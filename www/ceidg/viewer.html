@@ -1,0 +1,397 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            th {
+                text-align: left;
+            }
+            
+            select.versioned {
+                border: none;
+                width: 100%;
+            }
+        </style>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script>
+            var fileContents = {};
+        
+            $(() => {
+                $('#uploadFiles').change(onFilesSelected);
+                $('#version').change(onVersionChanged);
+            });
+            
+            function onFilesSelected(e) {
+                var uploadFiles = $('#uploadFiles')[0];
+                fileContents = {};
+                $('#version').empty();
+                var waitCounter = 0;
+                for (var f = 0; f < uploadFiles.files.length; ++f) {
+                    var file = uploadFiles.files[f];
+                    console.log('Selected file ' + file.name);
+                    if (file) {
+                        ++waitCounter;
+                        var reader = new FileReader();
+                        reader.key = file.name;
+                        reader.readAsText(file, "UTF-8");
+                        reader.onload = function (evt) {
+                            var content = evt.target.result;
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(content, "application/xml");
+                            fileContents[evt.target.key] = doc;
+                            if (--waitCounter == 0) {
+                                onFileContentsLoaded();
+                            }
+                        }
+                    }
+                }
+            }
+
+            function onFileContentsLoaded() {
+                var records = [];
+                
+                function rec(key, time, value, doNotCompareWithPrevious, doNotHighlight) {
+                    if (value == null) return;
+                    var timeValue = {
+                        time: time,
+                        value: value,
+                        doNotAddFrom: !!doNotCompareWithPrevious,
+                        doNotHighlight: !!doNotHighlight
+                    };
+                    var rec = records.find(r => r.key == key);
+                    if (!rec) {
+                        rec = {
+                            key: key,
+                            values: [timeValue]
+                        };
+                        records.push(rec);
+                    }
+                    else if (doNotCompareWithPrevious || rec.values[rec.values.length - 1].value != value) {
+                        rec.values.push(timeValue);
+                    }
+                }
+                
+                function sel(doc, selector, attr) {
+                    try {
+                        var el = doc.querySelector('Dokument TrescDokumentu Wartosc ' + selector);
+                        if (attr) {
+                            return el.attributes[attr].value;
+                        }
+                        return el.getInnerHTML();
+                    }
+                    catch (error) {
+                        return null;
+                    }
+                }
+
+                function modified(doc, selector) {
+                    if (sel(doc, 'RodzajWniosku') == '1') return true;
+                    var el = doc.querySelector('Dokument TrescDokumentu Wartosc ' + selector);
+                    if (el == null) return false;
+                    var mod = el.attributes.modyfikacja;
+                    return !mod || mod.value == '1';
+                }
+                
+                function recm(key, time, doc, selector, additionalSelector) {
+                    if (modified(doc, selector)) {
+                        rec(key, time, sel(doc, selector + (additionalSelector ? ' ' + additionalSelector : '')));
+                    }
+                }
+                
+                function foreignerStatus(value) {
+                    if (value == 2) return 'Являюсь иностранцем не из ЕС, имеющим право вести хоздеятельность в Польше';
+                    return 'НЕ являюсь иностранцем не из ЕС, имеющим право вести хоздеятельность в Польше (' + value + ')';
+                }
+                
+                function communityOfProperty(value) {
+                    if (value == 1) return 'имеется';
+                    if (value == 2) return 'отсутствует';
+                    return 'Не касается';
+                }
+                
+                var pkd = {};
+
+                var names = Object.getOwnPropertyNames(fileContents).sort();
+                var ni = 0;
+                for (var n in names) {
+                    ++ni;
+                    var doc = fileContents[names[n]];
+                    var isUpdate = sel(doc, 'RodzajWniosku') == '2';
+                    var submissionDate = sel(doc, 'DataZlozeniaWniosku Czas');
+                    var time = isUpdate ? sel(doc, 'DataPowstaniaZmiany Czas') : submissionDate;
+                    $('#version').append($('<option value="' + time + '">' + ni + '. ' + time + '</option>'));
+                    $('#version').val(time);
+
+                    var context = 'Wnioskodawca DaneWnioskodawcy';
+                    if (modified(doc, context)) {
+                        var prefix = '2. Личные данные - ';
+                        rec(prefix + 'Пол', time, sel(doc, context + ' Plec'));
+                        rec(prefix + 'Имя', time, sel(doc, context + ' Imie'));
+                        rec(prefix + 'Второе имя', time, sel(doc, context + ' ImieDrugie'));
+                        rec(prefix + 'Фамилия', time, sel(doc, context + ' Nazwisko'));
+                        rec(prefix + 'Фамилия от рождения', time, sel(doc, context + ' NazwiskoRodowe'));
+                        rec(prefix + 'Имя матери', time, sel(doc, context + ' ImieMatki'));
+                        rec(prefix + 'Имя отца', time, sel(doc, context + ' ImieOjca'));
+                        rec(prefix + 'Дата рождения', time, sel(doc, context + ' DataUrodzenia Czas'));
+                        rec(prefix + 'Место рождения', time, sel(doc, context + ' MiejsceUrodzenia'));
+                        rec(prefix + 'Гражданство', time, sel(doc, context + ' PosiadaneObywatelstwa Obywatelstwo'));
+                        rec(prefix + 'Иностранец - Статус', time, foreignerStatus(sel(doc, context + ' Cudzoziemiec Status')));
+                        rec(prefix + 'Иностранец - Подтверждающий документ - Сигнатура', time, sel(doc, context + ' Cudzoziemiec Identyfikator Sygnatura'));
+                        rec(prefix + 'Иностранец - Подтверждающий документ - Кем выдан', time, sel(doc, context + ' Cudzoziemiec Identyfikator OrganWydajacy'));
+                        rec(prefix + 'Иностранец - Подтверждающий документ - Когда выдан', time, sel(doc, context + ' Cudzoziemiec Identyfikator DataWydania Czas'));
+                        rec(prefix + 'Идентификация - PESEL', time, sel(doc, context + ' Identyfikatory PESEL'));
+                        rec(prefix + 'Идентификация - NIP', time, sel(doc, context + ' Identyfikatory NIP') || 'нет');
+                        rec(prefix + 'Идентификация - REGON', time, sel(doc, context + ' Identyfikatory REGON') || 'нет');
+                        rec(prefix + 'Идентификация - Документ - Вид', time, sel(doc, context + ' Identyfikatory DokumentTozsamosci Rodzaj'));
+                        rec(prefix + 'Идентификация - Документ - Название', time, sel(doc, context + ' Identyfikatory DokumentTozsamosci Nazwa'));
+                        rec(prefix + 'Идентификация - Документ - Номер', time, sel(doc, context + ' Identyfikatory DokumentTozsamosci Numer'));
+                    }
+                    
+                    context = 'Wnioskodawca AdresZamieszkania';
+                    if (modified(doc, context)) {
+                        prefix = '3. Адрес проживания - ';
+                        rec(prefix + 'Страна', time, sel(doc, context + ' Kraj'));
+                        rec(prefix + 'Воеводство', time, sel(doc, context + ' Wojewodztwo'));
+                        rec(prefix + 'Округ', time, sel(doc, context + ' Powiat'));
+                        rec(prefix + 'Район', time, sel(doc, context + ' Gmina'));
+                        rec(prefix + 'Почтовый код', time, sel(doc, context + ' KodPocztowy'));
+                        rec(prefix + 'Населенный пункт', time, sel(doc, context + ' Miejscowosc'));
+                        rec(prefix + 'Улица', time, sel(doc, context + ' Ulica'));
+                        rec(prefix + 'Номер дома', time, sel(doc, context + ' Budynek'));
+                        rec(prefix + 'Номер квартиры', time, sel(doc, context + ' Lokal'));
+                        rec(prefix + 'Примечания', time, sel(doc, context + ' Uwagi'));
+                    }
+                    
+                    context = 'WpisDoEwidencji EwidencjaGospodarcza DaneDoKontaktu';
+                    if (modified(doc, context)) {
+                        prefix = '4. Данные для контакта - ';
+                        rec(prefix + 'Телефон', time, sel(doc, context + ' NrTelefonu'));
+                        rec(prefix + 'E-mail', time, sel(doc, context + ' Email'));
+                        rec(prefix + 'Сайт', time, sel(doc, context + ' StronaWWW'));
+                        rec(prefix + 'Другой способ контакта', time, sel(doc, context + ' InnaFormaKontaktu'));
+                        rec(prefix + 'Разрешение на публикацию данных - Публикация', time, sel(doc, context, 'sprzeciwWobecUdostepnienia') == 1 ? 'запрещена' : 'разрешена');
+                    }
+                    
+                    context = 'WpisDoEwidencji EwidencjaGospodarcza';
+                    prefix = '5. Данные фирмы - ';
+                    recm(prefix + 'Название', time, doc, context + ' FirmaPrzedsiebiorcy');
+                    recm(prefix + 'Сокращенное название', time, doc, context + ' NazwaSkrocona');
+                    recm(prefix + 'Дата начала деятельности', time, doc, context + ' DataRozpoczeciaDzialalnosci', 'Czas');
+                    recm(prefix + 'Количество работников (включая босса)', time, doc, context + ' LiczbaPracujacych');
+                    
+                    context = 'WpisDoEwidencji EwidencjaGospodarcza RodzajeDzialalnosciGospodarczej';
+                    prefix += '5.1. Виды деятельности - ';
+                    var added = [];
+                    var removed = [];
+                    if (modified(doc, context)) {
+                        recm(prefix + 'Основной код деятельности', time, doc, context + ' Przewazajacy');
+                        var codes = doc.querySelectorAll(context + ' PKD2007');
+                        for (var c = 0; c < codes.length; ++c) {
+                            var code = codes[c];
+                            if (code.attributes.wykreslenie.value == '0') {
+                                added.push(code.getInnerHTML());
+                            }
+                            else {
+                                removed.push(code.getInnerHTML());
+                            }
+                        }
+                    }
+                    rec(prefix + 'Добавленные доп. коды', time, added.join(', ') || 'нет', true, added.length == 0);
+                    rec(prefix + 'Удаленные доп. коды', time, removed.join(', ') || 'нет', true, removed.length == 0);
+                    added.forEach(x => pkd[x] = 1);
+                    removed.forEach(x => delete pkd[x]);
+                    rec(prefix + 'Полный список доп. кодов', time, Object.getOwnPropertyNames(pkd).sort().join(', ') || 'нет');
+                    
+                    context = 'WpisDoEwidencji EwidencjaGospodarcza AdresDoDoreczen';
+                    if (modified(doc, context)) {
+                        prefix = '6. Адрес для корреспонденции - ';
+                        rec(prefix + 'Страна', time, sel(doc, context + ' Kraj'));
+                        rec(prefix + 'Воеводство', time, sel(doc, context + ' Wojewodztwo'));
+                        rec(prefix + 'Округ', time, sel(doc, context + ' Powiat'));
+                        rec(prefix + 'Район', time, sel(doc, context + ' Gmina'));
+                        rec(prefix + 'Почтовый код', time, sel(doc, context + ' KodPocztowy'));
+                        rec(prefix + 'Населенный пункт', time, sel(doc, context + ' Miejscowosc'));
+                        rec(prefix + 'Улица', time, sel(doc, context + ' Ulica'));
+                        rec(prefix + 'Номер дома', time, sel(doc, context + ' Budynek'));
+                        rec(prefix + 'Номер квартиры', time, sel(doc, context + ' Lokal'));
+                        rec(prefix + 'Примечания', time, sel(doc, context + ' Uwagi'));
+                    }
+                    
+                    context = 'WpisDoEwidencji EwidencjaGospodarcza MiejscaWykonywaniaDzialalnosci GlowneMiejsceDzialalnosci';
+                    if (modified(doc, context)) {
+                        prefix = '7. Постоянный адрес ведения деятельности - ';
+                        var brak = sel(doc, context, 'brak') == '1';
+                        rec(prefix + 'Наличие', time,  brak ? 'отсутствует' : 'присутствует');
+                        rec(prefix + 'Совпадает с адресом проживания', time,  sel(doc, context, 'jakZamieszkania') == '1' ? 'да' : 'нет');
+                    }
+                    
+                    context = 'WpisDoEwidencji RejestrUbezpieczeniowy';
+                    if (modified(doc, context)) {
+                        prefix = '9. Обязательное страхование - ';
+                        var kind = sel(doc, context, 'rodzaj');
+                        rec(prefix + 'Вид страхования', time,  kind);
+                        
+                        var zusDocs = [];
+                        var zusNode = doc.querySelector(context + ' WnioskiZus');
+                        if (zusNode) {
+                            if (zusNode.attributes.dolaczamZZA.value == '1') zusDocs.push('ZZA');
+                            if (zusNode.attributes.dolaczamZUA.value == '1') zusDocs.push('ZUA');
+                            if (zusNode.attributes.dolaczamZCNA.value == '1') zusDocs.push('ZCNA × ' + zusNode.attributes.iloscZCNA.value);
+                            if (zusNode.attributes.dolaczamZWUA.value == '1') zusDocs.push('ZWUA');
+                            if (zusNode.attributes.dolaczamZIUA.value == '1') zusDocs.push('ZIUA');
+                            rec(prefix + 'ZUS - Отправленные заявки', time, zusDocs.join(', ') || 'нет');
+                        }
+                        
+                        rec(prefix + 'ZUS - Дата начала оплаты взносов', time, sel(doc, context + ' ObowiazekSkladkowy Data Czas'));
+                    }
+                    
+                    context = 'WpisDoEwidencji DokumentacjaRachunkowa NaczelnikUrzeduSkarbowego';
+                    if (modified(doc, context)) {
+                        rec('14. Налоговая инспекция - Начальник', time, sel(doc, context + ' AktualnyDoSprawEwidencji'));
+                    }
+                    
+                    context = 'WpisDoEwidencji DokumentacjaRachunkowa FormaOpodatkowania';
+                    if (modified(doc, context)) {
+                        rec('15. Выбор формы оплаты подоходного налога - Форма налогообложения', time, sel(doc, context));
+                    }
+                    
+                    context = 'WpisDoEwidencji DokumentacjaRachunkowa PodmiotProwadzacy';
+                    if (modified(doc, context)) {
+                        prefix = '17. Ведение бухгалтерской документации - ';
+                        rec(prefix + 'Кто ведет', time, sel(doc, context + ' Firma') ? 'бухгалтер' : 'самостоятельно');
+                        rec(prefix + 'Бухгалтер - NIP', time, sel(doc, context + ' NIP') || 'не указан');
+                        rec(prefix + 'Бухгалтер - Название фирмы', time, sel(doc, context + ' Firma') || 'не указано');
+                    }
+                    
+                    context = 'WpisDoEwidencji DokumentacjaRachunkowa AdresPrzechowywania';
+                    if (modified(doc, context)) {
+                        prefix = '19. Адрес хранения бухгалтерской документации - ';
+                        rec(prefix + 'Страна', time, sel(doc, context + ' Kraj'));
+                        rec(prefix + 'Воеводство', time, sel(doc, context + ' Wojewodztwo'));
+                        rec(prefix + 'Округ', time, sel(doc, context + ' Powiat'));
+                        rec(prefix + 'Район', time, sel(doc, context + ' Gmina'));
+                        rec(prefix + 'Почтовый код', time, sel(doc, context + ' KodPocztowy'));
+                        rec(prefix + 'Населенный пункт', time, sel(doc, context + ' Miejscowosc'));
+                        rec(prefix + 'Улица', time, sel(doc, context + ' Ulica'));
+                        rec(prefix + 'Номер дома', time, sel(doc, context + ' Budynek'));
+                        rec(prefix + 'Номер квартиры', time, sel(doc, context + ' Lokal'));
+                        rec(prefix + 'Примечания', time, sel(doc, context + ' Uwagi'));
+                    }
+                    
+                    context = 'WpisDoEwidencji DokumentacjaRachunkowa RachunkiBankowe RachunekBankowy';
+                    prefix = '21. Банковские счета - ';
+                    var accounts = doc.querySelectorAll(context);
+                    if (accounts.length > 0) {
+                        for (var a = 0; a < accounts.length; ++a) {
+                            var account = accounts[a];
+                            var type = sel(account, 'CharakterRachunku');
+                            var country = sel(account, 'Kraj');
+                            var number = sel(account, 'NumerRachunku');
+                            var typefix = prefix + (type == 'firmowy' ? 'Счёт для деятельности' : 'Личный счёт');
+                            rec(typefix, time, (country + number).replace(/(.{4})/g, '$1 ').trimEnd());
+                        }
+                    }
+                    if (!records.find(x => x.key == prefix + 'Счёт для деятельности')) {
+                        rec(prefix + 'Счёт для деятельности', time, 'нет');
+                    }
+                    if (!records.find(x => x.key == prefix + 'Личный счёт')) {
+                        rec(prefix + 'Личный счёт', time, 'нет');
+                    }
+                    
+                    context = 'WpisDoEwidencji DokumentacjaRachunkowa MalzenskaWspolnoscMajatkowa';
+                    if (modified(doc, context)) {
+                        prefix = '23. Совместное имущество с супругом - ';
+                        rec(prefix + 'Наличие', time, communityOfProperty(sel(doc, context + ' Stan')));
+                    }
+                    
+                    var attachmentList = [];
+                    var attachments = doc.querySelectorAll('Zalaczniki Zalacznik');
+                    for (var f = 0; f < attachments.length; ++f) {
+                        attachmentList.push(attachments[f].attributes.nazwaPliku.value);
+                    }
+                    rec('Вложенные файлы - Файлы', time, attachmentList.join(', ') || 'нет', true, attachmentList.length == 0);
+                }
+
+                function ddl(values) {
+                    var result = '<select class="versioned">';
+                    for (var i = 0; i < values.length; ++i) {
+                        var value = values[i];
+                        result += '<option' + (i == values.length - 1 ? ' selected="selected"' : '') + (value.doNotHighlight ? ' class="doNotHighlight"' : '') + ' value="' + value.time + '">' + (value.doNotAddFrom ? '' : 'От ') + value.time + ': ' + value.value + '</option>';
+                    }
+                    result += '</select>';
+                    return result;
+                }
+
+                var $output = $('#output');
+                $output.empty();
+                $output.append($('<table><tbody /></table>'));
+                var $tbody = $output.find('table tbody');
+                var prevHeaders = [];
+                for (var r in records) {
+                    var record = records[r];
+                    
+                    var recHeaders = record.key.split(' - ');
+                    var key = recHeaders.pop();
+                    
+                    for (var h = 0; h < recHeaders.length; ++h) {
+                        if (prevHeaders[h] == recHeaders[h]) continue;
+                        var header = recHeaders[h];
+                        var hn = 2 + h;
+                        var cn = 10 + h * 2;
+                        var color = cn.toString(16);
+                        color = color + color + 'd';
+                        $tbody.append($('<tr>' +
+                            '<th colspan="2" style="background-color: #' + color + '"><h' + hn + ' style="margin: 0">' + header + '</h' + hn + '></th>' +
+                        '</tr>'));
+                    }
+                    prevHeaders = recHeaders;
+                    
+                    $tbody.append($('<tr>' +
+                        '<th>' + key + '</th>' +
+                        '<td>' + ( record.values.length == 1 ? record.values[0].value : ddl(record.values) ) + '</td>' +
+                    '</tr>'));
+                }
+                
+                $('#version-container').show();
+                $('#uploadFiles').hide();
+                onVersionChanged();
+            }
+            
+            function onVersionChanged() {
+                var time = $('#version').val();
+                $('select.versioned').each(function () {
+                    $(this)
+                        .val($(this).find('option').filter((idx, el) => $(el).attr('value') <= time).last().attr('value'))
+                        .css('background-color', $(this).val() == time && !$(this).find('option[value=' + time + ']').hasClass('doNotHighlight') ? 'yellow' : 'white');
+                });
+            }
+        </script>
+    </head>
+    <body style="margin: 0">
+        <div id="version-container" style="display: none; position: sticky; top: 0px; font-weight: bold; font-size: 150%; padding: 5px; border-bottom: solid 1px #888; box-shadow: 0 0 15px; background-color: #ffe; text-align: center">
+            Версия
+            <select id="version" style="font-size: 20px">
+            </select>
+        </div>
+        <div id="output" style="display: flex; flex-direction: column; align-items: center">
+            <h2>Просмотр актуального состояния записи в CEIDG<sup>(beta)</sup></h2>
+            <h3 style="margin-bottom: 0">Что это такое, зачем это нужно</h3>
+            <p style="max-width: 1100px">Часто предприниматели сталкиваются с вопросом, как посмотреть свою запись в CEIDG в её текущем состоянии, во всей полноте. Сайт biznes.gov.pl, к сожалению, не предоставляет такую возможность, та выписка, которую можно посмотреть, содержит далеко не все данные. Для понимания текущего состояния приходится просматривать всю историю своих заявок и отслеживать изменения в определенных секциях.</p>
+            <h3 style="margin-bottom: 0">Что делает эта страница</h3>
+            <p style="max-width: 1100px">Эта страница скомпилирует все исторические данные из твоих заявок на изменения в CEIDG и покажет полную актуальную версию записи, с возможностью путешествия между всеми её версиями. Для этого тебе понадобится скачать свои заявки с сайта biznes.gov.pl в формате XML, как описано ниже, и открыть их при помощи этой страницы.</p>
+            <p style="max-width: 1100px">Пожалуйста, учти, что это beta-версия, быстро сляпанный на коленке proof of concept, поэтому конечно же ты можешь заметить какие-нибудь ляпы и недочёты. Для некоторых исправлений и дополнений мне может понадобиться не просто твой отзыв, а даже фрагменты твоих файлов с личными данными, чтобы понять, как обработать всё правильно, потому что те XML файлы, которые послужили мне примером, не содержали всех возможных вариантов изменений данных. Я буду рад, если ты посодействуешь улучшению кода.</p>
+            <h3 style="margin-bottom: 0">Чего не делает эта страница</h3>
+            <p style="max-width: 1100px">Эта страница сама по себе не подвергает твои данные опасности, т.к. никуда не отсылает их, а обрабатывает прямо в твоём браузере, на твоём компьютере, с помощью языка Javascript. Также она не модифицирует твои файлы, а лишь читает и анализирует их. Если ты доверяешь этому компьютеру и этому браузеру, то нет причин беспокоиться.</p>
+            <h3 style="margin-bottom: 0">Готов? Поехали!</h3>
+            <ul>
+                <li><a href="https://konto.biznes.gov.pl/pl/moje-konto" target="_blank">Зайди</a> в свой аккаунт предпринимателя на сайте biznes.gov.pl.</li>
+                <li>После входа открой Moje sprawy - <a href="https://konto.biznes.gov.pl/pl/moje-konto/moje-sprawy/sprawy-zrealizowane" target="_blank">Sprawy zrealizowane</a>.</li>
+                <li>По очереди пройдись по всем пунктам, которые называются Zarejestruj działalność gospodarczą w CEIDG или Zmień dane firmy w CEIDG.</li>
+                <li>В каждом из них кликни на файл типа 20230101-1111-0737-wniosek.xml и сохрани все такие файлы в одной новой папке на своём диске.</li>
+                <li>Помни, что важно сохранить каждый из этих файлов, не пропустить ни одного, т.к. каждый следующий зависит от предыдущего.</li>
+                <li>Когда скачаешь все файлы, нажми кнопку ниже, выбери сразу все файлы и одним махом открой их.</li>
+                <li>Нажимая на кнопку и открывая файлы, ты выражаешь согласие на обработку данных этой страницей, в этом браузере, на этом компьютере.</li>
+            </ul>
+            <input id="uploadFiles" type="file" accept="application/xml" multiple="multiple" style="margin-bottom: 30px" />
+        </div>
+    </body>
+</html>
