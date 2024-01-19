@@ -1,0 +1,1363 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Чек-лист</title>
+        <style>
+            body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                background-color: #ddd;
+                font: 10pt "Arial";
+            }
+            * {
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+            }
+            
+            .page {
+                width: 210mm;
+                min-height: 297mm;
+                padding: 10mm;
+                margin: 10mm auto;
+                border: 1px #D3D3D3 solid;
+                border-radius: 5px;
+                background: white;
+                box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
+            td, th {
+                border: solid 1px grey;
+                padding: 3px;
+                line-height: 3mm;
+            }
+            
+            td {
+                font-size: 12pt;
+                text-align: center;
+                min-width: 5mm;
+            }
+            
+            th {
+                font-weight: normal;
+                font-size: 7pt;
+                text-align: left;
+            }
+            
+            th.narrow {
+                max-width: 9mm;
+                overflow-wrap: anywhere;
+            }
+            
+            tr.group th {
+                background-color: #ddd;
+                font-size: 11pt;
+                font-weight: bold;
+                padding: 1.5mm;
+                text-align: left;
+            }
+            
+            tr.subgroup th {
+                background-color: #eee;
+                font-size: 8pt;
+                font-weight: bold;
+                padding: 3px;
+                text-align: left;
+            }
+            
+            .big-letter {
+                font-size: 13pt;
+            }
+            
+            a[rel="modal:open"] {
+                border-bottom: dotted 1px red;
+                text-decoration: none;
+                background-color: #ffb;
+                cursor: pointer;
+            }
+            
+            input[type=checkbox] {
+                margin: 0 3.5px;
+            }
+
+            .updates-only {
+                display: none;
+                font-style: italic;
+                margin-bottom: 1mm;
+            }
+
+            .print-button {
+                position: fixed;
+                z-index: 1;
+                top: 10px;
+                right: 10px;
+                width: 100px;
+                height: 100px;
+                font-size: 70px;
+                border: solid 1px grey;
+                box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+                background-color: #eff;
+                text-align: center;
+                cursor: pointer;
+            }
+            
+            .donate-button {
+                position: fixed;
+                z-index: 1;
+                bottom: 10px;
+                right: 10px;
+                width: 100px;
+                height: 100px;
+                font-size: 70px;
+                border: solid 1px grey;
+                box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+                background-color: #eff;
+                text-align: center;
+                cursor: pointer;
+                border-radius: 50px;
+                padding-top: 3px;
+            }
+
+            .help-button {
+                position: fixed;
+                z-index: 1;
+                bottom: 10px;
+                left: 10px;
+                width: 100px;
+                height: 100px;
+                font-size: 70px;
+                border: solid 1px grey;
+                box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+                background-color: #eff;
+                text-align: center;
+                cursor: pointer;
+                border-radius: 50px;
+                padding-top: 10px;
+            }
+            
+            tr.non-printable * {
+                text-decoration: line-through;
+                background-color: transparent;
+                color: #aaa;
+            }
+
+            tr.non-printable > * * {
+                border-bottom: none;
+            }
+            
+            .minor {
+                font-size: smaller;
+                font-style: italic;
+            }
+            
+            @media print {
+                html, body {
+                    width: 210mm;
+                    height: 297mm;
+                    background: white;
+                }
+
+                .page {
+                    margin: 0;
+                    border: initial;
+                    border-radius: initial;
+                    width: initial;
+                    min-height: initial;
+                    box-shadow: initial;
+                    background: initial;
+                    page-break-after: always;
+                }
+                
+                .non-printable {
+                    display: none;
+                }
+                
+                #checklist tr > *:nth-child(1) {
+                    display: none;
+                }
+                
+                a[rel="modal:open"] {
+                    text-decoration: none;
+                    color: black;
+                    background-color: transparent;
+                    border-bottom: none !important;
+                }
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+        <script>
+            var spouseCol = 4;
+            var childCol = 5;
+            var colNum = 6;
+
+            function updateRows() {
+                $('#checklist > tbody > tr').each(function() {
+                    var $r = $(this);
+                    var visible = true;
+                    
+                    do {
+                        var listType = $('#listType').val();
+                        var spouse = $('#spouse').val() == '1';
+                        var children = $('#children').val() == '1';
+
+                        if (listType == 'updates' && !$r.hasClass('updates')&& !$r.hasClass('updates-only')) {
+                            visible = false;
+                            break;
+                        }
+                        
+                        if (listType == 'full' && $r.hasClass('updates-only')) {
+                            visible = false;
+                            break;
+                        }
+
+                        if ($r.hasClass('spouse-specific') || $r.hasClass('child-specific')) {
+                            var specificVisible = false;
+                            if (spouse && $r.hasClass('spouse-specific')) {
+                                specificVisible = true;
+                            }
+                            else if (children && $r.hasClass('child-specific')) {
+                                specificVisible = true;
+                            }
+                            if (!specificVisible) {
+                                visible = false;
+                                break;
+                            }
+                        }
+
+                    } while (false);
+                    $r.toggle(visible);
+                });
+            }
+
+            function removeHash() {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+            }
+
+            function configModal() {
+                $('a[rel="modal:open"][href="' + window.location.hash + '"]').click();
+                
+                $('a[rel="modal:open"]').click(function() {
+                    window.location.hash = $(this).attr('href');
+                });
+
+                var nativeClose = $.modal.close;
+                $.modal.close = function() {
+                    removeHash();
+                    nativeClose();
+                }
+
+                $(document).on('click.modal', 'a[rel~="modal:close"]', function() {
+                    removeHash();
+                });
+            }
+            
+            function getState() {
+                var state = {};
+                $('select.persisted').each(function(i, c) {
+                    state[c.name] = $(c).find(':selected').val();
+                });
+                $('input.persisted').each(function(i, c) {
+                    state[c.name] = $(c).val();
+                });
+                $('.optional-check').each(function(i, c) {
+                    state[c.name] = c.checked;
+                });
+                return JSON.stringify(state);
+            }
+            
+            function setState(json) {
+                var state = JSON.parse(json);
+                $('select.persisted').each(function(i, c) {
+                    var $c = $(c);
+                    if (c.name in state) {
+                        $c.find('option').prop('selected', false);
+                        $c.find('option[value="' + state[c.name] + '"]').prop('selected', true);
+                        $c.change();
+                    }
+                });
+                $('input.persisted').each(function(i, c) {
+                    if (c.name in state) {
+                        $(c).val(state[c.name]).change();
+                    }
+                });
+                $('.optional-check').each(function(i, c) {
+                    if (c.name in state) {
+                        c.checked = state[c.name];
+                        $(c).change();
+                    }
+                });
+            }
+            
+            function saveState() {
+                if (typeof(Storage) !== "undefined") {
+                    localStorage.setItem('state', getState());
+                }
+            }
+            
+            function restoreState() {
+                if (typeof(Storage) !== "undefined") {
+                    var state = localStorage.getItem('state');
+                    if (state) {
+                        setState(state);
+                    }
+                }
+            }
+            
+            $(function() {
+                configModal();
+
+                $('.print-button').click(function() {
+                    window.print();
+                });
+
+                $('#spouse').on('change', function() {
+                    $('#checklist tr:not(.group):not(.subgroup) *:nth-child(' + spouseCol + '), .spouse-specific:not(.child-specific)').toggle($(this).val() == '1');
+                    updateRows();
+                    saveState();
+                });
+
+                $('#children').on('change', function() {
+                    $('#checklist tr:not(.group):not(.subgroup) *:nth-child(' + childCol + '), .child-specific:not(.spouse-specific), .child-copy').toggle($(this).val() == '1');
+                    updateRows();
+                    saveState();
+                });
+
+                $('#numberOfChildren').on('change', function() {
+                    var num = $(this).val();
+                    $('.child-copy').remove();
+                    $('#checklist tr:not(.group):not(.subgroup) *:nth-child(' + childCol + ')').each(function() {
+                        var $child = $(this);
+                        for (var i = 2; i <= num; i++) {
+                            $child.after($child.clone().addClass('child-copy'));
+                        }
+                    });
+                    $('#checklist tr.group, #checklist tr.subgroup').find('th:nth-child(2)').attr('colspan', colNum - 1 + num);
+                    saveState();
+                });
+                
+                $('.optional-check').on('change', function(event) {
+                    var print = this.checked;
+                    $('.optional-check-in-comment[name="' + this.name + '"]').prop('checked', this.checked);
+                    if (print) {
+                        $(this).closest('tr').removeClass('non-printable');
+                    }
+                    else {
+                        $(this).closest('tr').addClass('non-printable');
+                    }
+                    saveState();
+                });
+                $('.optional-check-in-comment').on('change', function(event) {
+                    var $pair = $('#checklist .optional-check[name="' + this.name + '"]');
+                    $pair.prop('checked', this.checked);
+                    $pair.change();
+                });
+                
+                $('#listType').on('change', function(event) {
+                    var type = this.value;
+                    $('.updates-only').toggle(type == 'updates');
+                    updateRows();
+                    saveState();
+                });
+                
+                restoreState();
+                updateRows();
+                
+                if (window.location.hash == '#updates') {
+                    $('#listType').val('updates').change();
+                    removeHash();
+                }
+                // TODO: make empty subgroups and groups non-printable
+            });
+        </script>
+    </head>
+    <body>
+        <div class="page non-printable" style="min-height: auto; background-color: #444; color: #eee; font-size: 120%; padding: 10px 20px 15px 20px; margin-top: 10px">
+            <div style="display: flex; justify-content: space-between">
+                <div style="font-size: 70px">
+                    ☑️
+                </div>
+                <div style="text-align: center">
+                    <div style="margin-bottom: 10px">Хочешь поблагодарить автора?</div>
+                    <a target="_blank" href="https://justandrei.github.io/coffee" style="text-decoration: none">
+                        <img src="bmc.svg" style="" />
+                    </a>
+                </div>
+                <div style="font-size: 70px">
+                    ️☑️
+                </div>
+            </div>
+        </div>
+        <div class="page non-printable" style="min-height: auto">
+            <div class="print-button">🖶</div>
+            <a target="_blank" href="https://justandrei.github.io/coffee"><img class="donate-button" src="bmc-icon.svg" /></a>
+            <a target="_blank" href="https://t.me/JDG_PBH"><div class="help-button">?</div></a>
+            <h2>Чек-лист для подачи на ВНЖ с целью ведения деятельности</h2>
+            Чек-лист
+            <select class="persisted" name="listType" id="listType">
+                <option value="full" selected="selected">полный</option>
+                <option value="updates">актуализации документов</option>
+            </select>
+            <h3>Состав семьи</h3>
+            Супруг
+            <select class="persisted" name="spouse" id="spouse">
+                <option value="0">отсутствует, либо подаётся отдельно по своей работе или ИП, либо не подаётся</option>
+                <option value="1" selected="selected">подаётся вместе, на содержании</option>
+            </select>
+            <br/><br/>
+            Дети
+            <select class="persisted" name="children" id="children">
+                <option value="0">отсутствуют, либо подаются с супругом, либо не подаются</option>
+                <option value="1" selected="selected">подаются вместе, на содержании</option>
+            </select>
+            <div class="child-specific">
+                <br/>
+                Сколько детей
+                <select class="persisted" name="numberOfChildren" id="numberOfChildren">
+                    <option value="1" selected="selected">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <!-- TODO: разрешить давать людям имена и инициалы -->
+        </div>
+        <div class="page">
+            <table id="checklist" cellpadding="0" cellspacing="0">
+                <tr class="updates">
+                    <th><a rel="modal:open" href="#c-header-optional">Опц</a></th>
+                    <th><span class="updates-only" style="font-size: 13pt; font-weight: bold; font-style: normal;">Что <a rel="modal:open" href="#c-how-to-update">донести или дослать по почте</a></span></th>
+                    <td class="narrow"><a class="big-letter" rel="modal:open" href="#c-header-g">Г</a></td>
+                    <td class="narrow"><a class="big-letter" rel="modal:open" href="#c-header-s">С</a></td>
+                    <td class="narrow"><a class="big-letter" rel="modal:open" href="#c-header-r">Р</a></td>
+                    <td class="narrow"><a class="big-letter" style="font-size: 15pt" rel="modal:open" href="#c-header-check">&check;</a></td>
+                    <td class="narrow"><a class="big-letter" style="font-size: 15pt; line-height: 5mm" rel="modal:open" href="#c-header-printed">🖶</a></td>
+                </tr>
+                <tr class="group">
+                    <th></th>
+                    <th colspan="6">Что можно сделать очень заранее</th>
+                </tr>
+                <tr class="subgroup">
+                    <th></th>
+                    <th colspan="6">Легко доступно сразу, нужно просто напечатать или сделать копию</th>
+                </tr>
+                <tr class="updates-only subgroup">
+                    <th></th>
+                    <th colspan="6">Если поменяли паспорт</th>
+                </tr>
+                <tr class="updates">
+                    <th></th>
+                    <th>
+                        <a rel="modal:open" href="#c-passport-copy">Копия</a> (сканы либо фото хорошего качества) всех
+                        <a rel="modal:open" href="#c-passport-pages">заполненных</a> страниц паспорта
+                    </th>
+                    <td><a class="comment-link big-letter" rel="modal:open" href="#c-plus">+</a></td>
+                    <td>+</td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="updates">
+                    <th></th>
+                    <th>
+                        + <a rel="modal:open" href="#c-passport-last-page-copy">2 копии страницы с фото</a>, а ребенку – дополнительно по 1 копии этой страницы родителей
+                    </th>
+                    <td>+</td>
+                    <td>+</td>
+                    <td><a rel="modal:open" href="#c-passport-last-page-copy-child">Р Г С</a></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        Подтверждение присвоения номера PESEL (копия и оригинал для сверки)
+                    </th>
+                    <td>+</td>
+                    <td>+</td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a rel="modal:open" href="#c-ceidg">Выписка регистрации в СEIDG</a>
+                    </th>
+                    <td>+</td>
+                    <td><a rel="modal:open" href="#c-letter-g">Г</a></td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a rel="modal:open" href="#c-contract">Контракт</a>(ы) с клиентом(-ами)
+                    </th>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="updates-only subgroup">
+                    <th></th>
+                    <th colspan="6">Сразу же, как только продлили договор или переехали в другую квартиру</th>
+                </tr>
+                <tr class="updates">
+                    <th></th>
+                    <th>
+                        <a rel="modal:open" href="#c-flat-rent">Договор аренды жилья</a> (копия, иметь с собой оригинал для сверки)
+                    </th>
+                    <td>+</td>
+                    <td>+</td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="spouse-specific">
+                    <th></th>
+                    <th>
+                        Свидетельство о браке (копия, иметь с собой оригинал для сверки)
+                    </th>
+                    <td></td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="child-specific">
+                    <th></th>
+                    <th>
+                        Свидетельство о рождении (копия, иметь с собой оригинал для сверки)
+                    </th>
+                    <td></td>
+                    <td></td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="subgroup">
+                    <th></th>
+                    <th colspan="6">Заказать</th>
+                </tr>
+                <tr class="spouse-specific">
+                    <th></th>
+                    <th>
+                        <a href="#c-translation" rel="modal:open">Присяжный перевод</a> свидетельства о браке (<a href="#c-translation-copy" rel="modal:open">копия</a>, оригинал иметь с собой)
+                    </th>
+                    <td></td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="child-specific">
+                    <th></th>
+                    <th>
+                        <a href="#c-translation" rel="modal:open">Присяжный перевод</a> свидетельства о рождении (<a href="#c-translation-copy" rel="modal:open">копия</a>, оригинал иметь с собой)
+                    </th>
+                    <td></td>
+                    <td></td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th><input class="optional-check" name="ch-contract-translation" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a href="#c-translation" rel="modal:open">Присяжный перевод</a> <a rel="modal:open" href="#c-contract-translation">контракта</a>(-ов) с клиентом(-ами) (<a href="#c-translation-copy" rel="modal:open">копия</a>, оригинал иметь с собой)
+                    </th>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="spouse-specific child-specific">
+                    <th><input class="optional-check" name="ch-study" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a rel="modal:open" href="#c-study">Справка с места обучения</a> (<a href="#c-schooling-proof-copy" rel="modal:open">копия</a>, оригинал иметь с собой)
+                    </th>
+                    <td>С&nbsp;Р</td>
+                    <td>+</td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="subgroup">
+                    <th></th>
+                    <th colspan="6">Потрудиться написать</th>
+                </tr>
+                <tr>
+                    <th><input class="optional-check" name="ch-oswiadczenie-cudzoziemca" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a href="#c-oswiadczenie-cudzoziemca" rel="modal:open">Oświadczenie cudzoziemca</a>
+                    </th>
+                    <td>?</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th><input class="optional-check" name="ch-about-work" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a href="#c-about-work" rel="modal:open">Заявление о работе</a>
+                    </th>
+                    <td>?</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a href="#c-jdg-form" rel="modal:open">Анкета предпринимателя</a> (подготовить заранее всё, кроме чек-листа документов)
+                    </th>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th><input id="ch-business-plan" name="ch-business-plan" class="optional-check" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a href="#c-business-plan" rel="modal:open">Бизнес-план</a> <span style="color: red; font-weight: bold; font-size: 80%" class="non-printable">NEW!</span>
+                    </th>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th><input class="optional-check" name="ch-jdg-description" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a href="#c-jdg-description" rel="modal:open">Описание деятельности &mdash; краткая выжимка некоторых глав вашего бизнес-плана</a>
+                    </th>
+                    <td>?</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th><input class="optional-check" name="ch-attachment1" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a href="#c-attachment1" rel="modal:open">Załącznik nr. 1</a>
+                    </th>
+                    <td>?</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a href="#c-support" rel="modal:open">Oświadczenie o liczbie osób na utrzymaniu</a>
+                    </th>
+                    <td><a href="#c-support-main" rel="modal:open">Г С?</a></td>
+                    <td><a href="#c-support-spouse" rel="modal:open">С Г?</a></td>
+                    <td><a href="#c-support-child" rel="modal:open">Г/С</a></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th><input class="optional-check" name="ch-card-without-address" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a href="#c-card-without-address" rel="modal:open">Oświadczenie o wydruku karty bez adresu</a>
+                    </th>
+                    <td>+</td>
+                    <td>+</td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="group">
+                    <th></th>
+                    <th colspan="6">Что нужно сделать ближе к моменту подачи, чтобы иметь самое актуальное</th>
+                </tr>
+                <tr class="subgroup">
+                    <th></th>
+                    <th colspan="6">Заказать желательно за 10-14 дней до подачи (справки делаются за 1-7 дней, но действуют 30 дней)</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a href="#c-no-dept-evidence-from-zus" rel="modal:open">Справка</a> об отсутствии задолженности в ZUS (RWN) +
+                        <a href="#c-no-dept-evidence-from-zus-upd" rel="modal:open">UPD</a>
+                    </th>
+                    <td>+</td>
+                    <td>Г</td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a href="#c-no-dept-evidence-from-tax" rel="modal:open">Справка</a> об отсутствии задолженности в оплате налогов (ZAS-W) +
+                        <a href="#c-no-dept-evidence-from-tax-upd" rel="modal:open">UPD</a>
+                    </th>
+                    <td>+</td>
+                    <td>Г</td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th><input class="optional-check" name="ch-health-insurance" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a href="#c-health-insurance" rel="modal:open">Частная страховка</a>
+                    </th>
+                    <td>?</td>
+                    <td>?</td>
+                    <td>?</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="subgroup">
+                    <th></th>
+                    <th colspan="6">Заказать у бухгалтера (заранее уточнить сроки)</th>
+                </tr>
+                <tr class="updates-only subgroup">
+                    <th></th>
+                    <th colspan="6">В феврале-апреле, подав декларацию за завершенный год, можете передать ее инспектору</th>
+                </tr>
+                <tr class="updates">
+                    <th><input class="optional-check" name="ch-declaration" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a rel="modal:open" href="#c-declaration">Годовая декларация</a> (если есть)
+                    </th>
+                    <td>+</td>
+                    <td>Г</td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="updates-only subgroup">
+                    <th></th>
+                    <th colspan="6">Не обязательно, но при желании каждые 1-2 месяца можно досылать свежие документы</th>
+                </tr>
+                <tr class="updates">
+                    <th></th>
+                    <th>
+                        <a href="#c-income-evidence" rel="modal:open">Ewidencja przychodów</a> / KPiR (+ помесячные PIT-28, если есть).
+                    </th>
+                    <td>+</td>
+                    <td>Г</td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="updates">
+                    <th></th>
+                    <th>
+                        <a href="#c-zus-dra" rel="modal:open">ZUS DRA</a> &mdash; за каждый месяц. Обязательно приложить <a href="#c-zus-dra-upp" rel="modal:open">UPP</a>
+                    </th>
+                    <td>+</td>
+                    <td>Г</td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="updates">
+                    <th><input class="optional-check" name="ch-about-work" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a href="#c-jpkv7m" rel="modal:open">JPK_V7m</a> и UPO &mdash; за каждый месяц, если платите VAT
+                    </th>
+                    <td>+</td>
+                    <td>Г</td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="subgroup">
+                    <th></th>
+                    <th colspan="6">Сделать самостоятельно</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a href="#c-application-fee" rel="modal:open">Opłata skarbowa</a> &mdash; пошлина за рассмотрение внёска (распечатка чека)
+                    </th>
+                    <td>+</td>
+                    <td>+</td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a href="#c-photo" rel="modal:open">Фотографии</a> 4 шт (3,5x4,5, стандартное фото на польские документы)
+                    </th>
+                    <td>+</td>
+                    <td>+</td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="updates">
+                    <th><input class="optional-check" name="ch-invoice" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a rel="modal:open" href="#c-invoice">Фактуры</a> с <a rel="modal:open" href="#c-invoice-signature">подписью</a>.
+                        На обратной стороне &mdash; распечатка банковского подтверждения <a rel="modal:open" href="#c-invoice-confirmation">прихода</a>
+                    </th>
+                    <td>+</td>
+                    <td>Г</td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="updates">
+                    <th></th>
+                    <th>
+                        <a rel="modal:open" href="#c-business-account-bank-statement">Распечатка фирмового счета</a>, где видны операции ИП
+                    </th>
+                    <td>+</td>
+                    <td>Г</td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="spouse-specific child-specific">
+                    <th><input class="optional-check" name="ch-personal-account-bank-statement" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a rel="modal:open" href="#c-personal-account-bank-statement">Распечатка личного счета</a> для подтверждения пребывания
+                    </th>
+                    <td></td>
+                    <td>+</td>
+                    <td>?</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a rel="modal:open" href="#c-zus-insurance-confirmation">Potwierdzenie ubezpieczenia ZUS</a>
+                    </th>
+                    <td>+</td>
+                    <td>Г</td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a rel="modal:open" href="#c-zus-zza">ZUS ZZA/ZUA</a>
+                    </th>
+                    <td>+</td>
+                    <td>Г</td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="spouse-specific child-specific">
+                    <th></th>
+                    <th>
+                        <a rel="modal:open" href="#c-zus-zcna">ZUS ZCNA</a>
+                    </th>
+                    <td>С Р</td>
+                    <td>+</td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="updates-only subgroup">
+                    <th></th>
+                    <th colspan="6">Если не подали чек оплаты сразу, то можете донести позже</th>
+                </tr>
+                <tr class="updates">
+                    <th><input class="optional-check" name="ch-card-fee" type="checkbox" checked="checked"/></th>
+                    <th>
+                        <a href="#c-card-fee" rel="modal:open">Оплата за изготовление карты побыта</a> (распечатка чека)
+                    </th>
+                    <td>+</td>
+                    <td>+</td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="subgroup">
+                    <th></th>
+                    <th colspan="6">Делать в последнюю очередь, чтобы точно понимать, какие документы отмечать как приложенные</th>
+                </tr>
+                <tr>
+                    <th><span style="color: red; font-weight: bold; font-size: 80%" class="non-printable">NEW!</span></th>
+                    <th>
+                        <a rel="modal:open" href="#c-application-form">Wniosek o pobyt czasowy</a> (заявка) &mdash; <a rel="modal:open" href="#c-application-form-count">от одной до трёх копий</a>
+                    </th>
+                    <td>+</td>
+                    <td>+</td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        Анкета предпринимателя (заполнить чек-лист в конце и распечатать)
+                    </th>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="group spouse-specific child-specific">
+                    <th></th>
+                    <th colspan="6">Кому идти в ужонд: всем взрослым <span class="child-specific"> и детям 6+ лет (у них берут отпечатки пальцев)</span></th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="non-printable" style="padding-bottom: 20px">
+            <div class="page" style="min-height: auto">
+                <p>Чек-лист обработал и скомпоновал в один лист формата А4 Андрей Митин.
+                Информация в основном взята с <a target="_blank" href="https://sobolevbel.github.io/jdg/legalization/">гитхаб-страницы Евгения Соболева</a> и
+                из чата <a target="_blank" href="https://t.me/JDG_PBH">ИП в Польше</a>.
+                Рекомендую в любом случае почитать гитхаб-страницу и конечно <a target="_blank" href="https://sobolevbel.github.io/jdg/support/">поддержать</a>
+                проект Евгения добровольным пожертвованием.</p>
+                <p>Прошу задавать любые вопросы, касающиеся подачи на ВНЖ, в чате <a target="_blank" href="https://t.me/JDG_PBH">ИП в Польше</a>. Там много опытных, отзывчивых людей, готовых помогать чуть ли не круглосуточно.</p>
+            </div>
+        </div>
+
+        <div class="non-printable" id="comments">
+            <div class="modal" id="c-application-form">
+                <p><a target="_blank" href="https://drive.google.com/uc?export=download&id=1TTyM8F8Y0DU7XAi_qulcDGhnGlOv7nsu">Шаблон</a> с комментариями по заполнению.</p>
+                <p><b style="color: red">Новинка!</b> <b>Поздравляю, Вы обнаружили beta-версию нового инструмента для заполнения заявки на ВНЖ!</b></p>
+                <p><span target="_blank" style="font-weight: bold; font-size: 150%; text-decoration: line-through">Попробовать заполнить заявку на ВНЖ</span> <b style="color: red">извините за неудобства, инструмент временно отключен,<br/>пока что пользуйтесь шаблоном выше</b></p>
+            </div>
+            
+            <div class="modal" id="c-jpkv7m">
+                <p>Jednolity Plik Kontrolny &mdash; ежемесячная декларация VAT.</p>
+            </div>
+            
+            <div class="modal" id="c-how-to-update">
+                <p>Свежие документы можно либо лично заносить в канцелярию, либо отправлять по почте на адрес канцелярии, указывая на конверте номер дела. Оригиналы документов (например, паспорт или договор аренды жилья) посылать ни в коем случае не надо, только копии. Многие заверяют копии у нотариуса, т.к. при пересылке почтой некому делать сверку с оригиналом. Примут ли незаверенную копию - на усмотрение инспектора.</p>
+                <p>В случае личного занесения в канцелярию, как показывает практика, принимающий персонал тоже не занимается сверкой копий, так что для уверенности лучше посетить нотариуса в любом случае.</p>
+            </div>
+            
+            <div class="modal" id="c-declaration">
+                <p style="color: blue">Если ИП &mdash; гражданин Украины (не важно, PESEL UKR или обычный), то до 4 марта 2024 г. ему не нужно доказывать наличие стабильного дохода, поэтому декларацию можно не подавать.</p>
+                <p>Годовая декларация, если она есть, это самый веский аргумент наличия стабильного дохода.</p>
+                <p>PIT-28 - декларация рычалтовца. Если пользуетесь другой налоговой системой, в вашем случае будет другой формуляр.</p>
+                <p>Если у вас есть годовая декларация и если в ней набирается нужная сумма, то вам не нужно писать бизнес-план. Также нет необходимости подавать фактуры, эвиденцию приходов и ZUS DRA за тот год, который задекларирован, но есть смысл сделать эти документы для месяцев текущего года, чтобы показать, что вы продолжаете вести деятельность.</p>
+                <p>Скрепите канцелярской скрепкой листы декларации вместе.</p>
+                <p><input class="optional-check-in-comment" id="ch-declaration" name="ch-declaration" type="checkbox" checked="checked" /><label for="ch-declaration">У вас есть декларация, будете подавать</label></p>
+            </div>
+            
+            <div class="modal" id="c-application-form-count">
+                <p>Нужное количество копий ищем <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">тут</a>.</p>
+                <p>Скрепите канцелярской скрепкой листы каждой копии внёска.</p>
+            </div>
+            
+            <div class="modal" id="c-zus-dra">
+                <p>ZUS DRA &mdash; ежемесячная декларация о доходах, которую бухгалтер отправляет в ZUS. В частности, она содержит суммарный годовой доход, от размера которого зависит сумма складки здровотней &mdash; так ZUS узнаёт, когда вам пора платить увеличенную складку.</p>
+                <p>Эти декларации подаются с целью продемонстрировать, что вы исправно отчитываетесь перед ZUS о доходах и платите складки ZUS.</p>
+                <p>Скрепите канцелярской скрепкой пачку деклараций.</p>
+            </div>
+
+            <div class="modal" id="c-zus-zcna">
+                <p>ZCNA &mdash; заявление о регистрации члена семьи, находящегося на содержании, в качестве лица, получающего страховое обеспечение вместе с основным застрахованным лицом. Таким образом предприниматель добавляет безработного супруга и детей к своей страховке. Ежемесячная сумма страхового взноса при этом не меняется. В одно заявление ZCNA вписывается до двух членов семьи, поэтому для семьи составом пара + трое детей будет как минимум 2 заявления: супруг + ребенок и еще два ребенка. Но можно оформлять и по одному заявлению на каждого по отдельности (4 заявления в этом примере).</p>
+                <p>Есть нюанс: ZCNA имеет настоящую силу лишь в том случае, когда либо выполнено в физическом отделе ZUS и снабжено мокрой печатью, либо сделано в электронном виде на сайте zus.pl и подаётся вместе с подтверждением высылки в ZUS (цифровой подписью). А поскольку большинство предпринимателей регистрируют членов семьи не самостоятельно, а через CEIDG (одновременно с регистрацией фирмы), то подтверждение высылки получить невозможно - подтверждение доступно лишь тому, кто высылает, а в этом случае это CEIDG, из которого это подтверждение невозможно достать.</p>
+                <p>Ниже описано, как получить ZCNA без мокрой печати и подтверждения, как электронный документ. Именно в таком виде я сам печатал и подавал ZCNA - скорее, "для галочки", т.к. основной упор делал на Potwierdzenie ubezpieczenia ZUS (см. предыдущий пункт чек-листа). Хотите перестраховаться &mdash; получайте ZCNA с мокрой печатью в отделе ZUS.</p>
+                <ul>
+                    <li>Если подаетесь как одинокий волк, ZCNA не нужен.</li>
+                    <li>Если подаетесь с одним супругом или одним ребенком, готовый ZCNA можно скачать  с сайта zus.pl (ePłatnik / Dokumenty / Dokumenty w ZUS) &mdash; он там создаётся в процессе регистрации фирмы в CEIDG, если не отказались заодно подать данные в ZUS.</li>
+                    <li>Если же в семье больше двух человек, файл на сайте zus.pl к сожалению будет содержать только одного человека &mdash; видимо, последнего, кого ввели при регистрации в CEIDG.<br/>
+                    Как сделать ZCNA для остальных:
+                    <ul>
+                        <li>Перед началом скачиваем тот единственный файл ZCNA, который уже есть в ZUS - он послужит образцом заполнения.</li>
+                        <li>Открываем ePłatnik / Dokumenty / Dodaj dokument.</li>
+                        <li>Выбираем тип документа ZUS ZCNA.</li>
+                        <li>Нажимаем кнопку Wybierz (не путаем с Pokaż formularz).</li>
+                        <li>Отклоняем предложение перейти к креатору (он не позволит добавить того, кто уже есть в системе).</li>
+                        <li>Заполняем обе страницы (переключаются табами, на второй - только дата).<br/>
+                        Чтобы заполнить поле Data nadania, можно удалить атрибут disabled у input (или просто позже написать в распечатке дату от руки).<br/>
+                        Kod stopnia pokrewieństwa / powinowactwa &mdash; 01 для супруга, 11 для ребенка.
+                        </li>
+                        <li>При помощи кнопки Drukuj генерируем PDF и сохраняем. Нам даже не нужно отправлять его в ZUS &mdash; зачем нагружать бюрократов лишней работой, если все члены семьи фактически уже есть в системе? Просто закрываем и всё. Можно еще подчистить за собой, удалив файлы из папки Dokumenty robocze.</li>
+                    </ul>
+                </ul>
+            </div>
+
+            <div class="modal" id="c-zus-zza">
+                <p>ZUS ZZA &mdash; заявление о регистрации в качестве плательщика складки здровотней.</p>
+                <p>Это заявление обычно автоматически оформляется тогда, когда вы регистрируете фирму в CEIDG и заявляете, что можете претендовать на ульгу на старт: CEIDG сам отсылает такое заявление в ZUS, если вы не отклонили предложение сразу подать данные в ZUS.</p>
+                <p>По прошествии 6 полных месяцев деятельности вы переходите с ульги на старт на складки преференцийные. С этого момента помимо складки здровотней вы начинаете платить складки сполечные. Поэтому вы (чаще всего с помощью бухгалтера) перерегистрируетесь в ZUS и оформляете заявление ZUS ZUA &mdash; о регистрации в качестве плательщика складек сполечных.</p>
+                <p>Соответственно, когда вы подаётесь на ВНЖ, вы приносите заявление, актуальное на момент подачи: если вы еще на ульге на старт, значит приносите ZZA, а если прошло полгода деятельности, значит приносите ZUA.</p>
+                <p>Оба документа, по мере их появления, доступны для скачивания с сайта <a target="_blank" href="https://zus.pl">zus.pl</a>, в разделе ePłatnik / Dokumenty / Dokumenty w ZUS.</p>
+            </div>
+            
+            <div class="modal" id="c-zus-insurance-confirmation">
+                <p>Potwierdzenie ubezpieczenia - справка из ZUS о том, что вы и находящиеся у вас на содержании члены семьи реально застрахованы в ZUS (NFZ).</p>
+                <p><a target="_blank" href="https://docs.google.com/document/d/1aAIAQ3Vu-5SzS3fGV7HrX6TzN-xys0_7IRowv5zhSIk/edit?usp=sharing">Как создать справку</a>.</p>
+                <p>Ниже в чек-листе есть ZZA/ZUA и ZCNA - документы, которые играют ту же самую роль, что и эта справка. Подача ZZA/ZUA и ZCNA для меня выглядит несколько странной, т.к. это просто анкеты, которые сами по себе не подтверждают регистрацию в ZUS. Поэтому лично я сгенерировал подтверждение из ZUS как более веский, на мой взгляд, документ. Отдавал я и его, и ZUA+ZCNA, но спросил у пани, что из этого нужнее. Пани сказала, что не знает, что имеет большее значение, но когда есть и то, и другое, она подшивает к делу всё.</p>
+                <p>Вероятно, ZZA/ZUA и ZCNA полностью выполняют функцию подтверждения застрахованности в ZUS тогда, когда они сделаны в отделе ZUS и снабжены мокрой печатью - для этого вам пришлось бы лично сходить туда. Однако я не люблю посещать административные заведения, поэтому на всякий случай подал эти документы, как рекомендовано бывалыми экспертами, исходя из накопленного опыта, но без мокрой печати, и всё же считаю, что справка о застрахованности, выданная самим ZUS, с цифровой подписью, является самодостаточной. В любом случае, не рискую удалять ZZA/ZUA и ZCNA из чек-листа &mdash; лучше подать лишний документ, чем если чего-то будет не хватать.</p>
+
+            </div>
+
+            <div class="modal" id="c-personal-account-bank-statement">
+                <p>Это опциональная вещь, но бывает, что в уженде просят доказательства реального пребывания в Польше. Ими может быть что угодно, в т.ч. фото, сделанные в разное время в разных местах города. Я решил распечатать личный счёт жены, там видны регулярные транзакции в польских магазинах.</p>
+                <p>Поскольку эта распечатка может быть весьма объемной, рекомендую печатать в масштабе 2 страницы на каждой стороне A4. Скрепите распечатку канцелярской скрепкой.</p>
+                <p><input class="optional-check-in-comment" id="ch-personal-account-bank-statement" name="ch-personal-account-bank-statement" type="checkbox" checked="checked" /><label for="ch-personal-account-bank-statement">На всякий случай будете подавать распечатку</label></p>
+            </div>
+            
+            <div class="modal" id="c-flat-rent">
+                <p>В договоре обязательно должны быть явно прописаны все члены семьи, подающиеся на побыт.</p>
+                <p class="minor">Что касается срока действия договора, существует общая рекомендация, чтобы на момент подачи заявления на побыт до конца договора было не менее 6 месяцев. Эту рекомендацию не всегда возможно выполнить, т.к. и агентство, и частный лендлорд могут отказаться продлевать договор на следующий период за несколько месяцев до конца текущего срока.</p>
+                <p>Самое главное &mdash; договор должен действовать на момент подписания децизии, и это очень важно, иначе будет отказ. Поэтому так: подавайте договор с любым сроком действия, но как только вы смогли подписать продление на следующий период, немедленно делайте копию и отсылайте инспектору почтой, с указанием номера дела, либо сами занесите в канцелярию ужонда.</p>
+                <p class="minor">Если у вас бессрочный договор аренды (до уведомления), вам повезло.</p>
+            </div>
+
+            <div class="modal" id="c-business-account-bank-statement">
+                <p>PKO: логинимся в <a target="_blank" href="https://www.ipko.pl/">ipko.pl</a>, выбираем бизнес-счёт, в меню Operacje na koncie выбираем Wyciągi. Там будет по одному PDF на каждый месяц, но чтобы увидеть все месяцы, а не только 2 последних, придётся авторизовать эту операцию в приложении IKO (нажимаем на сайте Pokaż starsze dane, подтверждаем на телефоне).</p>
+                <p>Если Вы ведете деятельность, используя личный счёт вместо фирмового, значит делайте распечатку личного. Можно отфильтровать операции и распечатать только то, что относится к ведению деятельности &mdash; по отдельности: поступления от контрагента, оплаты PIT, оплаты ZUS.</p>
+                <p>Печатайте на обеих сторонах листа и скрепите канцелярской скрепкой всю распечатку транзакций.</p>
+            </div>
+            
+            <div class="modal" id="c-invoice">
+                <p>Типичный программист выставляет одну фактуру в месяц каждому (чаще всего, единственному) контрагенту, поэтому распечатка всех фактур за несколько месяцев деятельности не является проблемой. Но если у вас другой случай, если вы выставляете десятки, сотни и более фактур ежемесячно, тогда конечно нет смысла печатать все фактуры. Вам для наглядного доказательства деятельности будет достаточно выписки с бизнес-счёта.</p>
+                <p>Скрепите канцелярской скрепкой пачку фактур (и реинвойсов, если есть).</p>
+                <p><input class="optional-check-in-comment" id="ch-invoice" name="ch-invoice" type="checkbox" checked="checked" /><label for="ch-invoice">У вас небольшое количество фактур, будете подавать их</label></p>
+            </div>
+            
+            <div class="modal" id="c-invoice-signature">
+                <p>Не нужно мудрить с цифровой подписью. Ужонд интересует только то, что вы сами подтверждаете, что это вами выставленная фактура. Тот факт, что её приняли, косвенно доказан наличием входящих платежей от контрагента.</p>
+            </div>
+            
+            <div class="modal" id="c-invoice-confirmation">
+                Бывает так, что контрагент присылает сумму, не соответствующую сумме, указанной в фактуре. Например, когда контрагент частично сам оплачивает бенефиты (страховку, MultiSport и т.п.), а остаток доплачиваете вы, и вот этот остаток вычитается из вашей суммы. В этом случае контрагент присылает реинвойс на вычтенную сумму. Чтобы у инспектора не возникло вопроса, почему пришло меньше, чем вы выставили, дополнительно печатайте и прилагайте реинвойс.
+            </div>
+            
+            <div class="modal" id="c-application-fee">
+                <p>Главный предприниматель и все члены семьи (если они подаются "прицепом" к нему, а не самостоятельно) &mdash; все должны заплатить по 340 zł. Если кто-то говорит вам, что надо платить 440 zł, не обращайте внимание, это просто путаница: 440 zł платят те, кто подаётся с целью работать (быть не ИП, а наёмным сотрудником), в частности подаётся на BlueCard. ИП попадают в тариф "иные цели" и платят 340 zł, точно так же, как их супруги и дети.</p>
+                <p>Данные для платежа ищем <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">тут</a>.</p>
+                <p>Внимание! Перед распечаткой чека оплаты нужно обязательно дождаться, когда оплата реально пройдёт (платёж в банке должен перейти из ожидающего в завершенный, должна пропасть кнопка отмены).</p>
+            </div>
+            
+            <div class="modal" id="c-photo">
+                <p>4 фотографии 35x45 мм, сделанные не более, чем 6 месяцев назад. Это стандартный размер, который в Польше используется для большинства документов.</p>
+                <p><b>Вклеивать фотографии в заявку не надо!</b> Просто приложите набор из четырёх фотографий.</p>
+                <p>В Польше в фотосалонах принято отдавать фотографии не на одном листе, а уже нарезанные. Обычно их делают 4 штуки, но если вежливо попросите и объясните цель, вам могут пойти навстречу и без дополнительной оплаты напечатать и 6, и 8 штук. Например, ребенку могут понадобиться фотографии и для заявки на побыт, и для карты мешканьца, и для школьной легитимации. Попробуйте сказать об этом.</p>
+                <p>Узнав цену на эту услугу, некоторые предпочитают сделать фотографии самостоятельно. Желание можно понять, но лучше браться за это дело лишь в том случае, когда точно знаешь, что делаешь, и имеешь соответствующий опыт. Не стоит рисковать получить отказ в открытии дела лишь на основании некачественных фотографий, это будет крайне обидно.</p>
+                <p>Полезная ссылка для самостоятельной подготовки фото: <a href="https://makepassportphoto.com/en/p/photo-for-poland-temporary-residence-card?plan=free" target="_blank">makepassportphoto.com</a></p>
+            </div>
+
+            <div class="modal" id="c-card-fee">
+                <p>В настоящее время (для оформивших заявку на ВНЖ после 29.07.2022) стоимость изготовления карты без льгот &mdash; 100 zł, а для детей, которым на дату подачи заявки не исполнилось 16 лет, &mdash; 50 zł.</p>
+                <p>Оплатить изготовление карты можно как сразу, так и позже. Только имейте в виду, что в некоторых воеводствах к изготовлению карты не приступят, пока не принесёте чек, тогда как в других воеводствах чек попросят предъявить лишь в день выдачи готовой карты.</p>
+                <p>Если Ваше воеводство требует деньги вперед, рекомендуется оплатить заранее, чтобы сразу после положительного решения инспектор запустил процесс печати Вашей карты. Не переживайте за деньги: в случае отрицательного решения их возвращают по заявлению (если конечно Вы не захотите делать вторую попытку получить ВНЖ).</p>
+                <p>Данные для платежа и информацию об особенностях своего воеводства ищем <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">тут</a>.</p>
+                <p>Внимание! Перед распечаткой чека оплаты нужно обязательно дождаться, когда оплата реально пройдёт (платёж в банке должен перейти из ожидающего в завершенный, должна пропасть кнопка отмены).</p>
+            </div>
+
+            <div class="modal" id="c-zus-dra-upp">
+                <p>UPP (Urzędowe Poświadczenie Przedłożenia) &mdash; подтверждение подачи декларации в ZUS, которое генерирует zus.pl. Это по сути цифровая подпись, которую вы можете распечатать, а работник ужонда при желании может проверить.</p>
+                <p>Если вы ведете бухгалтерию самостоятельно (например, при помощи сервиса <a target="_blank" href="https://www.infakt.pl/polecam/andrei-mitin">Infakt</a>, wFirma и им подобных), значит вы сами загружаете ZUS DRA на сайт zus.pl. В этом случае вы сами можете скачать UPP с сайта &mdash; подтверждение будет доступно за кнопкой Podgląd poświadczenia przedłożenia.</p>
+                <p>А если декларации подает за вас бухгалтер, тогда эта кнопка будет не зеленой, а серой, отключенной, потому что кто декларацию загружает, тот и получает подтверждение. Поэтому просите бухгалтера прислать ZUS DRA вместе с UPP.</p>
+                <p>В том случае, если у вас горят все сроки, утром подача внёска в ужонде, а бухгалтер так и не прислал нужные документы и не отвечает на ваши сообщения и звонки, не переживайте, просто не подавайте ZUS DRA сейчас, донесите потом.</p>
+                <p>При обсуждении в чате, можно ли за неимением UPP просто подписать ZUS DRA ручкой, мнения разделились: кто-то имел успешный опыт подачи в таком виде, кто-то возразил, что в Варшаве, где не очень любят просить принести недостающие документы, просто влепят отказ, если инспектору не понравится, что ZUS DRA без UPP. Если никак не возможно получить UPP, рекомендуются такие варианты:</p>
+                <ul>
+                    <li>Потребовать бухгалтера поставить свою подпись и печать</li>
+                    <li>Прийти лично в ZUS с распечатанными ZUS DRA и попросить поставить печать</li>
+                    <li>Оформить заявку US-7 (можно онлайн через zus.pl) на получение справки об оплаченных взносах, что должно послужить заменой ZUS DRA</li>
+                </ul>
+            </div>
+
+            <div class="modal" id="c-income-evidence">
+                <p>Ewidencja przychodów &mdash; это упрощенная KPiR (книга приходов и расходов), потому что рычалтовцы не ведут учёт расходов. Выглядит примерно как таблица с колонками: дата прихода, номер документа (например, фактуры), сумма прихода для каждой возможной налоговой ставки (столько-то пришло облагаемого по ставке 12%, столько-то &mdash; по ставке 3% и т.п.) и общая сумма. Эвиденция охватывает весь текущий год одной таблицей.</p>
+                <p>Если вы пользуетесь не рычалтом, а другой системой налогообложения, тогда просите у бухгалтера KPiR. Там будут учтены и показаны также расходы.</p>
+                <p>Мне бухгалтер прислал эвиденцию без своей подписи, в виде PDF, но фактически, когда я подавал документы, пани и не потребовала никакой подписи, ни бухгалтера, ни моей.</p>
+                <p>Помимо эвиденции бухгалтер может предоставить промежуточные PIT-28 (если у вас рычалт) за каждый месяц, тогда их тоже можно приложить. В этих документах как и в эвиденции расписано, какой доход получен по каждой налоговой ставке, но кроме того есть еще данные о налоговых вычетах (в т.ч. 50% складки здровотней и 100% складок сполечных) и рассчитана сумма налога. Один документ охватывает один месяц, поэтому бухгалтер предоставит столько файлов, сколько месяцев вы работали в этом году.</p>
+                <p>Скрепите канцелярской скрепкой пачку деклараций PIT-28.</p>
+            </div>
+            
+            <div class="modal" id="c-health-insurance">
+                <p>Имеется в виду, что при наличии дополнительной страховки здоровья и/или жизни ее копию тоже можно приложить к делу.</p>
+                <p>Это не является существенным плюсом, страховка ZUS &mdash; всё-таки основная, хотя у некоторых людей нет ZUS и тогда альтернативная страховка становится обязательной.</p>
+                <p>Этот пункт находится в секции "заказать", т.к. в том случае, если страховка делается через контрагента, может понадобиться обратиться к контрагенту для получения бумажки-подтверждения страховки с печатью.</p>
+                <p><input class="optional-check-in-comment" id="ch-health-insurance" name="ch-health-insurance" type="checkbox" checked="checked" /><label for="ch-health-insurance">Будете подавать дополнительную / альтернативную страховку</label></p>
+            </div>
+            
+            <div class="modal" id="c-no-dept-evidence-from-tax">
+                <p>Есть два способа получения этой справки:</p>
+                <ul>
+                    <li>Новый бесплатный способ через e-Urząd Skarbowy (podatki.gov.pl)</li>
+                    <li>Старый платный способ через biznes.gov.pl</li>
+                </ul>
+                <p>Описываю оба способа, т.к. у нового есть существенный  недостаток &mdash; он еще не проверен толком. На сайте сказано, что этот электронный документ не надо печатать, а надо посылать электронным способом. Но люди успешно подавали распечатанную справку пани в окошке. Однако надо понимать, что пани, принимающая документы, &mdash; не инспектор, и пока еще не проверено мнение последнего.</p>
+                <p>Тем не менее, бесплатная справка в среднем получается значительно быстрее, поэтому можно сначала подать ее, а если вдруг инспектору она не очень понравится, позже можно донести классическую платную справку.</p>
+                
+                <h4>Новый экспериментальный способ</h4>
+                <ul>
+                    <li>Заходим на <a target="_blank" href="https://www.podatki.gov.pl/e-urzad-skarbowy/">podatki.gov.pl</a>, логинимся в e-Urząd Skarbowy через Profil Zaufany.</li>
+                    <li class="minor">Кстати, если вы не делали этого раньше, рекомендую зайти в Ustawienia, Zgody i powiadomienia и дать разрешение налоговой контактировать с вами по e-mail и телефону вместо долго идущей бумажной почты.</li>
+                    <li>Открываем Dokumenty, Złóż dokument.</li>
+                    <li>Вводим в поле поиска ZAS.</li>
+                    <li>Из списка выбираем Zaświadczenie o niezaleganiu lub stanie zaległości w podatkach</li>
+                    <li>Krok 1: Proszę o wydanie zaświadczenia: o niezaleganiu w podatkach.<br/>Чекбоксы не трогаем.</li>
+                    <li>Krok 2: Składam wniosek: za siebe</li>
+                    <li>Krok 3: Identyfikator podatkowy: NIP</li>
+                    <li>Krok 4: Cel wydania zaświadczenia: w celu uzyskania karty pobytu</li>
+                    <li>Krok 5: контактные данные можем не вводить, если в настройках они уже добавлены (см. выше)</li>
+                    <li>Krok 6: жмём Akceptuj i wyślij<br/>Дальше с отправкой всё очевидно.</li>
+                    <li>Через несколько минут (или, бывает, часов) придут SMS и e-mail о готовности документа.</li>
+                    <li>Снова заходим на сайт, в меню Dokumenty, Dokumenty otrzymane и скачиваем справку.</li>
+                    <li>Не пытаемся искать UPD &mdash; справка, полученная этим способом, не имеет UPD.</li>
+                </ul>
+                
+                <h4>Старый надежный способ</h4>
+                <ul>
+                    <li>Сначала оплачиваем услугу обычным ("краёвым") банковским переводом.
+                    <ul>
+                        <li>Kwota: 21 zł</li>
+                        <li>Tytuł: OPŁATA SKARBOWA ZA WYDANIE ZAŚWIADCZENIA O NIEZALEGANIU W PODATKACH</li>
+                        <li>Название и номер счета получателя ищем <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">тут</a></li>
+                    </ul>
+                    </li>
+                    <li>Важно! Дожидаемся, когда оплата пройдёт: платёж в банке должен перейти из ожидающего в завершенный, должна пропасть кнопка отмены.</li>
+                    <li>Скачиваем чек оплаты из онлайн-банкинга в виде PDF</li>
+                    <li>Заказываем справку <a target="_blank" href="https://www.biznes.gov.pl/pl/opisy-procedur/-/proc/751">тут</a>, пользуясь <a target="_blank" href="https://sobolevbel.github.io/jdg/taxes/#podatek-dochodowy">инструкцией</a>.<br/>Когда дело дойдет до оплаты, из двух вариантов выбираем Mam dowód zapłacenia opłaty skarbowej и загружаем PDF банковского чека.
+                    </li>
+                    <li>Получив справку, проверяем, что действительно нет долга перед налоговой, а в конце есть электронная подпись (см. <a target="_blank" href="https://docs.google.com/document/d/1CoS2Y_p5WEX7qiiNCbMoayQ5hziLRxsNPXs4OBT21bs/edit?usp=sharing">пример</a>)</li>
+                </ul>
+            </div>
+
+            <div class="modal" id="c-no-dept-evidence-from-tax-upd">
+                <p>При получении справки новым способом UPD получить невозможно, т.к. саму справку предполагается использовать в электронном виде.</p>
+                <p>Старый способ: при просмотре результатов запроса на biznes.gov.pl находим UPD.xml и нажимаем кнопку Podgląd рядом с ним, потом Drukuj или Pobierz PDF</p>
+            </div>
+            
+            <div class="modal" id="c-no-dept-evidence-from-zus">
+                <p><a target="_blank" href="https://sobolevbel.github.io/jdg/zus/#zus_1">Инструкция</a> как заказать справку.</p>
+                <p>Внимание! В инструкции упоминается, что будет появляться информация на biznes.gov.pl, но сейчас это так не работает. В этом нет ничего страшного &mdash; когда справка будет готова, на e-mail придёт оповещение от ZUS (from: &lt;Zakład Ubezpieczeń Społecznych&gt; noreply@zus.pl, subject: Powiadomienie NPI).</p>
+                <p>Официальный срок изготовления &mdash; до 7 дней, фактически обычно делается за 1-2 дня. Срок действия &mdash; 30 дней. Исходя из этого, рекомендую заказывать справку за одву-две недели до личной подачи.</p>
+            </div>
+
+            <div class="modal" id="c-no-dept-evidence-from-zus-upd">
+                <p>На <a target="_blank" href="https://sobolevbel.github.io/jdg/zus/#zus_1:~:text=%D0%9E%D1%82%D0%BA%D1%80%D1%8B%D0%B2%D0%B0%D0%B5%D0%BC%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82-,Przegl%C4%85daj%20dokument,-.">скриншоте</a> к седьмому пункту инструкции (<span class="minor">Открываем документ Przeglądaj dokument.</span>) внизу видна кнопка <b>Pokaż poświadczenie doręczenia.</b> Именно она позволяет посмотреть и скачать подтверждение, которое тоже стоит распечатать (нажать Wizualizuj / Drukuj).</p>
+                <p>Если любопытно, что такое UPO, UPP и UPD, можете почитать <a target="_blank" href="https://mampodpis.pl/profil-zaufany/co-oznacza-upo-upp-i-upd">статью на польском</a>.</p>
+            </div>
+
+            <div class="modal" id="c-card-without-address">
+                <p>Это заявление нужно, чтобы не указывали адрес на карте побыта. Иначе придётся переделывать карту при каждом пеерезде с квартиры на квартиру.</p>
+                <p>Подход к печати адреса на карте зависит от воеводства. Ходят слухи, что в последнее время во многих воеводствах в принципе стали склонны печатать карту без адреса, но в то же время, например, про Краков есть противоречивые данные: одни говорят, что требуют мельдунек и обязательно печатают адрес на карте. Некоторые люди специально не мельдуются и пишут заявление о невозможности замельдоваться (на месте, при личной подаче) &mdash; всё ради того, чтобы карту напечатали без адреса.</p>
+                <p>А вот совсем другое про тот же Краков: <span class="minor">В Кракове не носил</span> [заявление], <span class="minor">так как прочитал, что не принимают его. Пани сама дала бланк, спросила хочу ли печатать адрес и показала где поставить птичку об отказе печатать с адресом.</a></p>
+                <a target="_blank" href="https://docs.google.com/document/d/1S-eukPswXjPQ8TdhH5GXAaOY2yX_hLhFOMuHlQ7JRdk/edit?usp=sharing">Шаблон заявления</a>
+                <p><input class="optional-check-in-comment" id="ch-card-without-address" name="ch-card-without-address" type="checkbox" checked="checked" /><label for="ch-card-without-address">Будете подавать заявление</label></p>
+            </div>
+            
+            <div class="modal" id="c-support-spouse">
+                <p>Если супруг безработный, прилагается два заявления: одно от имени Главного, мол, я содержу Супруга и Ребенка (детей), второе &mdash; от имени самого Супруга, мол, я никого не содержу.</p>
+                <p>Если Супруг сам себя обеспечивает, он подаётся самостоятельно и в этом случае достаточно одного заявления от самого Супруга.</p>
+                <p>В то же время, если есть дети, которые вписаны в заявление Главного, мол, их обеспечивает Главный, а не Супруг, значит  заявление Главного тоже стоит приложить, чтобы не возникло вопросов, кто же обеспечивает каждого из детей.</p>
+            </div>
+            
+            <div class="modal" id="c-support-child">
+                <p>Заявление любого из родителей, о том, что этот ребенок находится на его содержании.</p>
+            </div>
+            
+            <div class="modal" id="c-support-main">
+                <p>В самой простой ситуации, когда всех содержит один Главный, достаточно одного заявления от его имени, с перечислением всех членов семьи.</p>
+                <p>В том случае, если есть дети и если хотя бы один из них условно находится на обеспечении Супруга (вписан в его заявление, но не в заявление Главного), тогда заявление Супруга тоже стоит приложить, чтобы не возникло вопросов, кто же обеспечивает каждого из детей.</p>
+            </div>
+            
+            <div class="modal" id="c-support">
+                <p><a target="_blank" href="https://docs.google.com/spreadsheets/d/1_yruVHF87BCM80_qA39WJBO3ZNVWKQ-vS6oWtvjX5s4/edit?usp=sharing">Кто должен писать заявление</a></p>
+                <p><a target="_blank" href="https://docs.google.com/document/d/1yVaVf18hnuCg9JMYGnxneDOC6ANG1Okv/edit">Шаблон заявления</a></p>
+            </div>
+            
+            <div class="modal" id="c-attachment1">
+                <p>Вообще, этот документ сам по себе задуман для заполнения <i>работодателем</i> при подаче на ВНЖ с целью <i>работы</i> (не ИП), но почему-то в <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">некоторых воеводствах</a> от предпринимателей тоже его требуют. В этом случае надо заполнять так, словно сам себя нанял на работу.</p>
+                <p>Бланк: <a target="_blank" href="https://drive.google.com/file/d/1wAZBGo9LE2cT9jtgiUtuVc3ROnvVEc8O/view?usp=sharing">PDF</a>, <a target="_blank" href="https://migrant.poznan.uw.gov.pl/pl/system/files/pliki/zalacznik_nr_1_do_wniosku_o_udzielenie_zezwolenia_na_pobyt_czasowy_i_prace.doc">DOC</a></p>
+                <p><a target="_blank" href="https://drive.google.com/file/d/1wXMRV7mISy9f9fwcBDbb8xXGDqYlBnTH/view?usp=sharing">Пример заполнения</a></p>
+                <p><input class="optional-check-in-comment" id="ch-attachment1" name="ch-attachment1" type="checkbox" checked="checked" /><label for="ch-attachment1">Ваше воеводство требует Załącznik nr. 1, будете подавать</label></p>
+            </div>
+            
+            <div class="modal" id="c-header-g">
+                <p>В этой колонке отмечено, какие документы нужно иметь в пакете <b>Г</b>лавного подающегося на ВНЖ.</p>
+                <p>На распечатанном листике можно обводить кружочками то, что уже подготовлено.</p>
+            </div>
+            
+            <div class="modal" id="c-header-s">
+                <p>В этой колонке отмечено, какие документы нужно иметь в пакете <b>С</b>упруга подающегося на ВНЖ.</p>
+                <p>На распечатанном листике можно обводить кружочками то, что уже подготовлено.</p>
+            </div>
+            
+            <div class="modal" id="c-header-r">
+                <p>В этой колонке отмечено, какие документы нужно иметь в пакете <b>Р</b>ебенка подающегося на ВНЖ.</p>
+                <p>На распечатанном листике можно обводить кружочками то, что уже подготовлено.</p>
+            </div>
+            
+            <div class="modal" id="c-header-check">
+                На распечатанном листике в этой колонке можно отмечать, какие документы подготовлены для всех членов семьи.
+            </div>
+            
+            <div class="modal" id="c-header-printed">
+                <p>На распечатанном листике в этой колонке можно отмечать, какие документы распечатаны.</p>
+                <p>Рекомендую для каждого члена семьи завести отдельную папку для документов и сразу складывать туда то, что напечатано.</p>
+                <p class="minor">Что касается двухсторонней печати, её не только можно использовать, но даже весьма желательно, и дело не только в экономии бумаги: папка с документами становится заметно тоньше, а работнику ужонда придётся меньше работать дыроколом, чтобы сшить все документы вместе.</p>
+                <p>Где печатать?</p>
+                <ul>
+                    <li>Печать в офисе контрагента. Очевидно самый выгодный вариант, единственный недостаток которого &mdash; ограниченная доступность.</li>
+                    <li>Печать в специализированных центрах. Если принципиально не хотите покупать домашний принтер, можно подготовить все документы в электронном виде и принести на "флэшке" в <a about="_blank" href="https://www.google.com/maps/search/ksero/">ближайший пункт печати</a>. Там же сможете воспользоваться сканером и копиром. Вы потратите в районе 0.50 zł за печать одной страницы, что легко превращается в 500 zł и больше, если нужно напечатать документы для всей семьи, тем более, если придётся что-нибудь переделать из-за ошибок, которые обнаружите позже. Очевидные недостатки подхода: доступность печати только в рабочие часы, вне дома, и конечно цена.</li>
+                    <li>Альтернатива &mdash; приобретение домашнего МФУ. Простейший струйный принтер со встроенным сканером обойдётся примерно в 200-250 zł и будет доступен круглосуточно. Лично я купил HP Deskjet 2700. Понятно, что продавая принтеры по такой цене, производитель расчитывает заработать на расходниках.<br/><span class="minor">У HP есть интересная модель продажи &mdash; по принципу подписки, но я не рискнул этим воспользоваться, опасаясь не угадать с выбором плана и остаться без краски в самый неподходящий момент.</span><br/>Я сэкономил иначе: заказал на allegro <a target="_blank" href="https://allegro.pl/listing?string=LCink%20Klip%20HP%20305">набор для заправки</a> за 40 zł, который заменяет десятки картриджей.<br/>Основные недостатки дешевого принтера: возня с заправкой и отсутствие двухсторонней печати. Можно наловчиться печатать сначала все чётные, потом все нечётные страницы, но всё равно легко ошибиться и в итоге выкинуть десятки испорченных листов бумаги.</li>
+                    <li>Идеальное домашнее МФУ типа Epson L4260 / L4266. Тут и заводская система непрерывной подачи чернил, удобная в заправке, и автоматическая двухсторонняя печать, в общем, никакой головной боли. Единственный недостаток &mdash; цена устройства. Но если нужно периодически что-то печатать для детей &mdash; это хорошее вложение денег на годы.</li>
+                    <li>Лазерный принтер. Лично мне этот вариант был не интересен, т.к. цветной стоит дорого, а ч/б мне не подходит. Но можете рассмотреть эту опцию как самую выгодную, если считать стоимость печати одной страницы.</li>
+                </ul>
+            </div>
+            
+            <div class="modal" id="c-plus">
+                Плюс означает, что человек, которого документ касается, и человек, в папку которого это документ добавляется, &mdash; это один и тот же человек.
+                Когда возникает такая ситуация, что в пакет документов одного человека нужно добавить документ, касающийся другого человека,
+                тогда вместо плюса используются буквы-инициалы:
+                <ul>
+                    <li>Г &mdash; документ главного,</li>
+                    <li>С &mdash; документ супруга,</li>
+                    <li>Р &mdash; документ ребенка.</li>
+                </ul>
+            </div>
+            
+            <div class="modal" id="c-passport-copy">
+                <p>Рекомендую один раз отсканировать весь паспорт и сделать один документ PDF или Word &mdash; потом  может еще не раз пригодиться для распечатывания. Кроме того, готовый файл удобно печатать по два разворота паспорта на одну сторону A4, в результате 17 разворотов помещаются на 5 двухсторонних листах A4.</p>
+                <p>У меня такой подход:</p>
+                <ul>
+                    <li>Отсканировал один раз все развороты каждого паспорта и сохранил в отдельной папке, дав файлам имена 00-01.jpg, 02-03.jpg, ..., 32-33.jpg в соответствии с номерами страниц.</li>
+                    <li>Открыл <a target="_blank" href="https://justandrei.github.io/jdg-tools/pdf/merger.html">PDF merger</a>, загрузил все сканы и скачал их в виде объединенного файла PDF.</li>
+                    <li>Открыл <a target="_blank" href="https://www.foxit.com/pdf-reader">Foxit Reader</a> (альтернатива Adobe Acrobat Reader) и распечатал PDF в режиме Multiple pages per sheet (по две страницы файла на одну сторону листа A4), двухсторонней печатью.</li>
+                    <li>Папку с исходными jpg продолжаю хранить, и она уже пригодилась: после получения штампа о побыте и повторной визы PBH пришлось пересканировать только 2 разворота, чтобы обновить PDF.</li>
+                </ul>
+                <p>Скрепите канцелярской скрепкой листы с копией паспорта.</p>
+            </div>
+            
+            <div class="modal" id="c-passport-pages">
+                <p>В зависимости от воеводства может потребоваться копия абсолютно всех страниц, либо только тех, где есть информация. Проверяем своё воеводство <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">тут</a></p>
+                <p>В том случае, если вы заменили паспорт и виза осталась в старом, вы делаете копию обоих паспортов. К копии старого паспорта предъявляются такие же требования как к копии актуального: нужно делать копию либо всех, либо только использованных страниц в зависимости от воеводства.</p>
+            </div>
+            
+            <div class="modal" id="c-passport-last-page-copy">
+                <p>Сколько делать дополнительных копий страницы с фото &mdash; зависит от возраста человека и воеводства. Проверяем своё воеводство <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">тут</a>.</p>
+            </div>
+            
+            <div class="modal" id="c-passport-last-page-copy-child">
+                <p>Ребенку делаем полную копию его собственного паспорта и добавляем по одной копии страницы с фото из паспорта каждого из родителей.</p>
+            </div>
+            
+            <div class="modal" id="c-ceidg">
+                <ul>
+                    <li>Заходим на <a target="_blank" href="https://konto.biznes.gov.pl/pl/moje-konto/moja-firma/dane-firmy">konto.biznes.gov.pl</a>, в Dane firmy</li>
+                    <li>Нажимаем Pobierz zaświadczenie o wpisie</li>
+                    <li>Нажимаем Pobierz zaświadczenie z danymi niejawnymi</li>
+                    <li>Скачиваем PDF</li>
+                    <li>Печатаем и кладём по одной копии в папку каждого подающегося</li>
+                </ul>
+            </div>
+            
+            <div class="modal" id="c-letter-g">
+                <b>Г</b> &mdash; значит такая же бумажка, как у <b>Г</b>лавного подающегося, т.е. буквально на его имя, просто её копия добавляется в папку документов супруга или ребенка, если буква указана в колонке супруга или ребенка
+            </div>
+            
+            <div class="modal" id="c-contract">
+                <p>Контракт должен быть либо заключен на польском языке (или на двух языках, включая польский), либо должен быть переведен на польский язык присяжным переводчиком (см. ниже), но оригинал должен быть предъявлен в любом случае.</p>
+                <p>Стоимость перевода контракта присяжным переводчиком может сильно расстроить (от 35 до 80 zł за каждые 1125 знаков, включая пробелы), поэтому, если есть время, иногда проще сделать перевод не присяжный (можно самому перевести через <a target="_blank" href="https://deepl.com/">DeepL</a> и дать вычитать знакомому, хорошо знающему польский), переоформить контракт в двухязычный (две колонки на каждой странице, например, слева английский, справа польский) и предложить контрагенту переподписать двухязычную версию. Конечно, в этом случае понадобится подпись от руки, не цифровая, т.к. цифровая привязана к дате подписания.</p>
+                <p>Скрепите канцелярской скрепкой листы копии контракта.</p>
+                <p>Допускается подписание контракта цифровой подписью. Если контрагент польский, то обычно используется <a target="_blank" href="https://pz.gov.pl">profil zaufany</a>, а для прочих используют <a target="_blank" href="https://www.pandadoc.com">PandaDoc</a>, <a target="_blank" href="https://www.docusign.com">DocuSign</a> и прочие подобные сервисы.</p>
+                <p class="minor">Кстати, если вы ищете шаблон контракта на разработку ПО, т.к. контрагент не предоставил собственной версии, можете бесплатно использовать <a target="_blank" href="https://www.pandadoc.com/software-development-agreement-template">шаблон от PandaDoc</a>.</p>
+                <p>Если ваш контракт подписан цифровой подписью, убедитесь, что файл содержит две электронных подписи, вашу и представителя контрагента, при этом обе подписи должны быть видимыми, т.е. при распечатке должны появиться бэджи.</p>
+                <p>Потенциальные проблемы:</p>
+                <ul>
+                    <li>Со стороны польского контрагента контракт подписан человеком, которого нет в KRS &mdash; существует вероятность, что ужонд проверит наличие в KRS и может сказать, что человек не имел права подписывать документ. Лучше не спорить с ужендом, а попросить контрагента переподписать документ.</li>
+                    <li>Отсутствует цифровая подпись контрагента &mdash; возможно, вы подписывали первым, а потом отсылали документ контрагенту, чтобы получить подпись с его стороны. Поищите в почте ответное письмо с документом, подписанным двумя сторонами.</li>
+                    <li>Цифровая подпись показана как непроверенная &mdash; используйте Adobe Acrobat Reader или Foxit PDF Reader, которые умеют проверять подпись онлайн.<br/>
+                    Также бывает, что ридер по каким-то причинам не может проверить, отозван ли сертификат, поэтому показывает подпись как непроверенную. В этом случае можно отключить проверку отзыва сертификата:
+                        <ul>
+                            <li>Adobe Acrobat Reader &mdash; в меню Preferences / Signatures / Verification выключить Require certificate revokation checking...</li>
+                            <li>Foxit PDF Reader &mdash; в меню File / Preferences / Signature / Signing & Verifications / Change Settings выключить Require certificate revokation checking...</li>
+                        </ul>
+                    </li>
+                    <li>Цифровая подпись контрагента присутствует (показана программой просмотра), но не видна в распечатке &mdash; жаль, контрагент допустил ошибку и поставил скрытую подпись. Придётся получить бумажную версию контракта в офисе или по почте, с подписью ручкой, т.к. цифровую подпись не переделать (изменится дата подписания).</li>
+                </ul>
+            </div>
+
+            <div class="modal" id="c-contract-translation">
+                <p>Нужен в том случае, если контракт не на польском языке.</p>
+                <p><input class="optional-check-in-comment" id="ch-contract-translation" name="ch-contract-translation" type="checkbox" checked="checked" /><label for="ch-contract-translation">Вам нужен перевод контракта</label></p>
+            </div>
+            
+            <div class="modal" id="c-study">
+                <p>Для супруга это может быть справка из полицеальной школы или университета.</p>
+                <p>Для ребенка это может быть справка из детского сада, школы, лицея, техникума и т.д.</p>
+                <p>Подавать эти документы не обязательно, но они демонстрируют серьезность намерений переехать и жить в Польше и теоретически увеличивают шанс положительного решения на полный срок в 3 года.</p>
+                <p><input class="optional-check-in-comment" id="ch-study" name="ch-study" type="checkbox" checked="checked" /><label for="ch-study">Вы собираетесь подавать справку(-и)</label></p>
+            </div>
+            
+            <div class="modal" id="c-translation-copy">
+                <p>Присяжный перевод может пригодиться много раз. Оказывается, в ужонде нормально относятся к ксерокопиям присяжных переводов: у меня лично пани уточняла, неужели я хочу сдать оригинал. Так что можете сделать копию и принести вместе с оригиналом, работник заверит копию и у вас останется оригинал для других нужд, в том числе для повторной подачи на ВНЖ.</p>
+            </div>
+            
+            <div class="modal" id="c-schooling-proof-copy">
+                <p>Справка может пригодиться много раз. Оказывается, в ужонде нормально относятся к ксерокопиям справок: у меня лично пани уточняла, неужели я хочу сдать оригинал. Так что можете сделать копию и принести вместе с оригиналом, работник заверит копию и у вас останется оригинал для других нужд, в том числе для повторной подачи на ВНЖ.</p>
+            </div>
+            
+            <div class="modal" id="c-translation">
+                <p>Ищите ближайших к вам переводчиков в <a target="_blank" href="https://arch-bip.ms.gov.pl/pl/rejestry-i-ewidencje/tlumacze-przysiegli/lista-tlumaczy-przysieglych/search.html?Language=9">официальном реестре</a> всех присяжных переводчиков в Польше. Напишите нескольким из них электронное письмо (или на номер в WhatsApp), приложите скан документа(-ов) (в т.ч. обложки), спросите, сколько будет стоить перевод и как скоро он будет готов. Смело пишите по-русски &mdash; это же профессиональный переводчик. Сравнив цены, сроки и территориальное расположение, подтвердите заказ.</p>
+                <p>Оплату могут как попросить перевести заранее, так и при встрече.</p>
+                <p>На встречу обязательно возьмите с собой оригинал(ы) документа(-ов) &mdash; по закону переводчик обязан убедиться, что переводит настоящий документ.</p>
+            </div>
+            
+            <div class="modal" id="c-oswiadczenie-cudzoziemca">
+                <p><a target="_blank" href="https://docs.google.com/document/d/1gr0w9wyzOE6c52si58hrxmdlt3tG8M5aZ1P1dHLxASk/edit?usp=sharing">Шаблон документа</a></p>
+                <p>Внимание! Документ <i>не</i> обязателен, но при этом часто вызывает вопросы по заполнению. Поэтому подход такой: если нет трудностей с заполнением, все пункты понятны и ответы однозначны &mdash; почему бы и не заполнить. Если же есть какие-то затруднения, можете смело этот документ игнорировать.</p>
+                <p><input class="optional-check-in-comment" id="ch-oswiadczenie-cudzoziemca" name="ch-oswiadczenie-cudzoziemca" type="checkbox" checked="checked" /><label for="ch-oswiadczenie-cudzoziemca">Документ не вызвал трудностей, собираетесь подавать</label></p>
+            </div>
+            
+            <div class="modal" id="c-header-optional">
+                После изучения комментариев к документам можете выключить ненужные вам строки, тогда они не будут напечатаны.
+            </div>
+
+            <div class="modal" id="c-about-work">
+                <p><a target="_blank" href="https://docs.google.com/document/d/1k6oG6idnwQXC3kv70eUPekJDszxky2Gr/edit?usp=sharing">Шаблон документа</a></p>
+                <p>Внимание! Документ <i>не</i> обязателен, но при этом часто вызывает вопросы по заполнению. Поэтому подход такой: если нет трудностей с заполнением, все пункты понятны и ответы однозначны &mdash; почему бы и не заполнить. Если же есть какие-то затруднения, можете смело этот документ игнорировать.</p>
+                <p><input class="optional-check-in-comment" id="ch-about-work" name="ch-about-work" type="checkbox" checked="checked" /><label for="ch-about-work">Документ не вызвал трудностей, собираетесь подавать</label></p>
+            </div>
+            
+            <div class="modal" id="c-jdg-form">
+                <p><a target="_blank" href="https://docs.google.com/document/d/1JIjog1ZHP9-ZqX3Z9MQQQhZrBHFAGjtL/edit?usp=sharing">Бланк для заполнения</a></p>
+                <p><a target="_blank" href="https://docs.google.com/document/d/1NBTNAKqmfw0J01wNdR54oR8-6k-9-_NxMXOmb6bVBE4/edit?usp=sharing">Образец для программиста</a> - <span style="color: red">NEW!</span></p>
+                <p><a target="_blank" href="https://drive.google.com/file/d/1zM60Fm1tLJ16vq_GMtZ8kEZxK0KGcEov/view">Общая инструкция</a></p>
+                <p>Большинство людей используют переводчик <a target="_blank" href="https://deepl.com">DeepL</a>, некоторые писали, что очень помог ChatGPT</p>
+            </div>
+            
+            <div class="modal" id="c-business-plan">
+                <p style="color: blue">Если ИП &mdash; гражданин Украины (не важно, PESEL UKR или обычный), то до 4 марта 2024 г. ему не нужно доказывать наличие стабильного дохода, поэтому бизнес-план можно не подавать.</p>
+                <p>Пожалуй, самый сложный документ из всех, цена у "помогаторов" доходит до 1000 zł. Я пересмотрел разные примеры и шаблоны и остановился на том, что просто написал свой с нуля, следуя <a target="_blank" href="https://drive.google.com/file/d/1RtpHWN5JEBMH2rIR7iau0QDU4T0r1ttB/view?usp=sharing">пошаговому руководству</a>. Часть вещей конечно просто выкинул, например, про найм сотрудников в штат. Получилось девять страниц вместе с титульной.</p>
+                <p><b style="color: red">Новинка!</b> Теперь, когда у меня есть положительная децизия, я наконец могу поделиться <a href="https://docs.google.com/document/d/1jGvMM-CwCIf6-rxhytQdgIlzXHuGoNRpNd9AvtWzbQI/edit?usp=sharing" target="_blank">шаблоном</a>. Разумеется, все личные данные искажены, любые совпадения случайны.</p>
+                <p>Насколько БП нужен. Если не работали в прошлом году либо сумма в годовой декларации не достигла 12 средних месячных доходов в секторе предпринимательства, то во многих ужендах могут буквально потребовать бизнес-план. Но некоторым везёт проскочить и без него.</p>
+                <p>Скрепите канцелярской скрепкой листы бизнес-плана.</p>
+                <p><input class="optional-check-in-comment" id="ch-с-business-plan" name="ch-business-plan" type="checkbox" checked="checked" /><label for="ch-с-business-plan">У вас нет PIT-28 за прошлый год, либо в нём нет достаточной суммы дохода, поэтому подаёте бизнес-план</label></p>
+            </div>
+            
+            <div class="modal" id="c-jdg-description">
+                <p>Заполнив анкету предпринимателя и написав бизнес-план, я почувствовал, что описание деятельности &mdash; это уже лишнее, просто повтор информации. Не стал этого делать.</p>
+                <p><input class="optional-check-in-comment" id="ch-jdg-description" name="ch-jdg-description" type="checkbox" checked="checked" /><label for="ch-jdg-description">На всякий случай собираетесь подавать описание деятельности</label></p>
+            </div>
+        </div>
+    </body>
+</html>
