@@ -76,7 +76,7 @@
                         if (attr) {
                             return el.attributes[attr].value;
                         }
-                        return el.getInnerHTML();
+                        return el.innerHTML;
                     }
                     catch (error) {
                         return null;
@@ -188,10 +188,10 @@
                         for (var c = 0; c < codes.length; ++c) {
                             var code = codes[c];
                             if (code.attributes.wykreslenie.value == '0') {
-                                added.push(code.getInnerHTML());
+                                added.push(code.innerHTML);
                             }
                             else {
-                                removed.push(code.getInnerHTML());
+                                removed.push(code.innerHTML);
                             }
                         }
                     }
