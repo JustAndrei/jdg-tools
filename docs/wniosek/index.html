@@ -1,0 +1,657 @@
+﻿<html>
+    <head>
+        <meta charset="UTF-8">
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/pdf/pdf-lib.min.js"></script>
+        <script src="/js/pdf/fontkit.umd.min.js"></script>
+        <script src="/js/jquery-ui/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css"></link>
+        <script src="/js/JsBarcode.all.min.js"></script>
+        <script src="code.min.js"></script>
+        <link rel="stylesheet" href="style.min.css"></link>
+    </head>
+    <body>
+        <div style="text-align: center">
+            <table id="form" cellspacing="0" style="display: inline-block">
+                <tr class="block-start block-end sticky">
+                    <th>Профиль</th>
+                    <td colspan="5">
+                        <div class="bmc">
+                            <a href="https://justandrei.github.io/coffee" target="_blank">Угостить автора кофе <img src="bmc-icon.svg" /></a>
+                        </div>
+
+                        <select name="profile" data-tooltip="Профиль автоматически создаётся и обновляется при генерации заявки, в том случае, если заполнены поля Имя, Фамилия и Дата рождения.<br/>Личные данные хранятся исключительно в вашем браузере и никуда не отсылаются."></select>
+                        <input name="saveProfile" type="button" value="Запомнить изменения" />
+                        <input name="saveProfiles" type="button" value="Экспорт в файл" />
+                        <input name="loadProfiles" type="button" value="Импорт из файла" />
+                        <input name="deleteProfile" type="button" value="Удалить профиль" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Воеводство</th>
+                    <td>
+                        <select name="voivodeship" class="persisted"><option></option></select>
+                    </td>
+                    <th>Дата составления</th>
+                    <td>
+                        <input name="submissionDate" type="date" class="persisted" data-tooltip="При подаче через канцелярию - дата заполнения<br/>При подаче прямо инспектору - дата визита" />
+                    </td>
+                    <th>Место составления</th>
+                    <td>
+                        <input name="submissionPlace" class="persisted" data-tooltip="Город, обычно столица воеводства" />
+                    </td>
+                </tr>
+                <tr class="block-margin">
+                    <th style="vertical-align: top">Шаблон</th>
+                    <td style="vertical-align: top" colspan="1">
+                        <select name="docTemplate" class="persisted">
+                            <option value="standard">Стандартный / inPOL</option>
+                            <option value="mos">MOS</option>
+                        </select>
+                    </td>
+                    <th style="vertical-align: top">Баркод inPOL/MOS</th>
+                    <td style="vertical-align: top" colspan="3">
+                        <input name="barcode" maxlength="8" class="persisted" data-tooltip=""></input>
+                        <script type="text/tooltip" data-target="input[name='barcode']">
+                            <p>В Мазовецком воеводстве прежде всего необходима регистрация в системе <a href="https://inpol.mazowieckie.pl/" target="_blank">inPOL</a>,
+                            а в некоторых других воеводствах просят пользоваться системой <a href="https://www.mos.cudzoziemcy.gov.pl/" target="_blank">MOS</a>.
+                            После регистрации нужно сначала заполнить заявку, и только после этого можно будет выбрать дату визита.</p>
+                            <p>В любом случае перед заполнением заявки в одной из тех систем имеет смысл потренироваться заполнить заявку на этой странице. Преимущества такого подхода:</p>
+                            <ul>
+                                <li>К каждому полю тут есть подробные комментарии, помогающие разобраться, как заполнить правильно. Получив результат тут, Вы легко сможете повторить этот процесс в inPOL, уже понимая все нюансы.</li>
+                                <li>Заявку в inPOL или MOS, к сожалению, невозможно редактировать, только создать новую, а на этой странице Вы легко внесете любые исправления и перепечатаете измененный лист за пару минут.</li>
+                            </ul>
+                            <p>На заявках, созданных в системе inPOL, сверху присутствует баркод с уникальным номером заявки (в MOS &mdash; на всех страницах).
+                            Чтобы иметь возможность быстро вносить правки, не переделывая заявку целиком, часто люди поступают так:
+                            заполняют заявку в inPOL плюс заполняют еще один в виде документа Word, и когда появляется необходимость внести правки,
+                            они печатают первую страницу документа из inPOL, чтобы был штрихкод, а всё остальное допечатывают из своего файла.</p>
+                            <p>Но эта страница предоставляет уникальную возможность не заниматься стыковкой двух документов &mdash; просто введите номер со штрихкода из системы inPOL или MOS и он будет напечатан идентичным образом.</p>
+                            <p>Ну, и в целом, я надеюсь, Вы оцените удобство этой формы по сравнению с документом Word.</p>
+                        </script>
+                    </td>
+                </tr>
+                <tr class="block-start"><th>Фамилия</th><td><input name="lastName" class="persisted" data-tooltip="Фамилия в настоящий момент, латинскими буквами. Ни в коем случае не стоит пытаться записать на польский манер (IWANOW), нужно строго следовать написанию в паспорте." /></td>
+                <th>Прежние фамилии</th><td><input name="previousLastNames" class="persisted" data-tooltip="Тут должны быть перечислены через запятую все когда-либо носимые фамилии, кроме актуальной.<br/>Пример: урождённая Иванова первый раз вышла замуж за Петрова, а сейчас состоит во втором браке с Сидоровым. В этом случае фамилия в настоящий момент - Сидорова, предыдущие фамилии - Иванова, Петрова.<br/>Можете не заполнять, если не меняли фамилию (не переживайте за правила заполнения анкеты - поле автоматически будет заполнено текущей фамилией)." /></td>
+                <th>Фамилия при рождении</th><td><input name="familyName" class="persisted" data-tooltip="Фамилия из свидетельства о рождении.<br/>Можете не заполнять, если совпадает с актуальной фамилией." /></td></tr>
+                <tr class="block-middle"><th>Имя (имена)</th><td><input name="firstName" class="persisted" data-tooltip="Одно или несколько имен, носимых в настоящий момент. Не путать с отчеством.<br/>Пример: ANNA MARIYA" /></td>
+                <th>Прежнее имя (имена)</th><td colspan="3"><input name="previousFirstName" class="persisted" data-tooltip="Одно или несколько имен, носимых ранее. Указывайте, если меняли имя." /></td></tr>
+                <tr class="block-end"><th>Имя отца</th><td><input name="fatherFirstName" class="persisted" data-tooltip="Имя отца, как в его паспорте.<br/>Не в форме отчества (пишите не IVANOVICH, а IVAN)." /></td>
+                <th>Имя матери</th><td><input name="motherFirstName" class="persisted" data-tooltip="Имя матери, как в её паспорте." /></td>
+                <th>Девичья фамилия матери</th><td><input name="motherMaidenName" class="persisted" data-tooltip="Фамилия матери, данная ей при рождении." /></td></tr>
+                <tr><th>Дата рождения</th><td><input name="birthDate" type="date" class="persisted" data-tooltip="" /></td>
+                <th>Место рождения</th><td><input name="birthPlace" class="persisted" data-tooltip="Название города, посёлка и т.п." /></td>
+                <th>Страна рождения</th><td><input name="birthCountry" class="persisted" /></td></tr>
+                <tr><th>Пол</th><td><input name="sex" class="persisted" data-tooltip="Инструкция к анкете предусматривает только два варианта:<ul><li>M - mężczyzna (мужчина)</li><li>K - kobieta (женщина)</li></ul>" /></td></tr>            <tr><th>Национальность</th><td><input name="nationality" class="persisted" /></td>
+                <th>Гражданство</th><td><input name="citizenship" class="persisted" /></td></tr>
+                <tr>
+                    <th>Семейное положение</th>
+                    <td><input name="maritalStatus" class="persisted" /></td>
+                    <th>Образование</th>
+                    <td>
+                        <input name="education" class="persisted" data-tooltip="" />
+                        <script type="text/tooltip" data-target="input[name='education']">
+                            <ul>
+                                <li><a class="script-link" href="javascript:changeValue('input[name=%22education%22]', 'BEZ WYKSZTAŁCENIA')">BEZ WYKSZTAŁCENIA</a> - без образования (дошкольник)</li>
+                                <li><a class="script-link" href="javascript:changeValue('input[name=%22education%22]', 'NIEPEŁNE PODSTAWOWE')">NIEPEŁNE PODSTAWOWE</a> - школьник, еще не получивший аттестат</li>
+                                <li><a class="script-link" href="javascript:changeValue('input[name=%22education%22]', 'PODSTAWOWE')">PODSTAWOWE</a> - школьник, получивший аттестат (закончивший 8 классов в Польше, 9 классов в Беларуси и Украине)</li>
+                                <li><a class="script-link" href="javascript:changeValue('input[name=%22education%22]', 'ŚREDNIE')">ŚREDNIE</a> - получивший полное среднее образование (закончивший 11-12 классов или техникум)</li>
+                                <li><a class="script-link" href="javascript:changeValue('input[name=%22education%22]', 'NIEPEŁNE WYŻSZE')">NIEPEŁNE WYŻSZE</a> - студент ВУЗ</li>
+                                <li><a class="script-link" href="javascript:changeValue('input[name=%22education%22]', 'WYŻSZE')">WYŻSZE</a> - закончивший ВУЗ</li>
+                            </ul>
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Рост (см)</th>
+                    <td><input name="height" type="number" value="170" class="persisted" /></td>
+                    <th>Цвет глаз</th>
+                    <td>
+                        <input name="colourOfEyes" class="persisted" data-tooltip="" />
+                        <script type="text/tooltip" data-target="input[name='colourOfEyes']">
+                            Выбирайте, к какому цвету ваши глаза ближе. В системе inPOL есть только такие названия, так что лучше придерживаться их:
+                            <table>
+                                <tr>
+                                    <td style="text-align: right"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'CZARNE')">CZARNE</a></td>
+                                    <td><img src="eyes/czarne.jpg" class="eye" /></td>
+                                    <td><img src="eyes/brązowe.jpg" class="eye" /></td>
+                                    <td><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'BRĄZOWE')">BRĄZOWE</a></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'NIEBIESKIE')">NIEBIESKIE</a></td>
+                                    <td><img src="eyes/niebieskie.jpg" class="eye" /></td>
+                                    <td><img src="eyes/zielono-niebieskie.jpg" class="eye" /></td>
+                                    <td><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'ZIELONO-NIEBIESKIE')">ZIELONO-NIEBIESKIE</a></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right; white-space: nowrap"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'SZARO-NIEBIESKIE')">SZARO-NIEBIESKIE</a></td>
+                                    <td><img src="eyes/szaro-niebieskie.jpg" class="eye" /></td>
+                                    <td><img src="eyes/zielone.jpg" class="eye" /></td>
+                                    <td><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'ZIELONE')">ZIELONE</a></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'SZARE')">SZARE</a></td>
+                                    <td><img src="eyes/szare.jpg" class="eye" /></td>
+                                    <td><img src="eyes/szaro-zielone.jpg" class="eye" /></td>
+                                    <td><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'SZARO-ZIELONE')">SZARO-ZIELONE</a></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right; vertical-align: top; white-space: nowrap"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'CZERWONE')">CZERWONE</a><br/>(бывают у альбиносов)</td>
+                                    <td style="vertical-align: top"><img src="eyes/czerwone.jpg" class="eye" /></td>
+                                    <td style="vertical-align: top"><img src="eyes/piwne.jpg" class="eye" /></td><td colspan="3"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'PIWNE')">PIWNE</a> - карие с переходом цвета;<br/>часто так называют любые глаза со сложными переходами</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: center"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'WIELOKOLOROWE')">WIELOKOLOROWE</a> - глаза разного цвета</td>
+                                </tr>
+                            <table>
+                            Можно дополнительно изучить тему цвета глаз в <a href="https://pl.wikipedia.org/wiki/Kolor_oczu" target="_blank">Википедии</a>
+                        </script>
+                    </td>
+                    <th>Особые приметы</th>
+                    <td>
+                        <input name="specialMarks" class="persisted" data-tooltip="" />
+                        <script type="text/tooltip" data-target="input[name='specialMarks']">
+                            Укажите те шрамы, татуировки и т.п., которые находятся на виду (лицо, шея, кисти рук).
+                            Если есть татуировка на предплечье и Вы придёте на личную подачу в одежде с коротким рукавом,
+                            могут попросить вписать эту татуировку.<br/>
+                            Оставьте поле пустым, если ничего особенного нет.<br/>
+                            Если для описания Вам нужен переводчик на польский, рекомендую <a href="https://www.deepl.com/translator" target="_blank">DeepL</a>.
+                        </script>
+                    </td>
+                </tr>
+                <tr><th>PESEL (если есть)</th><td><input name="pesel" maxlength="11" pattern="^(\d{11}|BRAK)$" class="persisted" /></td>
+                <th>Номер телефона</th><td><input name="phone" type="tel" class="persisted" data-tooltip="Лучше всего писать в полном формате с плюсом и кодом страны - +48111222333" /></td>
+                <th style="padding-bottom: 10px">E-mail</th><td style="padding-bottom: 10px"><input name="email" type="email" class="persisted" data-tooltip="Не переживайте, влезет ваш адрес в анкету целиком или нет - все данные, которые не поместятся в поля заявки, будут автоматически продублированы на дополнительном листе(-ах), как и следует делать согласно инструкции (см. стр. 9, пункт 7)." /></td></tr>
+                <tr class="block-start">
+                    <th>Находитесь</th>
+                    <td>
+                        <select name="isInPoland" class="persisted persisted-bool" data-tooltip="">
+                            <option value="true" selected="selected">в Польше</option>
+                            <option value="false">за пределами Польши</option>
+                        </select>
+                    </td>
+                    <th>Дата въезда</th>
+                    <td>
+                        <input type="date" name="lastVisitToPoland.arrivalDate" class="persisted" data-tooltip="Если находитесь в Польше, укажите день въезда.<br/>Если находитесь за пределами Польши, укажите тот день, когда последний раз въезжали в Польшу.<br/>Если никогда не были в Польше, не заполняйте." />
+                    </td>
+                    <th>Основание</th>
+                    <td>
+                        <select name="lastVisitToPoland.groundOfStay" class="persisted">
+                            <option value="2">Виза</option>
+                            <option value="3">ВНЖ</option>
+                            <option value="1">Безвизовое движение</option>
+                            <option value="4">Документ другого гос-ва Шенгена</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr class="block-middle">
+                    <th colspan="6">
+                        <span id="current-address-header">Текущий адрес в Польше:</span>
+                        <span id="planned-address-header" style="display: none">Планируемый адрес в Польше:</span>
+                    </th>
+                </tr>
+                <tr class="block-middle">
+                    <th>Воеводство</th>
+                    <td><select name="address.voivodeship" class="persisted" data-tooltip="Обычно должно совпадать с воеводством, в котором подаётся заявление: где живёте, там и подаётесь на ВНЖ."><option></option></select></td>
+                    <th>Населенный пункт</th>
+                    <td><input name="address.city" class="persisted" /></td>
+                    <th>Почтовый код</th>
+                    <td><input name="address.postCode" class="persisted" /></td>
+                </tr>
+                <tr class="block-end">
+                    <th>Улица</th>
+                    <td><input name="address.street" class="persisted" /></td>
+                    <th>Дом</th>
+                    <td><input name="address.houseNumber" class="persisted" /></td>
+                    <th>Квартира</th>
+                    <td><input name="address.apartmentNumber" class="persisted" /></td>
+                </tr>
+                <tr>
+                    <th>Цель пребывания</th>
+                    <td colspan="3">
+                        <select name="purposeOfStay" class="persisted" data-tooltip="">
+                            <option value="4">&nbsp; 4 - Ведение хозяйственной деятельности (ИП, B2B, JDG)</option>
+                            <option value="16">16 - Иные обстоятельства (в т.ч. пребывание с иностранцем)</option>
+                            <option value="11">11 - Воссоединение с иностранцем (доступно не для всех)</option>
+                            <option value="10">10 - Воссоединение с поляком</option>
+                            <option value="2">&nbsp; 2 - Работа по специальности, требующей высокой квалификации (BlueCard)</option>
+                            <option value="1">&nbsp; 1 - Работа (umowa o pracę)</option>
+                            <option value="15">15 - Сезонная работа</option>
+                            <option value="3">&nbsp; 3 - Работа в командировке</option>
+                            <option value="5">&nbsp; 5 - Очное обучение (бакалавриат, магистратура, доктурантура)</option>
+                            <option value="6">&nbsp; 6 - Научные исследования и разработки</option>
+                            <option value="7">&nbsp; 7 - Долгосрочная мобильность исследователя</option>
+                            <option value="12">12 - Долгосрочная мобильность члена семьи исследователя</option>
+                            <option value="8">&nbsp; 8 - Прохождение стажировки</option>
+                            <option value="9">&nbsp; 9 - Европейская волонтерская служба</option>
+                            <option value="13">13 - Пребывание жертвы торговли людьми</option>
+                            <option value="14">14 - Кратковременное пребывание</option>
+                        </select>
+                        <script type="text/tooltip" data-target="select[name='purposeOfStay']">
+                            Наиболее распространенные цели:
+                            <ul>
+                                <li>Предприниматель (ИП) выбирает целью <a class="script-link" href="javascript:changeValue('select[name=%22purposeOfStay%22]', 4)">ведение хозяйственной деятельности (4)</a></li>
+                                <li>Программист (но не только) для работы по найму, с уровнем доходов, достаточным для получения BlueCard, выбирает целью <a class="script-link" href="javascript:changeValue('select[name=%22purposeOfStay%22]', 2)">работу по специальности, требующей высокой квалификации (2)</a></li>
+                                <li>Работники без доступа к BlueCard выбирают просто <a class="script-link" href="javascript:changeValue('select[name=%22purposeOfStay%22]', 1)">работу (1)</a></li>
+                                <li>Супруг (как и ребенок) основного подающегося если не может сам(а) работать или быть предпринимателем и собирается жить на обеспечении супруга, выбирает одну из этих целей:
+                                    <ul>
+                                        <li><a class="script-link" href="javascript:changeValue('select[name=%22purposeOfStay%22]', 10)">Воссоединение с поляком (10)</a> - если супруг поляк</li>
+                                        <li><a class="script-link" href="javascript:changeValue('select[name=%22purposeOfStay%22]', 11)">Воссоединение с иностранцем (11)</a> - если супруг
+                                            <ul>
+                                                <li>имеет ПМЖ (pobyt stały)</li>
+                                                <li>имеет карту долгосрочного резидента ЕС</li>
+                                                <li>имеет статус беженца</li>
+                                                <li>находится под дополнительной защитой</li>
+                                                <li>уже 2 года имеет непрерывный ВНЖ (pobyt czasowy) на основании одного или нескольких последовательных разрешений, причем последнее должно быть сроком не менее года</li>
+                                                <li>... (читайте полный список в <a href="https://sip.lex.pl/akty-prawne/dzu-dziennik-ustaw/cudzoziemcy-18053962/art-159" target="_blank">ст. 159</a> закона об иностранцах)</li>
+                                            </ul>
+                                        </li>
+                                        <li>В остальных случаях (что характерно для большинства) - <a class="script-link" href="javascript:changeValue('select[name=%22purposeOfStay%22]', 16)">иные обстоятельства (16)</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </script>
+                    </td>
+                    <th class="purposeOfStayInDetail-picker">Пояснения цели</th>
+                    <td class="purposeOfStayInDetail-picker">
+                        <input name="purposeOfStayInDetail" class="persisted" />
+                    </td>
+                </tr>
+                <tr class="block-start">
+                    <th colspan="6">Родственники, находящиеся в Польше</th>
+                </tr>
+                <tr class="block-end">
+                    <td colspan="6">
+                        <table id="familyMembers" cellspacing="0"
+                            class="persisted-dynamic-container"
+                            data-persisted-as="familyMembers"
+                            data-persisted-add-button="#addFamilyMember">
+                            <tr>
+                                <th>#</th>
+                                <th>Имя</th>
+                                <th>Фамилия</th>
+                                <th>Пол</th>
+                                <th>Дата рождения</th>
+                                <th>Родство</th>
+                                <th>Гражданство</th>
+                                <th>Где живёт</th>
+                                <th>Подаётся<br/>на ВНЖ</th>
+                                <th>На вашем<br/>содержании</th>
+                                <th></th>
+                            </tr>
+                            <script type="text/template" data-template="familyMember">
+                                <tr data-number="${number}" class="persisted-dynamic">
+                                    <td>${number}</td>
+                                    <td><input name="familyMembers.${number}.firstName" class="persisted" style="width: 90px" /></td>
+                                    <td><input name="familyMembers.${number}.lastName" class="persisted" style="width: 90px" /></td>
+                                    <td><input name="familyMembers.${number}.sex" class="persisted" style="width: 30px" /></td>
+                                    <td><input type="date" name="familyMembers.${number}.birthDate" class="persisted" /></td>
+                                    <td>
+                                        <select name="familyMembers.${number}.kinship" class="persisted" data-tooltip="">
+                                            <option value="WSPÓŁMAŁŻONEK">Współmałżonek - супруг</option>
+                                            <option value="WSPÓŁMAŁŻONKA">Współmałżonka - супруга</option>
+                                            <option value="MĄŻ">Mąż - муж</option>
+                                            <option value="ŻONA">Żona - жена</option>
+                                            <option value="SYN">Syn - сын (родной или приемный)</option>
+                                            <option value="CÓRKA">Córka - дочь (в т.ч. приемная)</option>
+                                            <option value="BABCIA">Babcia - бабушка</option>
+                                            <option value="BRAT">Brat - брат</option>
+                                            <option value="BRATANEK">Bratanek - племянник (сын брата)</option>
+                                            <option value="BRATANICA">Bratanica - племянница (дочь брата)</option>
+                                            <option value="BRATOWA">Bratowa - жена брата</option>
+                                            <option value="CIOTKA">Ciotka - тётя</option>
+                                            <option value="DZIADEK">Dziadek - дед</option>
+                                            <option value="KUZYN">Kuzyn - двоюродный брат</option>
+                                            <option value="KUZYNKA">Kuzynka - двоюродная сестра</option>
+                                            <option value="MATKA">Matka - мать</option>
+                                            <option value="OJCIEC">Ojciec - отец</option>
+                                            <option value="PARTNER">Partner - партнёр</option>
+                                            <option value="PARTNERKA">Partnerka - партнёрша</option>
+                                            <option value="PASIERB">Pasierb - пасынок</option>
+                                            <option value="PASIERBICA">Pasierbica - падчерица</option>
+                                            <option value="PRAWNUCZKA">Prawnuczka - правнучка</option>
+                                            <option value="PRAWNUK">Prawnuk - правнук</option>
+                                            <option value="SIOSTRA">Siostra - сестра</option>
+                                            <option value="SIOSTRZENICA">Siostrzenica - племянница (дочь сестры)</option>
+                                            <option value="SIOSTRZENIEC">Siostrzeniec - племянник (сын сестры)</option>
+                                            <option value="STRYJEK">Stryjek - дядя (брат матери)</option>
+                                            <option value="STRYJENKA">Stryjenka - тётя (жена брата матери)</option>
+                                            <option value="SYNOWA">Synowa - невестка (жена сына)</option>
+                                            <option value="SZWAGIER">Szwagier - брат жены/мужа или муж сестры</option>
+                                            <option value="SZWAGIERKA">Szwagierka - сестра жены/мужа</option>
+                                            <option value="TEŚĆ">Teść - тесть</option>
+                                            <option value="TEŚCIOWA">Teściowa - тёща</option>
+                                            <option value="WNUCZKA">Wnuczka - внучка</option>
+                                            <option value="WNUK">Wnuk - внук</option>
+                                            <option value="WUJEK">Wujek - дядя (брат отца/матери)</option>
+                                            <option value="ZIĘĆ">Zięć - зять</option>
+                                        </select>
+                                    </td>
+                                    <td><input name="familyMembers.${number}.citizenship" class="persisted" /></td>
+                                    <td><input name="familyMembers.${number}.placeOfResidence" class="persisted" /></td>
+                                    <td>
+                                        <select name="familyMembers.${number}.applying" class="persisted persisted-bool">
+                                            <option value="true">Да</option>
+                                            <option value="false">Нет</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="familyMembers.${number}.dependent" class="persisted persisted-bool">
+                                            <option value="true">Да</option>
+                                            <option value="false">Нет</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="button" name="removeFamilyMember" value="X" style="background-color: red; color: white" /></td>
+                                </tr>
+                            </script>
+                            <script type="text/template" data-template="kinshipTooltip">
+                                Информация для Мазовецкого воеводства (Варшава)
+                                <p>Парадоксально, но факт: значения, помеченные звёздочкой, невозможно выбрать в системе inPOL,
+                                поэтому, если будете заполнять заявку ребенка в inPOL, в строке родителя оставьте NIE WYBRANO.</p>
+                                <p>Кто распечатывает заявку из inPOL, тот потом руками дописывает OJCIEC или MATKA.</p>
+                                А кто пользуется этой страницей, у того сразу всё напечатано как надо.
+                            </script>
+                            <tr>
+                                <td></td>
+                                <td colspan="9" style="padding-top: 10px"><input type="button" id="addFamilyMember" value="Добавить родственника" /></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="6"></th>
+                </tr>
+                <tr class="block-start">
+                    <th colspan="3">Предыдущие посещения Польши</th>
+                    <th colspan="3">Путешествия за последние 5 лет<br/>(исключая Польшу и страну проживания)</th>
+                </tr>
+                <tr class="block-end">
+                    <td colspan="3" style="vertical-align: top">
+                        <table id="previousVisitsToPoland" cellspacing="0"
+                            class="persisted-dynamic-container"
+                            style="width: 100%"
+                            data-persisted-as="previousVisitsToPoland"
+                            data-persisted-add-button="#addVisitToPoland">
+                            <tr>
+                                <th>Дата въезда</th>
+                                <th>Дата выезда</th>
+                                <th>Основание</th>
+                                <th></th>
+                            </tr>
+                            <script type="text/template" data-template="visitToPoland">
+                                <tr data-number="${number}" class="persisted-dynamic">
+                                    <td><input type="date" name="previousVisitsToPoland.${number}.arrivalDate" class="persisted" /></td>
+                                    <td><input type="date" name="previousVisitsToPoland.${number}.departureDate" class="persisted" /></td>
+                                    <td><input name="previousVisitsToPoland.${number}.groundOfStay" class="persisted" /></td>
+                                    <td><input type="button" name="removeVisitToPoland" value="X" style="background-color: red; color: white" /></td>
+                                </tr>
+                            </script>
+                            <tr>
+                                <td colspan="4" style="padding-top: 10px"><input type="button" id="addVisitToPoland" value="Добавить посещение" /></td>
+                            </tr>
+                            <tr>
+                                <th colspan="4" style="padding-top: 10px">Свободное описание</th>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <textarea name="previousVisitsToPolandFreeText" style="width: 100%" rows="3" data-tooltip="" class="persisted"></textarea>
+                                    <script type="text/tooltip" data-target="textarea[name='previousVisitsToPolandFreeText']" data-tooltip-position-my="left bottom" data-tooltip-position-at="left top-5">
+                                        Если нет информации о старых поездках (после замены паспорта), пишем приблизительные даты, например,
+                                        "ездил на основании виз один раз на 2 недели в 2011-м году и трижды ездил в 2010-м, точных дат не помню".<br/>
+                                        Такое описание можно добавить как вместо дат, так и вместе с несколькими датами, которые достоверно известны.<br/>
+                                        Частый вопрос: "У меня 100500 поездок, неужели я должен всё вносить?!" На ваше усмотрение, но главное, чтобы информация была достоверной и у инспектора не сложилось впечатление, что Вы пытаетесь утаить или исказить информацию.
+                                        Если Вы действительно ездите каждый месяц в течение многих лет, можете в свободном виде написать про это.<br/>
+                                        Если для описания Вам нужен переводчик на польский, рекомендую <a href="https://www.deepl.com/translator" target="_blank">DeepL</a>.
+                                    </script>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td colspan="3" style="vertical-align: top">
+                        <table id="travels" cellspacing="0"
+                            class="persisted-dynamic-container"
+                            style="width: 100%"
+                            data-persisted-as="travels"
+                            data-persisted-add-button="#addTravel">
+                            <tr>
+                                <th>Дата въезда</th>
+                                <th>Дата выезда</th>
+                                <th>Страна</th>
+                                <th></th>
+                            </tr>
+                            <script type="text/template" data-template="travel">
+                                <tr data-number="${number}" class="persisted-dynamic">
+                                    <td><input type="date" name="travels.${number}.arrivalDate" class="persisted" /></td>
+                                    <td><input type="date" name="travels.${number}.departureDate" class="persisted" /></td>
+                                    <td><input name="travels.${number}.country" class="persisted" /></td>
+                                    <td><input type="button" name="removeTravel" value="X" style="background-color: red; color: white" /></td>
+                                </tr>
+                            </script>
+                            <tr>
+                                <td colspan="4" style="padding-top: 10px"><input type="button" id="addTravel" value="Добавить путешествие" /></td>
+                            </tr>
+                            <tr>
+                                <th colspan="4" style="padding-top: 10px">Свободное описание</th>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <textarea name="travelsFreeText" style="width: 100%" rows="3" data-tooltip="" class="persisted"></textarea>
+                                    <script type="text/tooltip" data-target="textarea[name='travelsFreeText']" data-tooltip-position-my="left bottom" data-tooltip-position-at="left top-5">
+                                        Если нет информации о старых поездках (после замены паспорта), пишем приблизительные даты, например,
+                                        "ездил один раз в Испанию на 2 недели в 2011-м году и трижды ездил в Литву в 2010-м, точных дат не помню".<br/>
+                                        Такое описание можно добавить как вместо дат, так и вместе с несколькими датами, которые достоверно известны.<br/>
+                                        Частый вопрос: "У меня 100500 поездок, неужели я должен всё вносить?!" На ваше усмотрение, но главное, чтобы информация была достоверной и у инспектора не сложилось впечатление, что Вы пытаетесь утаить или исказить информацию.
+                                        Если Вы действительно путешествуете несколько раз в год, можете в свободном виде написать про это.<br/>
+                                        Если для описания Вам нужен переводчик на польский, рекомендую <a href="https://www.deepl.com/translator" target="_blank">DeepL</a>.
+                                    </script>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Финансовые средства</th>
+                    <td colspan="5">
+                        <textarea name="meansOfSubsistence" class="persisted" style="width: 100%" rows="3" data-combo="DOCHÓD Z JEDNOOSOBOWEJ DZIAŁALNOŚCI GOSPODARCZEJ KTÓRĄ PROWADZĘ POD NAZWĄ\nIVAN IVANOV, NIP 1234567890, REGON 123456789|NA UTRZYMANIU U MĘŻA|NA UTRZYMANIU U ŻONY|NA UTRZYMANIU U OJCA|NA UTRZYMANIU U MATKI|WYNAGRODZENIE W WYSOKOŚCI 5000 ZŁ MIESIĘCZNIE" data-tooltip=""></textarea>
+                        <script type="text/tooltip" data-target="input[name='meansOfSubsistence']" data-tooltip-position-my="left bottom" data-tooltip-position-at="left top-5">
+                            Информация о финансовых средствах для покрытия расходов на содержание.<br/>
+                            Для успешного получения долгосрочного разрешения на проживание тут важнее показать не деньги на счету, а наличие дохода.<br/>
+                            Предприниматель указывает данные фирмы, наёмный работник указывает размер зарплаты, супруг/ребенок на содержании указывает, что его содержит супруг/родитель.
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Медицинская страховка</th>
+                    <td colspan="5">
+                        <textarea name="medicalInsurance" class="persisted" style="width: 100%" rows="3" data-combo="ZUS W ZWIĄZKU Z PROWADZONĄ JEDNOOSOBOWĄ DZIAŁALNOŚCIĄ GOSPODARCZĄ\nZNAK: 991400/4120/193398/2022|ZUS W ZWIĄZKU Z UBEZPIECZENIEM MĘŻA|ZUS W ZWIĄZKU Z UBEZPIECZENIEM ŻONY|ZUS W ZWIĄZKU Z UBEZPIECZENIEM OJCA|ZUS W ZWIĄZKU Z UBEZPIECZENIEM MATKI" data-tooltip=""></textarea>
+                        <script type="text/tooltip" data-target="input[name='medicalInsurance']" data-tooltip-position-my="left bottom" data-tooltip-position-at="left top-5">
+                            Наличие мед. страховки - один из ключевых критериев для получения ВНЖ.<br/>
+                            Предприниматель указывает, что застрахован в ZUS, супруг/ребенок на содержании указывает, что его содержит супруг/родитель.<br/>
+                            ZNAK можно взять из <a href="https://docs.google.com/document/d/1aAIAQ3Vu-5SzS3fGV7HrX6TzN-xys0_7IRowv5zhSIk/edit?usp=sharing" target="_blank">подтверждения застрахованности</a>.
+                        </script>
+                    </td>
+                </tr>
+                <tr class="block-start">
+                    <th colspan="6" style="padding: 5px 15px">Являетесь ли Вы  задержаными, находитесь ли Вы в охраняемом центре или под стражей для иностранцев, была ли по отношению к Вам применена мера пресечения в виде запрета выезда из страны или отбываете ли Вы наказание в виде лишения свободы, а также применено ли по отношению к Вам временное заключение под стражу?</th>
+                </tr>
+                <tr class="block-middle">
+                    <td colspan="6" style="padding: 5px 15px">
+                        <textarea name="detention" class="persisted" style="width: 100%" rows="3" data-tooltip="Оставьте пустым, если не задержаны" data-tooltip-position-my="left bottom" data-tooltip-position-at="left top-5"></textarea>
+                    </td>
+                </tr>
+                <tr class="block-middle">
+                    <th colspan="6" style="padding: 5px 15px">Заполните, если были наказаны в судебном порядке в Польше - когда, за какой проступок, какой был приговор и был ли он исполнен:</th>
+                </tr>
+                <tr class="block-middle">
+                    <td colspan="6" style="padding: 5px 15px">
+                        <textarea name="courtSentence" class="persisted" style="width: 100%" rows="3" data-tooltip="Оставьте пустым, если не были судимы в Польше" data-tooltip-position-my="left bottom" data-tooltip-position-at="left top-5"></textarea>
+                    </td>
+                </tr>
+                <tr class="block-middle">
+                    <th colspan="6" style="padding: 5px 15px">Если в отношении Вас ведется уголовное производство или производство по делам о правонарушениях в Польше, опишите, какое:</th>
+                </tr>
+                <tr class="block-middle">
+                    <td colspan="6" style="padding: 5px 15px">
+                        <textarea name="criminalCase" class="persisted" style="width: 100%" rows="3" data-tooltip="Оставьте пустым, если нет открытого дела" data-tooltip-position-my="left bottom" data-tooltip-position-at="left top-5"></textarea>
+                    </td>
+                </tr>
+                <tr class="block-middle">
+                    <th colspan="6" style="padding: 5px 15px">Опишите обременяющие Вас обязательства, возникающие из судебных решений, постановлений, административных решений, в том числе, алиментные обязательства, на территории Республики Польша или за пределами этой территории:</th>
+                </tr>
+                <tr class="block-end">
+                    <td colspan="6" style="padding: 5px 15px">
+                        <textarea name="liabilities" class="persisted" style="width: 100%" rows="3" data-tooltip="Оставьте пустым, если нет обязательств" data-tooltip-position-my="left bottom" data-tooltip-position-at="left top-5"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="6" style="padding: 5px 15px">
+                        <span style="float: right" id="attachmentsSize"></span>
+                        Приложения к заявке
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="6" style="padding: 5px 15px">
+                        <textarea rows="18" style="width: 100%" class="persisted" name="attachments"
+                            data-tooltip-position-my="left bottom" data-tooltip-position-at="left top-5"
+                            data-tooltip="Постарайтесь уместить весь набор в отведенное место. Если появляется прокрутка, значит данные не поместятся в заявке. Это не критично (они продублируются в полном виде на отдельном листе), но лучше избежать этого. Можно объединять имеющие отношение друг к другу вещи в одной строке. А некоторые, не самые важные вещи можно просто не указывать, хоть они и приложены (помните, что три главных критерия для выдачи ВНЖ - место для жизни, средства для жизни и страхование здоровья)."
+                        >POTWIERDZENIE OPŁATY, KSEROKOPIA PASZPORTU, ZDJĘCIA 4 SZT.</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="padding: 5px 15px">
+                        Добавить типичный набор приложений для:
+                        <input type="button" onclick="dialogAddJdgAttachments()" value="ИП" />
+                        <div id="dialog-addJdgAttachments" style="display: none" title="Приложения для ИП">
+                            <table cellspacing="0">
+                                <tr>
+                                    <th style="white-space: nowrap">Форма налогообложения</th>
+                                    <td>
+                                        <select name="taxationForm" data-sync="select[name='taxationForm']">
+                                            <option value="flatRateOnIncome" selected="selected">Ryczałt</option>
+                                            <option value="flatRate">Podatek liniowy</option>
+                                            <option value="common">Zasady ogólne</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="white-space: nowrap">Количество контрагентов</th>
+                                    <td>
+                                        <select name="numberOfClients">
+                                            <option value="none">Долгосрочных контрактов нет</option>
+                                            <option value="one" selected="selected">Один контрагент</option>
+                                            <option value="many">Несколько контрагентов</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="white-space: nowrap">Количество фактур в месяц</th>
+                                    <td>
+                                        <select name="tooManyInvoices" data-sync="select[name='tooManyInvoices']">
+                                            <option value="false" selected="selected">1-3</option>
+                                            <option value="true">Много</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="white-space: nowrap">Вели деятельность в прошлом году?</th>
+                                    <td>
+                                        <select name="evidences" data-sync="select[name='evidences']"
+                                            data-tooltip="Под нужной суммой понимается 12 средних доходов по воеводству в секторе предприятий в четвертом квартале позапрошлого года">
+                                            <option value="nnn:businessPlan">Нет</option>
+                                            <option value="ynn:businessPlan">Да, но декларация пока не подана</option>
+                                            <option value="yyn:lastYearPit,businessPlan">Да, подана декларация, но не набрана нужная сумма</option>
+                                            <option value="yyy:lastYearPit">Да, подана декларация и набрана нужная сумма</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="white-space: nowrap">Пользуетесь ульгой на старт?</th>
+                                    <td>
+                                        <select name="ulgaNaStart" data-sync="select[name='ulgaNaStart']">
+                                            <option value="no:false" selected="selected">Нет</option>
+                                            <option value="was:false">Уже закончилась</option>
+                                            <option value="is:true">Пока да</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <input type="button" onclick="dialogAddJdgFMAttachments()" value="члена семьи ИП" />
+                        <div id="dialog-addJdgFMAttachments" style="display: none" title="Приложения для члена семьи ИП">
+                            <table cellspacing="0">
+                                <tr>
+                                    <th style="white-space: nowrap">ИП Вам</th>
+                                    <td>
+                                        <select name="kinship">
+                                            <option value="wife" selected="selected">жена</option>
+                                            <option value="husband">муж</option>
+                                            <option value="mother">мать</option>
+                                            <option value="father">отец</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="white-space: nowrap">Форма налогообложения</th>
+                                    <td>
+                                        <select name="taxationForm" data-sync="select[name='taxationForm']">
+                                            <option value="flatRateOnIncome" selected="selected">Ryczałt</option>
+                                            <option value="flatRate">Podatek liniowy</option>
+                                            <option value="common">Zasady ogólne</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="white-space: nowrap">Количество фактур в месяц</th>
+                                    <td>
+                                        <select name="tooManyInvoices" data-sync="select[name='tooManyInvoices']">
+                                            <option value="false" selected="selected">1-3</option>
+                                            <option value="true">Много</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="white-space: nowrap">Велась деятельность в прошлом году?</th>
+                                    <td>
+                                        <select name="evidences" data-sync="select[name='evidences']"
+                                            data-tooltip="Под нужной суммой понимается 12 средних доходов по воеводству в секторе предприятий в четвертом квартале позапрошлого года">
+                                            <option value="nnn:businessPlan">Нет</option>
+                                            <option value="ynn:businessPlan">Да, но декларация пока не подана</option>
+                                            <option value="yyn:lastYearPit,businessPlan">Да, подана декларация, но не набрана нужная сумма</option>
+                                            <option value="yyy:lastYearPit">Да, подана декларация и набрана нужная сумма</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="white-space: nowrap">Есть ульга на старт?</th>
+                                    <td>
+                                        <select name="ulgaNaStart" data-sync="select[name='ulgaNaStart']">
+                                            <option value="no:false" selected="selected">Нет</option>
+                                            <option value="was:false">Уже закончилась</option>
+                                            <option value="is:true">Пока да</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="padding: 5px 15px">
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="6" style="text-align: center">
+                        <button id="render" style="margin: 10px 0; background-color: darkgreen; color: white; font-size: 20px; padding: 5px 15px">Сформировать заявку</button>
+                    </th>
+                </tr>
+            </table>
+        </div>
+        <br/>
+        <br/>
+        <div style="position: absolute; z-index: -1; width: 100%; text-align: center;">
+            <p id="generating" style="display: none">Генерирую PDF...</p>
+            <p id="fallback" style="display: none">Если документ не отобразился, что ж, тогда просто <a id="download-pdf" download="wniosek.pdf">скачайте его</a></p>
+        </div>
+        <object id="pdf" style="width: 100%; height: 90%;"></object>
+    </body>
+</html>
+
