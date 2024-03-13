@@ -1,15 +1,31 @@
 $(function() {
-    function readFile(callback) {
-        var $i = $('#readFileProxy');
+    function readFiles(multiple, callback) {
+        var results = [];
+        var resultsCounter = 0;
+        var $i = $('#readFilesProxy');
         if ($i.length == 0) {
-            $i = $('<input id="readFileProxy" type="file" style="display: none" />');
+            $i = $('<input id="readFilesProxy" type="file"' + ( multiple ? ' multiple="multiple"' : '' ) + ' style="display: none" />');
             $i.change(function() {
                 var files = $i.prop('files');
-                if (files && files[0]) {
-                    var mimeType = files[0].type;
-                    var reader = new FileReader();
-                    reader.onload = e => callback(e.target.result, mimeType);
-                    reader.readAsArrayBuffer(files[0]);
+                if (files && files.length) {
+                    results = [];
+                    resultsCounter = files.length;
+                    for (var f = 0; f < files.length; ++f) {
+                        var mimeType = files[f].type;
+                        var reader = new FileReader();
+                        reader.fileIndex = f;
+                        reader.onload = function(fileIndex, fileCount) {
+                            return e => {
+                                results[fileIndex] = { buffer: e.target.result, type: mimeType };
+                                if (--resultsCounter <= 0) {
+                                    for (var r = 0; r < fileCount; ++r) {
+                                        callback(results[r].buffer, results[r].type);
+                                    }
+                                }
+                            };
+                        }(f, files.length);
+                        reader.readAsArrayBuffer(files[f]);
+                    }
                     $i.val('');
                 }
             });
@@ -63,7 +79,7 @@ $(function() {
     }
 
     $('#appendFile').click(e => {
-        readFile((newFileArrayBuffer, mimeType) => {
+        readFiles(true, (newFileArrayBuffer, mimeType) => {
             var nextPage = doc.getPages().length + 1;
             if (mimeType == 'application/pdf') {
                 PDFLib.PDFDocument.load(newFileArrayBuffer).then(newDoc => {
