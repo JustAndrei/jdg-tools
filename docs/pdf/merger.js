@@ -19,7 +19,7 @@ $(function() {
                                 results[fileIndex] = { buffer: e.target.result, type: mimeType };
                                 if (--resultsCounter <= 0) {
                                     for (var r = 0; r < fileCount; ++r) {
-                                        callback(results[r].buffer, results[r].type);
+                                        callback(results[r].buffer, results[r].type, r == fileCount - 1);
                                     }
                                 }
                             };
@@ -79,18 +79,24 @@ $(function() {
     }
 
     $('#appendFile').click(e => {
-        readFiles(true, (newFileArrayBuffer, mimeType) => {
+        readFiles(true, (newFileArrayBuffer, mimeType, lastFile) => {
             var nextPage = doc.getPages().length + 1;
             if (mimeType == 'application/pdf') {
                 PDFLib.PDFDocument.load(newFileArrayBuffer).then(newDoc => {
                     doc.copyPages(newDoc, newDoc.getPages().map((e, i, a) => i)).then(newPages => {
                         $.each(newPages, (i, p) => { doc.addPage(p); });
-                        displayPdf(doc, nextPage);
+                        if (lastFile) {
+                            displayPdf(doc, nextPage);
+                        }
                     });
                 });
             }
             else if (mimeType == 'image/jpeg') {
-                addJpg(newFileArrayBuffer, doc, $('#autoRotate').prop('checked'), $('#scale').val()).then(() => { displayPdf(doc, nextPage); });
+                addJpg(newFileArrayBuffer, doc, $('#autoRotate').prop('checked'), $('#scale').val()).then(() => {
+                    if (lastFile) {
+                        displayPdf(doc, nextPage);
+                    }
+                });
             }
             else {
                 alert('Тип ' + mimeType + ' не поддерживается');
