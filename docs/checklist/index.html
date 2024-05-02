@@ -1,6 +1,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Чек-лист</title>
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-EC8HTZ6XGV"></script>
@@ -10,6 +11,9 @@
             gtag('js', new Date());
             gtag('config', 'G-EC8HTZ6XGV');
         </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <style>
             body {
                 width: 100%;
@@ -23,7 +27,7 @@
                 box-sizing: border-box;
                 -moz-box-sizing: border-box;
             }
-            
+
             .page {
                 width: 210mm;
                 min-height: 297mm;
@@ -34,7 +38,7 @@
                 background: white;
                 box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
             }
-            
+
             @page {
                 size: A4;
                 margin: 0;
@@ -45,24 +49,24 @@
                 padding: 3px;
                 line-height: 3mm;
             }
-            
+
             td {
                 font-size: 12pt;
                 text-align: center;
                 min-width: 5mm;
             }
-            
+
             th {
                 font-weight: normal;
                 font-size: 7pt;
                 text-align: left;
             }
-            
+
             th.narrow {
                 max-width: 9mm;
                 overflow-wrap: anywhere;
             }
-            
+
             tr.group th {
                 background-color: #ddd;
                 font-size: 11pt;
@@ -70,7 +74,7 @@
                 padding: 1.5mm;
                 text-align: left;
             }
-            
+
             tr.subgroup th {
                 background-color: #eee;
                 font-size: 8pt;
@@ -78,18 +82,18 @@
                 padding: 3px;
                 text-align: left;
             }
-            
+
             .big-letter {
                 font-size: 13pt;
             }
-            
+
             a[rel="modal:open"] {
                 border-bottom: dotted 1px red;
                 text-decoration: none;
                 background-color: #ffb;
                 cursor: pointer;
             }
-            
+
             input[type=checkbox] {
                 margin: 0 3.5px;
             }
@@ -114,7 +118,7 @@
                 text-align: center;
                 cursor: pointer;
             }
-            
+
             .donate-button {
                 position: fixed;
                 z-index: 1;
@@ -148,7 +152,7 @@
                 border-radius: 50px;
                 padding-top: 10px;
             }
-            
+
             tr.non-printable * {
                 text-decoration: line-through;
                 background-color: transparent;
@@ -158,12 +162,109 @@
             tr.non-printable > * * {
                 border-bottom: none;
             }
-            
+
             .minor {
                 font-size: smaller;
                 font-style: italic;
             }
             
+            .banner {
+                margin-top: 10px;
+                min-height: auto;
+                padding: 10px 20px 15px 20px;
+                background-color: #444;
+                color: #eee;
+                font-size: 120%;
+            }
+            
+            .banner > div {
+                display: flex;
+                justify-content: space-between;
+            }
+            
+            .banner-check {
+                font-size: 70px;
+            }
+            
+            @media screen {
+                .page {
+                    max-width: 100vw;
+                }
+
+                select {
+                    max-width: 80vw;
+                }
+            }
+            
+            @media screen and (max-width: 550px) {
+                .banner-check {
+                    display: none;
+                }
+                
+                .banner > div {
+                    justify-content: center;
+                }
+                
+                .print-button, .donate-button, .help-button {
+                    width: 50px;
+                    height: 50px;
+                    font-size: 35px;
+                }
+            }
+
+            @media screen and (max-width: 431px) {
+                body {
+                    margin: 0;
+                    font-size: 12pt;
+                }
+                
+                .page {
+                    width: 100vw;
+                    height: auto;
+                    margin-left: 0;
+                    margin-right: 0;
+                    padding: 10px 0;
+                }
+
+                .modal {
+                    max-width: 90vw;
+                    font-size: 14pt;
+                }
+                
+                .child-copy {
+                    display: none;
+                }
+                
+                #checklist tr td:last-child,
+                #checklist tr td:nth-last-child(2) {
+                    display: none;
+                }
+                
+                td, th {
+                    line-height: normal;
+                }
+                
+                td {
+                    font-size: 14pt;
+                }
+
+                th {
+                    font-size: 9pt;
+                }
+
+                tr.group th {
+                    font-size: 13pt;
+                }
+
+                tr.subgroup th {
+                    font-size: 10pt;
+                }
+
+                .big-letter {
+                    font-size: 15pt;
+                }
+            }
+
             @media print {
                 html, body {
                     width: 210mm;
@@ -181,15 +282,15 @@
                     background: initial;
                     page-break-after: always;
                 }
-                
+
                 .non-printable {
                     display: none;
                 }
-                
+
                 #checklist tr > *:nth-child(1) {
                     display: none;
                 }
-                
+
                 a[rel="modal:open"] {
                     text-decoration: none;
                     color: black;
@@ -198,9 +299,6 @@
                 }
             }
         </style>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <script>
             var spouseCol = 4;
             var childCol = 5;
@@ -339,7 +437,7 @@
                 });
 
                 $('#numberOfChildren').on('change', function() {
-                    var num = $(this).val();
+                    var num = Number($(this).val());
                     $('.child-copy').remove();
                     $('#checklist tr:not(.group):not(.subgroup) *:nth-child(' + childCol + ')').each(function() {
                         var $child = $(this);
@@ -387,20 +485,16 @@
         </script>
     </head>
     <body>
-        <div class="page non-printable" style="min-height: auto; background-color: #444; color: #eee; font-size: 120%; padding: 10px 20px 15px 20px; margin-top: 10px">
-            <div style="display: flex; justify-content: space-between">
-                <div style="font-size: 70px">
-                    ☑️
-                </div>
+        <div class="page non-printable banner">
+            <div>
+                <div class="banner-check">☑️</div>
                 <div style="text-align: center">
                     <div style="margin-bottom: 10px">Хочешь поблагодарить автора?</div>
                     <a target="_blank" href="https://justandrei.github.io/coffee" style="text-decoration: none">
                         <img src="bmc.svg" style="" />
                     </a>
                 </div>
-                <div style="font-size: 70px">
-                    ️☑️
-                </div>
+                <div class="banner-check">☑️</div>
             </div>
         </div>
         <div class="page non-printable" style="min-height: auto">
@@ -642,7 +736,7 @@
                 <tr>
                     <th><input id="ch-business-plan" name="ch-business-plan" class="optional-check" type="checkbox" checked="checked"/></th>
                     <th>
-                        <a href="#c-business-plan" rel="modal:open">Бизнес-план</a> <span style="color: red; font-weight: bold; font-size: 80%" class="non-printable">NEW!</span>
+                        <a href="#c-business-plan" rel="modal:open">Бизнес-план</a>
                     </th>
                     <td>+</td>
                     <td></td>
@@ -783,7 +877,7 @@
                     <td></td>
                 </tr>
                 <tr class="updates">
-                    <th><input class="optional-check" name="ch-about-work" type="checkbox" checked="checked"/></th>
+                    <th><input class="optional-check" name="ch-jpkv7m" type="checkbox" checked="checked"/></th>
                     <th>
                         <a href="#c-jpkv7m" rel="modal:open">JPK_V7m</a> и UPO &mdash; за каждый месяц, если платите VAT
                     </th>
@@ -906,7 +1000,7 @@
                     <th colspan="6">Делать в последнюю очередь, чтобы точно понимать, какие документы отмечать как приложенные</th>
                 </tr>
                 <tr>
-                    <th><span style="color: red; font-weight: bold; font-size: 80%" class="non-printable">NEW!</span></th>
+                    <th></th>
                     <th>
                         <a rel="modal:open" href="#c-application-form">Wniosek o pobyt czasowy</a> (заявка) &mdash; <a rel="modal:open" href="#c-application-form-count">от одной до трёх копий</a>
                     </th>
@@ -947,13 +1041,13 @@
 
         <div class="non-printable" id="comments">
             <div class="modal" id="c-application-form">
+                <p><a href="https://justandrei.github.io/jdg-tools/wniosek" target="_blank" style="font-weight: bold">Новый генератор заявки</a></p>
                 <p><a target="_blank" href="https://drive.google.com/uc?export=download&id=1TTyM8F8Y0DU7XAi_qulcDGhnGlOv7nsu">Старый шаблон</a> с комментариями по заполнению.</p>
-                <p><b style="color: red">Новинка!</b> <b>Поздравляю, Вы обнаружили новый инструмент для заполнения заявки на ВНЖ!</b></p>
-                <p><a href="https://justandrei.github.io/jdg-tools/wniosek" target="_blank" style="font-weight: bold; font-size: 150%">Заполнить заявку на ВНЖ</a></p>
             </div>
             
             <div class="modal" id="c-jpkv7m">
                 <p>Jednolity Plik Kontrolny &mdash; ежемесячная декларация VAT.</p>
+                <p><input class="optional-check-in-comment" id="ch-jpkv7m" name="ch-jpkv7m" type="checkbox" checked="checked" /><label for="ch-jpkv7m">Вы являетесь зарегистрированным плательщиком VAT и приложите свои распечатки JPK (декларационной части) и UPO</label></p>
             </div>
             
             <div class="modal" id="c-how-to-update">
@@ -1344,7 +1438,7 @@
             
             <div class="modal" id="c-jdg-form">
                 <p><a target="_blank" href="https://docs.google.com/document/d/1JIjog1ZHP9-ZqX3Z9MQQQhZrBHFAGjtL/edit?usp=sharing">Бланк для заполнения</a></p>
-                <p><a target="_blank" href="https://docs.google.com/document/d/1NBTNAKqmfw0J01wNdR54oR8-6k-9-_NxMXOmb6bVBE4/edit?usp=sharing">Образец для программиста</a> - <span style="color: red">NEW!</span></p>
+                <p><a target="_blank" href="https://docs.google.com/document/d/1NBTNAKqmfw0J01wNdR54oR8-6k-9-_NxMXOmb6bVBE4/edit?usp=sharing">Образец для программиста</a></p>
                 <p><a target="_blank" href="https://drive.google.com/file/d/1zM60Fm1tLJ16vq_GMtZ8kEZxK0KGcEov/view">Общая инструкция</a></p>
                 <p>Большинство людей используют переводчик <a target="_blank" href="https://deepl.com">DeepL</a>, некоторые писали, что очень помог ChatGPT</p>
             </div>
