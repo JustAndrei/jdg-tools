@@ -81,6 +81,7 @@
             function render() {
                 var rateRange = rateRanges[$('#selRateRange').val()];
                 var exemption = $('#selExemption').val();
+                $('#exemptionComment').text($('#selExemption option:selected').data('comment'));
                 var noExemption = $('#selExemption option:last').val();
                 var annualIncomeRate = $('#selAnnualIncomeRate').val() / 100;
                 var maxAnnualIncomeRate = $('#selAnnualIncomeRate option:last').val() / 100;
@@ -153,6 +154,7 @@
                 margin: 5px;
                 padding: 5px;
                 border-radius: 15px;
+                font-size: 100%;
             }
 
             .pb {
@@ -198,13 +200,17 @@
                 font-weight: normal;
                 text-align: left;
             }
+            
+            th, td {
+                vertical-align: top;
+            }
         </style>
     </head>
     <body>
         <h1>Składki ZUS (ryczałt)</h1>
     
         <div style="text-align: center">
-            <select id="selRateRange" aria-label="Период"></select>
+            <select id="selRateRange" aria-label="Период" style="font-size: 110%"></select>
             <br/>
             <table style="display: inline-block" cellpadding="0" cellspacing="0">
                 <tr>
@@ -225,10 +231,11 @@
                     </td>
                     <td>
                         <select id="selExemption">
-                            <option value="2">Ulga na start</option>
-                            <option value="1">Składki preferencyjne</option>
-                            <option value="0">Składki pełne</option>
+                            <option value="2" data-comment="первые 6 или 7 месяцев">Ulga na start</option>
+                            <option value="1" data-comment="следующие 24 месяца">Składki preferencyjne</option>
+                            <option value="0" data-comment="льготы закончились">Składki pełne</option>
                         </select>
+                        <br/><span id="exemptionComment" style="margin-left: 15px; top: -3px; position: relative; font-size: 80%"></span>
                     </td>
                 </tr>
             </table>
