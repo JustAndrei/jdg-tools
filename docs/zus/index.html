@@ -1,0 +1,303 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Składki ZUS (ryczałt)</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <script>
+            var rateRanges = [
+                {
+                    name: '2024 июль-дек',
+                    from: '2024-07-01',
+                    to: '2024-12-31',
+                    factualAverageIncome: 7767.85,
+                    expectedAverageIncome: 7824.00,
+                    minIncome: 4300.00
+                },
+                {
+                    name: '2024 янв-июнь',
+                    from: '2024-01-01',
+                    to: '2024-06-30',
+                    factualAverageIncome: 7767.85,
+                    expectedAverageIncome: 7824.00,
+                    minIncome: 4242.00
+                },
+                {
+                    name: '2023 июль-дек',
+                    from: '2023-07-01',
+                    to: '2023-12-31',
+                    factualAverageIncome: 6965.94,
+                    expectedAverageIncome: 6935.00,
+                    minIncome: 3600.00
+                },
+                {
+                    name: '2023 янв-июнь',
+                    from: '2023-01-01',
+                    to: '2023-06-30',
+                    factualAverageIncome: 6965.94,
+                    expectedAverageIncome: 6935.00,
+                    minIncome: 3490.00
+                },
+                {
+                    name: '2022',
+                    from: '2022-01-01',
+                    to: '2022-12-31',
+                    factualAverageIncome: 6221.04,
+                    expectedAverageIncome: 5922.00,
+                    minIncome: 3010.00
+                }
+            ];
+
+            $(function() {
+                var today = new Date();
+                $('#selRateRange')
+                    .append(rateRanges.map((o, i, a) => {
+                        var $option = $('<option value="' + i + '">' + o.name + '</option>');
+                        if (new Date(o.from) <= today && today <= new Date(o.to)) {
+                            $option.attr('selected', 'selected');
+                        }
+                        return $option;
+                    }))
+                    .change(e => render());
+                $('#selExemption').change(e => render());
+                $('#selAnnualIncomeRate').change(e => render());
+
+                render();
+            });
+
+            function calculateSpoleczna(rateRange, exemption, percent) {
+                return (
+                    exemption == 0 ? rateRange.expectedAverageIncome * 0.6 * percent / 100 :
+                    exemption == 1 ? rateRange.minIncome * 0.3 * percent / 100 :
+                    0
+                );
+            }
+            
+            function round(value) {
+                return Math.round(value * 100) / 100;
+            }
+
+            function render() {
+                var rateRange = rateRanges[$('#selRateRange').val()];
+                var exemption = $('#selExemption').val();
+                var noExemption = $('#selExemption option:last').val();
+                var annualIncomeRate = $('#selAnnualIncomeRate').val() / 100;
+                var maxAnnualIncomeRate = $('#selAnnualIncomeRate option:last').val() / 100;
+
+                var zdrowotna = round(rateRange.factualAverageIncome * 0.09 * annualIncomeRate);
+                var maxZdrowotna = round(rateRange.factualAverageIncome * 0.09 * maxAnnualIncomeRate);
+
+                var emerytalna = round(calculateSpoleczna(rateRange, exemption, 19.52));
+                var maxEmerytalna = round(calculateSpoleczna(rateRange, noExemption, 19.52));
+
+                var rentowa = round(calculateSpoleczna(rateRange, exemption, 8));
+                var maxRentowa = round(calculateSpoleczna(rateRange, noExemption, 8));
+
+                var wypadkowa = round(calculateSpoleczna(rateRange, exemption, 1.67));
+                var maxWypadkowa = round(calculateSpoleczna(rateRange, noExemption, 1.67));
+
+                var chorobowa = round(calculateSpoleczna(rateRange, exemption, 2.45));
+                var maxChorobowa = round(calculateSpoleczna(rateRange, noExemption, 2.45));
+
+                var nfp = round(exemption == 0 ? calculateSpoleczna(rateRange, exemption, 2.45) : 0);
+                var maxNfp = round(calculateSpoleczna(rateRange, noExemption, 2.45));
+
+                var totalWoChorobowa = round(zdrowotna + emerytalna + rentowa + wypadkowa + nfp);
+                var total = round(totalWoChorobowa + chorobowa);
+
+                var width = $('label[for=zdrowotna]').parent().prop('clientWidth');
+
+                $('#zdrowotna').text(zdrowotna);
+                $('label[for=zdrowotna]').css('width', zdrowotna / maxZdrowotna * width);
+                $('#zdrowotna-in-all').css('width', zdrowotna / total * width);
+
+                $('#emerytalna').text(emerytalna);
+                $('label[for=emerytalna]').css('width', emerytalna / maxEmerytalna * width);
+                $('#emerytalna-in-all').css('width', emerytalna / total * width);
+
+                $('#rentowa').text(rentowa);
+                $('label[for=rentowa]').css('width', rentowa / maxRentowa * width);
+                $('#rentowa-in-all').css('width', rentowa / total * width);
+
+                $('#wypadkowa').text(wypadkowa);
+                $('label[for=wypadkowa]').css('width', wypadkowa / maxWypadkowa * width);
+                $('#wypadkowa-in-all').css('width', wypadkowa / total * width);
+
+                $('#chorobowa').text(chorobowa);
+                $('label[for=chorobowa]').css('width', chorobowa / maxChorobowa * width);
+                $('#chorobowa-in-all').css('width', chorobowa / total * width);
+
+                $('#nfp').text(nfp);
+                $('label[for=nfp]').css('width', nfp / maxNfp * width);
+                $('#nfp-in-all').css('width', nfp / total * width);
+
+                $('#total').text(total);
+                $('#totalWoChorobowa').text(totalWoChorobowa);
+                $('#totalWoChorobowa-container').toggle(totalWoChorobowa != total);
+            }
+        </script>
+        <style>
+            body {
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            h1, h2, h3 {
+                margin: 8px 5px 5px 5px;
+                text-align: center;
+            }
+            
+            select {
+                margin: 5px;
+                padding: 5px;
+                border-radius: 15px;
+            }
+
+            .pb {
+                border: solid 1px #888;
+                border-radius: 15px;
+                overflow: hidden;
+                height: 28px;
+                margin: 5px;
+                display: flex;
+                justify-content: space-between;
+            }
+            
+            .pb > div {
+                width: 0px;
+            }
+            
+            .pb > div > div {
+                padding: 5px;
+                position: relative;
+                float: right;
+                margin-right: 5px;
+                white-space: nowrap;
+                font-weight: bold;
+            }
+            
+            .pb label {
+                display: inline-block;
+                margin: 0;
+                padding: 5px 3px;
+                overflow: visible;
+                white-space: nowrap;
+                transition: width 1s;
+                text-indent: 10px;
+                height: 28px;
+            }
+
+            .pb-all label {
+                padding: 5px 0;
+            }
+
+            th {
+                padding: 5px 0px 0px 10px;
+                font-weight: normal;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Składki ZUS (ryczałt)</h1>
+    
+        <div style="text-align: center">
+            <select id="selRateRange" aria-label="Период"></select>
+            <br/>
+            <table style="display: inline-block" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th>
+                        <label for="selAnnualIncomeRate">Годовой доход</label>
+                    </th>
+                    <th>
+                        <label for="selExemption">Льгота</label>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <select id="selAnnualIncomeRate">
+                            <option value="60">≤ 60,000 zł</option>
+                            <option value="100">≤ 300,000 zł</option>
+                            <option value="180">&gt; 300,000 zł</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="selExemption">
+                            <option value="2">Ulga na start</option>
+                            <option value="1">Składki preferencyjne</option>
+                            <option value="0">Składki pełne</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Składka zdrowotna</h3>
+
+        <div class="pb" style="background-color: #ddf">
+            <label for="zdrowotna" style="background-color: #aaf; width: 0">Składka zdrowotna</label>
+            <div><div><span id="zdrowotna"></span> zł</div></div>
+        </div>
+
+        <h3>Składki społeczne</h3>
+
+        <div class="pb" style="background-color: #fdd">
+            <label for="emerytalna" style="background-color: #d88; width: 0">Emerytalna</label> 
+            <div><div><span id="emerytalna"></span> zł</div></div>
+        </div>
+
+        <div class="pb" style="background-color: #fde">
+            <label for="rentowa" style="background-color: #d8a; width: 0">Rentowa</label> 
+            <div><div><span id="rentowa"></span> zł</div></div>
+        </div>
+
+        <div class="pb" style="background-color: #feb">
+            <label for="wypadkowa" style="background-color: #da4; width: 0">Wypadkowa</label> 
+            <div><div><span id="wypadkowa"></span> zł</div></div>
+        </div>
+
+        <div class="pb" style="background-color: #ddd">
+            <label for="chorobowa" style="background-color: #aaa; width: 0">Chorobowa - необязательная</label> 
+            <div><div><span id="chorobowa"></span> zł</div></div>
+        </div>
+
+        <h3>Na Fundusz Pracy</h3>
+
+        <div class="pb" style="background-color: #dfd">
+            <label for="nfp" style="background-color: #ada; width: 0">Na Fundusz Pracy</label> 
+            <div><div><span id="nfp"></span> zł</div></div>
+        </div>
+
+        <h2>Всё вместе</h2>
+
+        <div class="pb pb-all" style="background-color: #eee">
+            <label id="zdrowotna-in-all" style="background-color: #aaf; width: 0">
+            </label><label id="emerytalna-in-all" style="background-color: #d88; width: 0">
+            </label><label id="rentowa-in-all" style="background-color: #d8a; width: 0">
+            </label><label id="wypadkowa-in-all" style="background-color: #da4; width: 0">
+            </label><label id="chorobowa-in-all" style="background-color: #aaa; width: 0">
+            </label><label id="nfp-in-all" style="background-color: #ada; width: 0">
+            </label>
+            <div><div><span id="total"></span> zł</div></div>
+        </div>
+
+        <div id="totalWoChorobowa-container" style="text-align: center">
+            <label for="totalWoChorobowa">А без хоробовой</label> &mdash; <span id="totalWoChorobowa"></span> zł</br>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px">
+            Рекомендую посмотреть<br/>
+            <a target="_blank" href="https://www.youtube.com/watch?v=FJVhBu-_nyA" style="font-weight: bold; text-decoration: none">
+                <img src="https://developers.google.com/static/site-assets/logo-youtube.svg" style="height: 20px; vertical-align: middle" />
+                Почти всё, что вы хотели узнать про ZUS
+            </a>
+
+            <div style="margin: 20px 0 5px 0">Хочешь поблагодарить автора?</div>
+            <a target="_blank" href="https://justandrei.github.io/coffee" style="text-decoration: none">
+                <img src="https://justandrei.github.io/jdg-tools/checklist/bmc.svg">
+            </a>
+        </div>
+    </body>
+</html>
