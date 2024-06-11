@@ -106,32 +106,33 @@
 
                 var totalWoChorobowa = round(zdrowotna + emerytalna + rentowa + wypadkowa + nfp);
                 var total = round(totalWoChorobowa + chorobowa);
+                var maxTotal = round(maxZdrowotna + maxEmerytalna + maxRentowa + maxWypadkowa + maxNfp + maxChorobowa);
 
                 var width = $('label[for=zdrowotna]').parent().prop('clientWidth');
 
                 $('#zdrowotna').text(zdrowotna);
                 $('label[for=zdrowotna]').css('width', zdrowotna / maxZdrowotna * width);
-                $('#zdrowotna-in-all').css('width', zdrowotna / total * width);
+                $('#zdrowotna-in-all').css('width', zdrowotna / maxTotal * width);
 
                 $('#emerytalna').text(emerytalna);
                 $('label[for=emerytalna]').css('width', emerytalna / maxEmerytalna * width);
-                $('#emerytalna-in-all').css('width', emerytalna / total * width);
+                $('#emerytalna-in-all').css('width', emerytalna / maxTotal * width);
 
                 $('#rentowa').text(rentowa);
                 $('label[for=rentowa]').css('width', rentowa / maxRentowa * width);
-                $('#rentowa-in-all').css('width', rentowa / total * width);
+                $('#rentowa-in-all').css('width', rentowa / maxTotal * width);
 
                 $('#wypadkowa').text(wypadkowa);
                 $('label[for=wypadkowa]').css('width', wypadkowa / maxWypadkowa * width);
-                $('#wypadkowa-in-all').css('width', wypadkowa / total * width);
+                $('#wypadkowa-in-all').css('width', wypadkowa / maxTotal * width);
 
                 $('#chorobowa').text(chorobowa);
                 $('label[for=chorobowa]').css('width', chorobowa / maxChorobowa * width);
-                $('#chorobowa-in-all').css('width', chorobowa / total * width);
+                $('#chorobowa-in-all').css('width', chorobowa / maxTotal * width);
 
                 $('#nfp').text(nfp);
                 $('label[for=nfp]').css('width', nfp / maxNfp * width);
-                $('#nfp-in-all').css('width', nfp / total * width);
+                $('#nfp-in-all').css('width', nfp / maxTotal * width);
 
                 $('#total').text(total);
                 $('#totalWoChorobowa').text(totalWoChorobowa);
@@ -280,13 +281,15 @@
         <h2>Всё вместе</h2>
 
         <div class="pb pb-all" style="background-color: #eee">
-            <label id="zdrowotna-in-all" style="background-color: #aaf; width: 0">
-            </label><label id="emerytalna-in-all" style="background-color: #d88; width: 0">
-            </label><label id="rentowa-in-all" style="background-color: #d8a; width: 0">
-            </label><label id="wypadkowa-in-all" style="background-color: #da4; width: 0">
-            </label><label id="chorobowa-in-all" style="background-color: #aaa; width: 0">
-            </label><label id="nfp-in-all" style="background-color: #ada; width: 0">
-            </label>
+            <span>
+                <label id="zdrowotna-in-all" style="background-color: #aaf; width: 0">
+                </label><label id="emerytalna-in-all" style="background-color: #d88; width: 0">
+                </label><label id="rentowa-in-all" style="background-color: #d8a; width: 0">
+                </label><label id="wypadkowa-in-all" style="background-color: #da4; width: 0">
+                </label><label id="chorobowa-in-all" style="background-color: #aaa; width: 0">
+                </label><label id="nfp-in-all" style="background-color: #ada; width: 0">
+                </label>
+            </span>
             <div><div><span id="total"></span> zł</div></div>
         </div>
 
