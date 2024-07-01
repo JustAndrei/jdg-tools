@@ -58,11 +58,9 @@
                             $option.attr('selected', 'selected');
                         }
                         return $option;
-                    }))
-                    .change(e => render());
-                $('#selExemption').change(e => render());
-                $('#selAnnualIncomeRate').change(e => render());
-
+                    }));
+                $('#selRateRange, #selExemption, #selAnnualIncomeRate, #selChorobowa').change(e => render());
+                loadSettings();
                 render();
             });
 
@@ -81,6 +79,7 @@
             function render() {
                 var rateRange = rateRanges[$('#selRateRange').val()];
                 var exemption = $('#selExemption').val();
+                var chorobowaFactor = $('#selChorobowa').val();
                 $('#exemptionComment').text($('#selExemption option:selected').data('comment'));
                 var noExemption = $('#selExemption option:last').val();
                 var annualIncomeRate = $('#selAnnualIncomeRate').val() / 100;
@@ -98,14 +97,13 @@
                 var wypadkowa = round(calculateSpoleczna(rateRange, exemption, 1.67));
                 var maxWypadkowa = round(calculateSpoleczna(rateRange, noExemption, 1.67));
 
-                var chorobowa = round(calculateSpoleczna(rateRange, exemption, 2.45));
+                var chorobowa = chorobowaFactor * round(calculateSpoleczna(rateRange, exemption, 2.45));
                 var maxChorobowa = round(calculateSpoleczna(rateRange, noExemption, 2.45));
 
                 var nfp = round(exemption == 0 ? calculateSpoleczna(rateRange, exemption, 2.45) : 0);
                 var maxNfp = round(calculateSpoleczna(rateRange, noExemption, 2.45));
 
-                var totalWoChorobowa = round(zdrowotna + emerytalna + rentowa + wypadkowa + nfp);
-                var total = round(totalWoChorobowa + chorobowa);
+                var total = round(zdrowotna + emerytalna + rentowa + wypadkowa + nfp + chorobowa);
                 var maxTotal = round(maxZdrowotna + maxEmerytalna + maxRentowa + maxWypadkowa + maxNfp + maxChorobowa);
 
                 var width = $('label[for=zdrowotna]').parent().prop('clientWidth');
@@ -135,8 +133,20 @@
                 $('#nfp-in-all').css('width', nfp / maxTotal * width);
 
                 $('#total').text(total);
-                $('#totalWoChorobowa').text(totalWoChorobowa);
-                $('#totalWoChorobowa-container').toggle(totalWoChorobowa != total);
+
+                saveSettings();
+            }
+
+            function loadSettings() {
+                $('#selExemption').val(localStorage.zus_exemption || 2);
+                $('#selAnnualIncomeRate').val(localStorage.zus_annualIncomeRate || 60);
+                $('#selChorobowa').val(localStorage.zus_chorobowa || 0);
+            }
+
+            function saveSettings() {
+                localStorage.zus_exemption = $('#selExemption').val();
+                localStorage.zus_annualIncomeRate = $('#selAnnualIncomeRate').val();
+                localStorage.zus_chorobowa = $('#selChorobowa').val();
             }
         </script>
         <style>
@@ -152,10 +162,10 @@
             }
             
             select {
-                margin: 5px;
-                padding: 5px;
-                border-radius: 15px;
-                font-size: 100%;
+                margin: 3px;
+                padding: 3px;
+                border-radius: 10px;
+                font-size: 80%;
             }
 
             .pb {
@@ -200,6 +210,7 @@
                 padding: 5px 0px 0px 10px;
                 font-weight: normal;
                 text-align: left;
+                font-size: 90%;
             }
             
             th, td {
@@ -221,6 +232,9 @@
                     <th>
                         <label for="selExemption">Льгота</label>
                     </th>
+                    <th>
+                        <label for="selChorobowa">Больничные</label>
+                    </th>
                 </tr>
                 <tr>
                     <td>
@@ -237,6 +251,12 @@
                             <option value="0" data-comment="льготы закончились">Składki pełne</option>
                         </select>
                         <br/><span id="exemptionComment" style="margin-left: 15px; top: -3px; position: relative; font-size: 80%"></span>
+                    </td>
+                    <td>
+                        <select id="selChorobowa">
+                            <option value="0">не нужны</option>
+                            <option value="1">нужны</option>
+                        </select>
                     </td>
                 </tr>
             </table>
@@ -291,10 +311,6 @@
                 </label>
             </span>
             <div><div><span id="total"></span> zł</div></div>
-        </div>
-
-        <div id="totalWoChorobowa-container" style="text-align: center">
-            <label for="totalWoChorobowa">А без хоробовой</label> &mdash; <span id="totalWoChorobowa"></span> zł</br>
         </div>
 
         <div style="text-align: center; margin-top: 20px">
