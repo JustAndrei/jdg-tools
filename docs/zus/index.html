@@ -108,31 +108,34 @@
 
                 var width = $('label[for=zdrowotna]').parent().prop('clientWidth');
 
-                $('#zdrowotna').text(zdrowotna);
+                $('#zdrowotna').text(zdrowotna.toFixed(2));
                 $('label[for=zdrowotna]').css('width', zdrowotna / maxZdrowotna * width);
                 $('#zdrowotna-in-all').css('width', zdrowotna / maxTotal * width);
 
-                $('#emerytalna').text(emerytalna);
+                $('#emerytalna').text(emerytalna.toFixed(2));
                 $('label[for=emerytalna]').css('width', emerytalna / maxEmerytalna * width);
                 $('#emerytalna-in-all').css('width', emerytalna / maxTotal * width);
 
-                $('#rentowa').text(rentowa);
+                $('#rentowa').text(rentowa.toFixed(2));
                 $('label[for=rentowa]').css('width', rentowa / maxRentowa * width);
                 $('#rentowa-in-all').css('width', rentowa / maxTotal * width);
 
-                $('#wypadkowa').text(wypadkowa);
+                $('#wypadkowa').text(wypadkowa.toFixed(2));
                 $('label[for=wypadkowa]').css('width', wypadkowa / maxWypadkowa * width);
                 $('#wypadkowa-in-all').css('width', wypadkowa / maxTotal * width);
 
-                $('#chorobowa').text(chorobowa);
+                $('#chorobowa').text(chorobowa.toFixed(2));
                 $('label[for=chorobowa]').css('width', chorobowa / maxChorobowa * width);
                 $('#chorobowa-in-all').css('width', chorobowa / maxTotal * width);
 
-                $('#nfp').text(nfp);
+                $('#nfp').text(nfp.toFixed(2));
                 $('label[for=nfp]').css('width', nfp / maxNfp * width);
                 $('#nfp-in-all').css('width', nfp / maxTotal * width);
 
-                $('#total').text(total);
+                $('#total').text(total.toFixed(2));
+
+                $('#selChorobowa').toggle(exemption != 2);
+                $('#chorobowaNA').toggle(exemption == 2);
 
                 saveSettings();
             }
@@ -257,6 +260,7 @@
                             <option value="0">не нужны</option>
                             <option value="1">нужны</option>
                         </select>
+                        <div id="chorobowaNA" style="display: none; margin: 3px 10px">недоступны</div>
                     </td>
                 </tr>
             </table>
