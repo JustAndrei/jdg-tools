@@ -41,7 +41,7 @@
                 width: 210mm;
                 min-height: 297mm;
                 padding: 10mm;
-                margin: 10mm auto;
+                margin: 5mm auto;
                 border: 1px #D3D3D3 solid;
                 border-radius: 5px;
                 background: white;
@@ -192,7 +192,7 @@
             }
             
             .banner {
-                margin-top: 10px;
+                margin-top: 0;
                 min-height: auto;
                 padding: 10px 20px 15px 20px;
                 background-color: #444;
@@ -256,7 +256,7 @@
                 background-color: #fcc;
             }
 
-            @media worse {
+            @media screen {
                 .page {
                     max-width: 100vw;
                 }
@@ -294,6 +294,10 @@
                     margin-left: 0;
                     margin-right: 0;
                     padding: 10px 0;
+                }
+
+                .non-printable.page {
+                    padding: 10px;
                 }
 
                 .modal {
@@ -1120,15 +1124,13 @@
             </table>
         </div>
 
-        <div class="non-printable" style="padding-bottom: 20px">
-            <div class="page" style="min-height: auto">
-                <p>Чек-лист обработал и скомпоновал в один лист формата А4 Андрей Митин.
-                Информация в основном взята с <a target="_blank" href="https://sobolevbel.github.io/jdg/legalization/">гитхаб-страницы Евгения Соболева</a> и
-                из чата <a target="_blank" href="https://t.me/JDG_PBH">ИП в Польше</a>.
-                Рекомендую в любом случае почитать гитхаб-страницу и конечно <a target="_blank" href="https://sobolevbel.github.io/jdg/support/">поддержать</a>
-                проект Евгения добровольным пожертвованием.</p>
-                <p>Прошу задавать любые вопросы, касающиеся подачи на ВНЖ, в чате <a target="_blank" href="https://t.me/JDG_PBH">ИП в Польше</a>. Там много опытных, отзывчивых людей, готовых помогать чуть ли не круглосуточно.</p>
-            </div>
+        <div class="non-printable page" style="padding-bottom: 50px; min-height: auto">
+            <p>Чек-лист обработал и скомпоновал в один лист формата А4 Андрей Митин.
+            Информация в основном взята с <a target="_blank" href="https://sobolevbel.github.io/jdg/legalization/">гитхаб-страницы Евгения Соболева</a> и
+            из чата <a target="_blank" href="https://t.me/JDG_PBH">ИП в Польше</a>.
+            Рекомендую в любом случае почитать гитхаб-страницу и конечно <a target="_blank" href="https://sobolevbel.github.io/jdg/support/">поддержать</a>
+            проект Евгения добровольным пожертвованием.</p>
+            <p>Прошу задавать любые вопросы, касающиеся подачи на ВНЖ, в чате <a target="_blank" href="https://t.me/JDG_PBH">ИП в Польше</a>. Там много опытных, отзывчивых людей, готовых помогать чуть ли не круглосуточно.</p>
         </div>
 
         <div class="non-printable" id="comments">
