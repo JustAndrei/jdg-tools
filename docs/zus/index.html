@@ -81,7 +81,7 @@
                 var exemption = $('#selExemption').val();
                 var chorobowaFactor = $('#selChorobowa').val();
                 $('#exemptionComment').text($('#selExemption option:selected').data('comment'));
-                var noExemption = $('#selExemption option:last').val();
+                var noExemption = 0;
                 var annualIncomeRate = $('#selAnnualIncomeRate').val() / 100;
                 var maxAnnualIncomeRate = $('#selAnnualIncomeRate option:last').val() / 100;
 
@@ -252,6 +252,7 @@
                             <option value="2" data-comment="первые 6/7 месяцев">Ulga na start</option>
                             <option value="1" data-comment="следующие 24 месяца">Składki preferencyjne</option>
                             <option value="0" data-comment="льготы закончились">Składki pełne</option>
+                            <option value="3" data-comment="1 месяц в году">"Отпуск" от ZUS</option>
                         </select>
                         <br/><span id="exemptionComment" style="margin-left: 15px; top: -3px; position: relative; font-size: 80%"></span>
                     </td>
