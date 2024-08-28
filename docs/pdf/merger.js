@@ -2,7 +2,7 @@ $(function() {
     function readFiles(multiple, callback) {
         var $i = $('#readFilesProxy');
         if ($i.length == 0) {
-            $i = $('<input id="readFilesProxy" type="file"' + ( multiple ? ' multiple="multiple"' : '' ) + ' style="display: none" />');
+            $i = $('<input id="readFilesProxy" type="file" accept="application/pdf, image/jpeg"' + ( multiple ? ' multiple="multiple"' : '' ) + ' style="display: none" />');
             $i.change(function() {
                 var files = $i.prop('files');
                 if (files && files.length) {
@@ -45,6 +45,7 @@ $(function() {
             window.doc = doc;
             $('#pdf').attr('data', '');
             $('#hint').hide();
+            $('.help').show();
         });
     }
 
@@ -73,6 +74,7 @@ $(function() {
             }
             window.lastUrl = URL.createObjectURL(new Blob([bytes], {type: 'application/pdf'}));
             $('#pdf').attr('data', lastUrl + '#page=' + (page ? page : ''));
+            $('.help').hide();
             $('#hint').show();
         });
     }

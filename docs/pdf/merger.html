@@ -16,18 +16,59 @@
         </style>
     </head>
     <body style="margin: 0; display: flex; height: 100%; flex-direction: column; align-items: stretch">
-        <div>
-            <div style="float: right">
-                <a href="https://justandrei.github.io/coffee" target="_blank"><img style="width: 80px" src="https://justandrei.github.io/coffee/bmc.svg" /></a>
+        <div style="display: flex; align-items: start">
+            <div style="display: inline-block">
+                <input type="button" id="appendFile" value="Добавить PDF/JPG файл(ы)" style="background-color: green; color: white; width: 200px"></input>
+                <div class="help" style="width: 200px; text-align: center; color: #22a">↑<br/>добавляйте файлы,<br/>по очереди, либо сразу несколько (можно смешивать PDF и JPG)</div>
             </div>
-            <span id="hint" style="display: none; float: right; margin-right: 10px">Для сохранения в файл или печати используйте эти кнопки ↓</span>
-            <input type="button" id="appendFile" value="Добавить PDF или JPG" style="background-color: green; color: white"></input>
-            <input type="checkbox" id="autoRotate" checked="checked">Автоповорот листа для JPG</input>
-            <input id="scale" placeholder="на весь лист" style="width: 85px; text-align: right"></input> dpi
-            &nbsp;
-            <input type="button" id="addBlankPage" value="Добавить пустую страницу"></button>
-            <input type="button" id="undo" value="Отменить" style="background-color: orange"></button>
-            <input type="button" id="reset" value="Очистить" style="background-color: red; color: white"></button>
+            <div style="display: inline-block; margin-left: 10px">
+                <input type="checkbox" id="autoRotate" checked="checked">Автоповорот листа для JPG</input>
+                <div class="help" style="width: 200px; text-align: center; color: #22a">↑<br/>(настройка для JPG)<br/>портрет или пейзаж, в зависимости от пропорций изображения, либо всегда просто портрет</div>
+            </div>
+            <div style="display: inline-block; margin-left: 10px">
+                <input id="scale" placeholder="на весь лист" style="width: 85px; text-align: right"></input> dpi
+                <div class="help" style="width: 110px; text-align: center; color: #22a">↑<br/><span style="font-size: 70%">(настройка для JPG)<br/>оставьте пустым, чтобы изображение занимало весь лист, либо укажите качество печати (кол-во точек на дюйм)</span></div>
+            </div>
+            <div style="display: inline-block; margin-left: 10px">
+                <input type="button" id="addBlankPage" value="Добавить пустую страницу" style="width: 200px"></input>
+                <div class="help" style="width: 200px; text-align: center; color: #22a">↑<br/>используйте при подготовке к двухсторонней печати, если нужно следующий документ начать с нового листа (нечетной страницы)</div>
+            </div>
+            <div style="display: inline-block; margin-left: 10px">
+                <input type="button" id="undo" value="Отменить" style="background-color: orange; width: 100px"></input>
+                <div class="help" style="width: 100px; text-align: center; color: #22a">↑<br/>отменить последнее добавление</div>
+            </div>
+            <div style="display: inline-block; margin-left: 10px">
+                <input type="button" id="reset" value="Очистить" style="background-color: red; color: white; width: 100px"></input>
+                <div class="help" style="width: 100px; text-align: center; color: #22a">↑<br/>начать всё с нуля</div>
+            </div>
+            <div style="display: inline-block; margin-left: 10px">
+                <div>
+                    <a href="https://justandrei.github.io/coffee" target="_blank"><img style="width: 80px" src="https://justandrei.github.io/coffee/bmc.svg" /></a>
+                </div>
+                <div class="help" style="width: 80px; text-align: center; color: #22a">↑<br/>благодарить за полезный инструмент</div>
+            </div>
+            <span id="hint" style="display: none; position: absolute; right: 30px; margin-left: 10px; color: #22a">Cохраните или распечатайте при помощи ↓этих кнопок↓</span>
+        </div>
+        <div class="help" style="position: relative; left: 50%; width: 600px; margin-left: -300px">
+            <h3>Инструмент для склейки нескольких файлов в один PDF</h3>
+            <h4>Идея в том, чтобы значительно облегчить распечатку материала: вы заранее готовите один большой PDF-файл и запускаете его в печать целиком</h4>
+            <h5>Примеры использования:</h5>
+            <ul>
+                <li>Сосканировали все страницы паспорта? Склейте их в один файл &mdash; так проще распечатать одной кнопкой каждый раз, когда понадобится</li>
+                <li>У вас файлы JPG, а для печати лучше всего иметь макет типа PDF &mdash; этот инструмент позволяет сохранить изображения в виде PDF</li>
+                <li>Печатаете не дома, а в печатном центре, при этом нужно распечатать 20 разных документов? Подготовьте заранее один файл, так будет проще и вам, и работнику печатного центра, вы сэкономите время</li>
+            </ul>
+            <h4 style="color: #282">Безопасность ваших данных</h4>
+            <p>Ваши файлы вообще не загружаются в Интернет, вся склейка файлов производится в вашем браузере при помощи Javascript. В плане такого подхода этот инструмент, похоже, уникален. Пользуйтесь, не беспокоясь за сохранность личных данных</p>
+            <h4>Заметили баг или не хватает функциональности?</h4>
+            <p>Связаться с автором можно через Telegram &mdash; <a href="https://t.me/justandrei79">@justandrei79</a>. Если вам не хватает функциональности типа</p>
+            <ul>
+                <li>удалить или заменить (обновить) страницу в готовом PDF</li>
+                <li>разбить PDF на отдельные файлы</li>
+                <li>разместить по несколько изображений на одной странице</li>
+                <li>и т.д., и т.п.</li>
+            </ul>
+            <p>можете обратиться к автору с просьбой добавить новую фичу, либо можете попробовать самостоятельно дополнить функциональность, ведь <a target="_blank" href="https://github.com/JustAndrei/jdg-tools/tree/main/docs/pdf">исходный код</a> открыт для всех. Прошу помнить, что инструмент создан на добровольных началах для общего блага, автора можно поблагодарить &mdash; <a target="_blank" href="https://justandrei.github.io/coffee/">поддержать добровольным пожертвованием</a>.</p>
         </div>
         <object id="pdf" style="flex-grow: 1"></object>
     </body>
