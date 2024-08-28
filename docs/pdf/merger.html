@@ -17,13 +17,17 @@
     </head>
     <body style="margin: 0; display: flex; height: 100%; flex-direction: column; align-items: stretch">
         <div>
-            <span id="hint" style="display: none; float: right; margin-right: 110px">Для сохранения в файл или печати используйте эти кнопки ↓</span>
-            <input type="button" id="appendFile" value="Добавить PDF или JPG"></input>
+            <div style="float: right">
+                <a href="https://justandrei.github.io/coffee" target="_blank"><img style="width: 80px" src="https://justandrei.github.io/coffee/bmc.svg" /></a>
+            </div>
+            <span id="hint" style="display: none; float: right; margin-right: 10px">Для сохранения в файл или печати используйте эти кнопки ↓</span>
+            <input type="button" id="appendFile" value="Добавить PDF или JPG" style="background-color: green; color: white"></input>
             <input type="checkbox" id="autoRotate" checked="checked">Автоповорот листа для JPG</input>
             <input id="scale" placeholder="на весь лист" style="width: 85px; text-align: right"></input> dpi
             &nbsp;
             <input type="button" id="addBlankPage" value="Добавить пустую страницу"></button>
-            <input type="button" id="reset" value="Очистить"></button>
+            <input type="button" id="undo" value="Отменить" style="background-color: orange"></button>
+            <input type="button" id="reset" value="Очистить" style="background-color: red; color: white"></button>
         </div>
         <object id="pdf" style="flex-grow: 1"></object>
     </body>

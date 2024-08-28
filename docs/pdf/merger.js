@@ -1,29 +1,32 @@
 $(function() {
     function readFiles(multiple, callback) {
-        var results = [];
-        var resultsCounter = 0;
         var $i = $('#readFilesProxy');
         if ($i.length == 0) {
             $i = $('<input id="readFilesProxy" type="file"' + ( multiple ? ' multiple="multiple"' : '' ) + ' style="display: none" />');
             $i.change(function() {
                 var files = $i.prop('files');
                 if (files && files.length) {
-                    results = [];
-                    resultsCounter = files.length;
+                    var results = [];
+                    var fileCount = files.length;
+                    var resultsCounter = fileCount;
+                    var r = -1;
+                    var next = function () {
+                        if (++r < fileCount) {
+                            callback(results[r].buffer, results[r].type, r == fileCount - 1, next);
+                        }
+                    };
                     for (var f = 0; f < files.length; ++f) {
+                        results.push(null);
                         var mimeType = files[f].type;
                         var reader = new FileReader();
-                        reader.fileIndex = f;
-                        reader.onload = function(fileIndex, fileCount) {
+                        reader.onload = function(fileIndex) {
                             return e => {
                                 results[fileIndex] = { buffer: e.target.result, type: mimeType };
                                 if (--resultsCounter <= 0) {
-                                    for (var r = 0; r < fileCount; ++r) {
-                                        callback(results[r].buffer, results[r].type, r == fileCount - 1);
-                                    }
+                                    next();
                                 }
                             };
-                        }(f, files.length);
+                        }(f);
                         reader.readAsArrayBuffer(files[f]);
                     }
                     $i.val('');
@@ -34,8 +37,37 @@ $(function() {
         $i.click();
     }
 
+    var undoBuffer = [];
+    
+    function reset() {
+        undoBuffer.length = 0;
+        PDFLib.PDFDocument.create().then(doc => {
+            window.doc = doc;
+            $('#pdf').attr('data', '');
+            $('#hint').hide();
+        });
+    }
+
+    function undo() {
+        undoBuffer.pop();
+        if (!undoBuffer.length) {
+            reset();
+            return;
+        }
+
+        var bytes = undoBuffer[undoBuffer.length - 1];
+
+        PDFLib.PDFDocument.load(bytes).then(newDoc => {
+            doc = newDoc;
+            var nextPage = doc.getPages().length + 1;
+            displayPdf(doc, nextPage);
+            undoBuffer.pop();
+        });
+    }
+
     function displayPdf(doc, page) {
         doc.save().then(bytes => {
+            undoBuffer.push(bytes);
             if (window.lastUrl) {
                 URL.revokeObjectURL(window.lastUrl);
             }
@@ -79,27 +111,30 @@ $(function() {
     }
 
     $('#appendFile').click(e => {
-        readFiles(true, (newFileArrayBuffer, mimeType, lastFile) => {
+        readFiles(true, (newFileArrayBuffer, mimeType, isLastFile, next) => {
             var nextPage = doc.getPages().length + 1;
             if (mimeType == 'application/pdf') {
                 PDFLib.PDFDocument.load(newFileArrayBuffer).then(newDoc => {
                     doc.copyPages(newDoc, newDoc.getPages().map((e, i, a) => i)).then(newPages => {
                         $.each(newPages, (i, p) => { doc.addPage(p); });
-                        if (lastFile) {
+                        if (isLastFile) {
                             displayPdf(doc, nextPage);
                         }
+                        else next();
                     });
                 });
             }
             else if (mimeType == 'image/jpeg') {
                 addJpg(newFileArrayBuffer, doc, $('#autoRotate').prop('checked'), $('#scale').val()).then(() => {
-                    if (lastFile) {
+                    if (isLastFile) {
                         displayPdf(doc, nextPage);
                     }
+                    else next();
                 });
             }
             else {
                 alert('Тип ' + mimeType + ' не поддерживается');
+                next();
             }
         });
     });
@@ -110,11 +145,6 @@ $(function() {
         displayPdf(doc, nextPage);
     });
 
-    $('#reset').click(e => {
-        PDFLib.PDFDocument.create().then(doc => {
-            window.doc = doc;
-            $('#pdf').attr('data', '');
-            $('#hint').hide();
-        });
-    }).click();
+    $('#reset').click(reset).click();
+    $('#undo').click(undo).click();
 });
