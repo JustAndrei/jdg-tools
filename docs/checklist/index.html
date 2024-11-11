@@ -518,13 +518,13 @@
                 });
 
                 $('#spouse').on('change', function() {
-                    $('#checklist tr:not(.group):not(.subgroup) *:nth-child(' + spouseCol + '), .spouse-specific:not(.child-specific)').toggle($(this).val() == '1');
+                    $('#checklist tr:not(.group):not(.subgroup) > *:nth-child(' + spouseCol + '), .spouse-specific:not(.child-specific)').toggle($(this).val() == '1');
                     updateRows();
                     saveState();
                 });
 
                 $('#children').on('change', function() {
-                    $('#checklist tr:not(.group):not(.subgroup) *:nth-child(' + childCol + '), .child-specific:not(.spouse-specific), .child-copy').toggle($(this).val() == '1');
+                    $('#checklist tr:not(.group):not(.subgroup) > *:nth-child(' + childCol + '), .child-specific:not(.spouse-specific), .child-copy').toggle($(this).val() == '1');
                     updateRows();
                     saveState();
                 });
@@ -532,7 +532,7 @@
                 $('#numberOfChildren').on('change', function() {
                     var num = Number($(this).val());
                     $('.child-copy').remove();
-                    $('#checklist tr:not(.group):not(.subgroup) *:nth-child(' + childCol + ')').each(function() {
+                    $('#checklist tr:not(.group):not(.subgroup) > *:nth-child(' + childCol + ')').each(function() {
                         var $child = $(this);
                         for (var i = 2; i <= num; i++) {
                             $child.after($child.clone().addClass('child-copy'));
@@ -963,7 +963,24 @@
                 <tr class="updates">
                     <th><input class="optional-check" name="ch-declaration" type="checkbox" checked="checked"/></th>
                     <th>
-                        <a rel="modal:open" href="#c-declaration">Годовая декларация</a> (если есть)
+                        <a rel="modal:open" href="#c-declaration">Годовая декларация</a> (если есть) +
+                        <a rel="modal:open" href="#c-declaration-upo">UPO</a>
+
+                        <!-- popup -->
+                        <div class="modal" id="c-declaration">
+                            <p style="color: blue">Если ИП &mdash; гражданин Украины (не важно, PESEL UKR или обычный), то до 4 марта 2024 г. ему не нужно доказывать наличие стабильного дохода, поэтому декларацию можно не подавать.</p>
+                            <p>Годовая декларация, если она есть, это самый веский аргумент наличия стабильного дохода.</p>
+                            <p>PIT-28 &mdash; декларация рычалтовца. Если пользуетесь другой налоговой системой, в вашем случае будет другой формуляр.</p>
+                            <p>Если у вас есть годовая декларация и если в ней набирается нужная сумма, то вам не нужно писать бизнес-план. Также нет необходимости подавать фактуры, эвиденцию приходов и ZUS DRA за тот год, который задекларирован, но есть смысл сделать эти документы для месяцев текущего года, чтобы показать, что вы продолжаете вести деятельность.</p>
+                            <p class="paperclip">Скрепите канцелярской скрепкой листы декларации вместе.</p>
+                            <p><input class="optional-check-in-comment" id="ch-declaration" name="ch-declaration" type="checkbox" checked="checked" /><label for="ch-declaration">У вас есть декларация, будете подавать</label></p>
+                        </div>
+
+                        <!-- popup -->
+                        <div class="modal" id="c-declaration-upo">
+                            <p>Если вы самостоятельно подавали декларацию через сервис <a href="https://www.fillup.pl/" target="_blank">Fill-up</a> или другой подобный ему, скорее всего, самой последней страницей скачанного PDF-файла декларации будет UPO, т.е. подтверждение получения сразу добавляется сервисом к файлу.</p>
+                            <p>Если же в файле декларации у вас нет UPO, вам нужно его раздобыть. Для этого найдите numer referencyjny (пункт 2 "Nr dokumentu" в самом начале вашей декларации), который выглядит, например, так &mdash; 338542085c5ecb738e41290a28fb6fe1, а затем используйте этот номер для скачивания UPO <a href="https://klient-eformularz.mf.gov.pl/declaration-client/status" target="_blank">тут</a>.</p>
+                        </div>
                     </th>
                     <td>+</td>
                     <td>Г</td>
@@ -1146,16 +1163,7 @@
                 <p>Свежие документы можно либо лично заносить в канцелярию, либо отправлять по почте на адрес канцелярии, указывая на конверте номер дела. Оригиналы документов (например, паспорт или договор аренды жилья) посылать ни в коем случае не надо, только копии. Многие заверяют копии у нотариуса, т.к. при пересылке почтой некому делать сверку с оригиналом. Примут ли незаверенную копию &mdash; на усмотрение инспектора.</p>
                 <p>В случае личного занесения в канцелярию, как показывает практика, принимающий персонал тоже не занимается сверкой копий, так что для уверенности лучше посетить нотариуса в любом случае.</p>
             </div>
-            
-            <div class="modal" id="c-declaration">
-                <p style="color: blue">Если ИП &mdash; гражданин Украины (не важно, PESEL UKR или обычный), то до 4 марта 2024 г. ему не нужно доказывать наличие стабильного дохода, поэтому декларацию можно не подавать.</p>
-                <p>Годовая декларация, если она есть, это самый веский аргумент наличия стабильного дохода.</p>
-                <p>PIT-28 &mdash; декларация рычалтовца. Если пользуетесь другой налоговой системой, в вашем случае будет другой формуляр.</p>
-                <p>Если у вас есть годовая декларация и если в ней набирается нужная сумма, то вам не нужно писать бизнес-план. Также нет необходимости подавать фактуры, эвиденцию приходов и ZUS DRA за тот год, который задекларирован, но есть смысл сделать эти документы для месяцев текущего года, чтобы показать, что вы продолжаете вести деятельность.</p>
-                <p class="paperclip">Скрепите канцелярской скрепкой листы декларации вместе.</p>
-                <p><input class="optional-check-in-comment" id="ch-declaration" name="ch-declaration" type="checkbox" checked="checked" /><label for="ch-declaration">У вас есть декларация, будете подавать</label></p>
-            </div>
-            
+
             <div class="modal" id="c-application-form-count">
                 <p>Нужное количество копий ищем <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">тут</a>.</p>
                 <p class="paperclip">Скрепите канцелярской скрепкой листы каждой копии внёска.</p>
