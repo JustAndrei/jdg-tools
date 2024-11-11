@@ -73,19 +73,46 @@
                         </script>
                     </td>
                 </tr>
-                <tr class="block-start"><th>Фамилия</th><td><input name="lastName" class="persisted" data-tooltip="Фамилия в настоящий момент, латинскими буквами. Ни в коем случае не стоит пытаться записать на польский манер (IWANOW), нужно строго следовать написанию в паспорте." /></td>
-                <th>Прежние фамилии</th><td><input name="previousLastNames" class="persisted" data-tooltip="Тут должны быть перечислены через запятую все когда-либо носимые фамилии, кроме актуальной.<br/>Пример: урождённая Иванова первый раз вышла замуж за Петрова, а сейчас состоит во втором браке с Сидоровым. В этом случае фамилия в настоящий момент - Сидорова, предыдущие фамилии - Иванова, Петрова.<br/>Можете не заполнять, если не меняли фамилию (не переживайте за правила заполнения анкеты - поле автоматически будет заполнено текущей фамилией)." /></td>
-                <th>Фамилия при рождении</th><td><input name="familyName" class="persisted" data-tooltip="Фамилия из свидетельства о рождении.<br/>Можете не заполнять, если совпадает с актуальной фамилией." /></td></tr>
-                <tr class="block-middle"><th>Имя (имена)</th><td><input name="firstName" class="persisted" data-tooltip="Одно или несколько имен, носимых в настоящий момент. Не путать с отчеством.<br/>Пример: ANNA MARIYA" /></td>
-                <th>Прежнее имя (имена)</th><td colspan="3"><input name="previousFirstName" class="persisted" data-tooltip="Одно или несколько имен, носимых ранее. Указывайте, если меняли имя." /></td></tr>
-                <tr class="block-end"><th>Имя отца</th><td><input name="fatherFirstName" class="persisted" data-tooltip="Имя отца, как в его паспорте.<br/>Не в форме отчества (пишите не IVANOVICH, а IVAN)." /></td>
-                <th>Имя матери</th><td><input name="motherFirstName" class="persisted" data-tooltip="Имя матери, как в её паспорте." /></td>
-                <th>Девичья фамилия матери</th><td><input name="motherMaidenName" class="persisted" data-tooltip="Фамилия матери, данная ей при рождении." /></td></tr>
-                <tr><th>Дата рождения</th><td><input name="birthDate" type="date" class="persisted" data-tooltip="" /></td>
-                <th>Место рождения</th><td><input name="birthPlace" class="persisted" data-tooltip="Название города, посёлка и т.п." /></td>
-                <th>Страна рождения</th><td><input name="birthCountry" class="persisted" /></td></tr>
-                <tr><th>Пол</th><td><input name="sex" class="persisted" data-tooltip="Инструкция к анкете предусматривает только два варианта:<ul><li>M - mężczyzna (мужчина)</li><li>K - kobieta (женщина)</li></ul>" /></td></tr>            <tr><th>Национальность</th><td><input name="nationality" class="persisted" /></td>
-                <th>Гражданство</th><td><input name="citizenship" class="persisted" /></td></tr>
+                <tr class="block-start">
+                    <th>Фамилия</th>
+                    <td><input name="lastName" class="persisted" data-tooltip="Фамилия в настоящий момент, латинскими буквами. Ни в коем случае не стоит пытаться записать на польский манер (IWANOW), нужно строго следовать написанию в паспорте." /></td>
+                    <th>Прежние фамилии</th>
+                    <td><input name="previousLastNames" class="persisted" data-tooltip="Тут должны быть перечислены через запятую все когда-либо носимые фамилии, кроме актуальной.<br/>Пример: урождённая Иванова первый раз вышла замуж за Петрова, а сейчас состоит во втором браке с Сидоровым. В этом случае фамилия в настоящий момент - Сидорова, предыдущие фамилии - Иванова, Петрова.<br/>Можете не заполнять, если не меняли фамилию (не переживайте за правила заполнения анкеты - поле автоматически будет заполнено текущей фамилией)." /></td>
+                    <th>Фамилия при рождении</th>
+                    <td><input name="familyName" class="persisted" data-tooltip="Фамилия из свидетельства о рождении.<br/>Можете не заполнять, если совпадает с актуальной фамилией." /></td>
+                </tr>
+                <tr class="block-middle">
+                    <th>Имя (имена)</th>
+                    <td><input name="firstName" class="persisted" data-tooltip="Одно или несколько имен, носимых в настоящий момент. Не путать с отчеством.<br/>Пример: ANNA MARIYA" /></td>
+                    <th>Прежнее имя (имена)</th>
+                    <td colspan="3"><input name="previousFirstName" class="persisted" data-tooltip="Одно или несколько имен, носимых ранее. Указывайте, если меняли имя." /></td>
+                </tr>
+                <tr class="block-end">
+                    <th>Имя отца</th>
+                    <td><input name="fatherFirstName" class="persisted" data-tooltip="Имя отца, как в его паспорте.<br/>Не в форме отчества (пишите не IVANOVICH, а IVAN)." /></td>
+                    <th>Имя матери</th>
+                    <td><input name="motherFirstName" class="persisted" data-tooltip="Имя матери, как в её паспорте." /></td>
+                    <th>Девичья фамилия матери</th>
+                    <td><input name="motherMaidenName" class="persisted" data-tooltip="Фамилия матери, данная ей при рождении." /></td>
+                </tr>
+                <tr>
+                    <th>Дата рождения</th>
+                    <td><input name="birthDate" type="date" class="persisted" data-tooltip="" /></td>
+                    <th>Место рождения</th>
+                    <td><input name="birthPlace" class="persisted" data-tooltip="Название города, посёлка и т.п." /></td>
+                    <th>Страна рождения</th>
+                    <td><input name="birthCountry" class="persisted" /></td>
+                </tr>
+                <tr>
+                    <th>Пол</th>
+                    <td><input name="sex" class="persisted" data-tooltip="Инструкция к анкете предусматривает только два варианта:<ul><li>M - mężczyzna (мужчина)</li><li>K - kobieta (женщина)</li></ul>" /></td>
+                </tr>
+                <tr>
+                    <th>Национальность</th>
+                    <td><input name="nationality" class="persisted" data-tooltip="Если у вас есть польская кровь и вы планируете в перспективе получать карту поляка или подаваться на сталый побыт по корням, крайне рекомендуется заполнять тут POLAK / POLKA, чтобы в дальнейшем к вам не возникло вопросов о самоидентификации." /></td>
+                    <th>Гражданство</th>
+                    <td><input name="citizenship" class="persisted" data-tooltip="В отличие от национальности, тут нужно писать только факт: какая страна выдала вам паспорт гражданина (или id), такое у вас и гражданство. Исключение &mdash; если у вас несколько гражданств, тогда выбирайте любое." /></td>
+                </tr>
                 <tr>
                     <th>Семейное положение</th>
                     <td><input name="maritalStatus" class="persisted" /></td>
