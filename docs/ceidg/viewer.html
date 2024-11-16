@@ -18,6 +18,7 @@
             $(() => {
                 $('#uploadFiles').change(onFilesSelected);
                 $('#version').change(onVersionChanged);
+                $('#reparse').click(onFileContentsLoaded);
             });
             
             function onFilesSelected(e) {
@@ -287,12 +288,13 @@
                             var type = sel(account, 'CharakterRachunku');
                             var country = sel(account, 'Kraj');
                             var number = sel(account, 'NumerRachunku');
-                            var typefix = prefix + (type == 'firmowy' ? 'Счёт для деятельности' : 'Личный счёт');
-                            rec(typefix, time, (country + number).replace(/(.{4})/g, '$1 ').trimEnd());
+                            var typefix = prefix + (type == 'firmowy' ? 'Бизнес-счёт' : 'Личный счёт');
+                            var taxReturn = account.attributes.zwrotPodatku.value == '0' ? '' : ' - для возврата налогов';
+                            rec(typefix, time, (country + number).replace(/(.{4})/g, '$1 ').trimEnd() + taxReturn);
                         }
                     }
-                    if (!records.find(x => x.key == prefix + 'Счёт для деятельности')) {
-                        rec(prefix + 'Счёт для деятельности', time, 'нет');
+                    if (!records.find(x => x.key == prefix + 'Бизнес-счёт')) {
+                        rec(prefix + 'Бизнес-счёт', time, 'нет');
                     }
                     if (!records.find(x => x.key == prefix + 'Личный счёт')) {
                         rec(prefix + 'Личный счёт', time, 'нет');
@@ -369,6 +371,7 @@
     </head>
     <body style="margin: 0">
         <div id="version-container" style="display: none; position: sticky; top: 0px; font-weight: bold; font-size: 150%; padding: 5px; border-bottom: solid 1px #888; box-shadow: 0 0 15px; background-color: #ffe; text-align: center">
+            <div id="reparse" style="float: right; cursor: pointer">🔃</div>
             Версия
             <select id="version" style="font-size: 20px">
             </select>
