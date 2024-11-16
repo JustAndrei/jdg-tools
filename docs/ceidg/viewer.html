@@ -73,7 +73,8 @@
                 
                 function sel(doc, selector, attr) {
                     try {
-                        var el = doc.querySelector('Dokument TrescDokumentu Wartosc ' + selector);
+                        var prefix = doc.parentElement == null ? 'Dokument TrescDokumentu Wartosc ' : '';
+                        var el = doc.querySelector(prefix + selector);
                         if (attr) {
                             return el.attributes[attr].value;
                         }
@@ -82,6 +83,13 @@
                     catch (error) {
                         return null;
                     }
+                }
+
+                function attr(el, name) {
+                    if (name in el.attributes) {
+                        return el.attributes[name].value;
+                    }
+                    return null;
                 }
 
                 function modified(doc, selector) {
@@ -111,6 +119,7 @@
                 }
                 
                 var pkd = {};
+                var bankAccounts = {};
 
                 var names = Object.getOwnPropertyNames(fileContents).sort();
                 var ni = 0;
@@ -288,18 +297,35 @@
                             var type = sel(account, 'CharakterRachunku');
                             var country = sel(account, 'Kraj');
                             var number = sel(account, 'NumerRachunku');
+                            var removal = attr(account, 'likwidacja') == '1' || attr(account, 'rezygnacja') == '1';
+                            var action = removal ? 'удалён ' : 'добавлен ';
                             var typefix = prefix + (type == 'firmowy' ? 'Бизнес-счёт' : 'Личный счёт');
-                            var taxReturn = !account.attributes.zwrotPodatku ? '' : account.attributes.zwrotPodatku.value == '0' ? '' : ' - для возврата налогов';
-                            rec(typefix, time, (country + number).replace(/(.{4})/g, '$1 ').trimEnd() + taxReturn);
+                            var forTaxReturn = attr(account, 'zwrotPodatku') == '1';
+                            var taxReturnInfo = forTaxReturn ? ' - для возврата налогов' : '';
+                            var accountName = (country + number).replace(/(.{4})/g, '$1 ').trimEnd();
+                            rec(typefix, time, action + accountName + taxReturnInfo);
+                            if (removal) {
+                                delete bankAccounts[accountName];
+                            } else {
+                                if (forTaxReturn) {
+                                    var accs = Object.getOwnPropertyNames(bankAccounts);
+                                    for (var ba in accs) {
+                                        bankAccounts[accs[ba]] = false;
+                                    }
+                                }
+                                bankAccounts[accountName] = forTaxReturn;
+                            }
                         }
                     }
                     if (!records.find(x => x.key == prefix + 'Бизнес-счёт')) {
                         rec(prefix + 'Бизнес-счёт', time, 'нет');
                     }
+                    rec(prefix + 'Полный список бизнес-счетов', time, Object.getOwnPropertyNames(bankAccounts).sort().join(', ') || 'нет');
+                    rec(prefix + 'Счёт для возврата налогов', time, Object.keys(bankAccounts).find(key => bankAccounts[key]) || 'нет');
                     if (!records.find(x => x.key == prefix + 'Личный счёт')) {
                         rec(prefix + 'Личный счёт', time, 'нет');
                     }
-                    
+
                     context = 'WpisDoEwidencji DokumentacjaRachunkowa MalzenskaWspolnoscMajatkowa';
                     if (modified(doc, context)) {
                         prefix = '23. Совместное имущество с супругом - ';
