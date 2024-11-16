@@ -289,7 +289,7 @@
                             var country = sel(account, 'Kraj');
                             var number = sel(account, 'NumerRachunku');
                             var typefix = prefix + (type == 'firmowy' ? 'Бизнес-счёт' : 'Личный счёт');
-                            var taxReturn = account.attributes.zwrotPodatku.value == '0' ? '' : ' - для возврата налогов';
+                            var taxReturn = !account.attributes.zwrotPodatku ? '' : account.attributes.zwrotPodatku.value == '0' ? '' : ' - для возврата налогов';
                             rec(typefix, time, (country + number).replace(/(.{4})/g, '$1 ').trimEnd() + taxReturn);
                         }
                     }
