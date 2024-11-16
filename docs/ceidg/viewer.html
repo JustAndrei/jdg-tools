@@ -119,7 +119,8 @@
                 }
                 
                 var pkd = {};
-                var bankAccounts = {};
+                var businessBankAccounts = {};
+                var privateBankAccounts = {};
 
                 var names = Object.getOwnPropertyNames(fileContents).sort();
                 var ni = 0;
@@ -304,27 +305,29 @@
                             var taxReturnInfo = forTaxReturn ? ' - для возврата налогов' : '';
                             var accountName = (country + number).replace(/(.{4})/g, '$1 ').trimEnd();
                             rec(typefix, time, action + accountName + taxReturnInfo);
+                            var target = type == 'firmowy' ? businessBankAccounts : privateBankAccounts;
                             if (removal) {
-                                delete bankAccounts[accountName];
+                                delete target[accountName];
                             } else {
                                 if (forTaxReturn) {
-                                    var accs = Object.getOwnPropertyNames(bankAccounts);
+                                    var accs = Object.getOwnPropertyNames(target);
                                     for (var ba in accs) {
-                                        bankAccounts[accs[ba]] = false;
+                                        target[accs[ba]] = false;
                                     }
                                 }
-                                bankAccounts[accountName] = forTaxReturn;
+                                target[accountName] = forTaxReturn;
                             }
                         }
                     }
                     if (!records.find(x => x.key == prefix + 'Бизнес-счёт')) {
                         rec(prefix + 'Бизнес-счёт', time, 'нет');
                     }
-                    rec(prefix + 'Полный список бизнес-счетов', time, Object.getOwnPropertyNames(bankAccounts).sort().join(', ') || 'нет');
-                    rec(prefix + 'Счёт для возврата налогов', time, Object.keys(bankAccounts).find(key => bankAccounts[key]) || 'нет');
+                    rec(prefix + 'Полный список бизнес-счетов', time, Object.getOwnPropertyNames(businessBankAccounts).sort().join(', ') || 'нет');
+                    rec(prefix + 'Счёт для возврата налогов', time, Object.keys(businessBankAccounts).find(key => businessBankAccounts[key]) || 'нет');
                     if (!records.find(x => x.key == prefix + 'Личный счёт')) {
                         rec(prefix + 'Личный счёт', time, 'нет');
                     }
+                    rec(prefix + 'Полный список личных счетов', time, Object.getOwnPropertyNames(privateBankAccounts).sort().join(', ') || 'нет');
 
                     context = 'WpisDoEwidencji DokumentacjaRachunkowa MalzenskaWspolnoscMajatkowa';
                     if (modified(doc, context)) {
