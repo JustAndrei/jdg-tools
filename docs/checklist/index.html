@@ -404,12 +404,17 @@
                         var spouse = $('#spouse').val() == '1';
                         var children = $('#children').val() == '1';
 
-                        if (listType == 'updates' && !$r.hasClass('updates')&& !$r.hasClass('updates-only')) {
+                        if (listType == 'updates' && !$r.hasClass('updates') && !$r.hasClass('updates-only')) {
                             visible = false;
                             break;
                         }
                         
-                        if (listType == 'full' && $r.hasClass('updates-only')) {
+                        if (listType == 'full' && ($r.hasClass('updates-only') || $r.hasClass('base-only'))) {
+                            visible = false;
+                            break;
+                        }
+
+                        if (listType == 'base' && !$r.hasClass('base') && !$r.hasClass('base-only')) {
                             visible = false;
                             break;
                         }
@@ -565,6 +570,8 @@
                 $('#listType').on('change', function(event) {
                     var type = this.value;
                     $('.updates-only').toggle(type == 'updates');
+                    $('.base-only').toggle(type == 'base');
+                    $('.full-only').toggle(type == 'full');
                     updateRows();
                     saveState();
                 });
@@ -602,6 +609,7 @@
             Чек-лист
             <select class="persisted" name="listType" id="listType">
                 <option value="full" selected="selected">полный (в т.ч. очередная подача)</option>
+                <option value="base">базовый (формальный минимум)</option>
                 <option value="updates">актуализации документов</option>
             </select>
             <h3>Состав семьи</h3>
@@ -631,7 +639,7 @@
         </div>
         <div class="page">
             <table id="checklist" cellpadding="0" cellspacing="0">
-                <tr class="updates">
+                <tr class="base updates">
                     <th><a rel="modal:open" href="#c-header-optional">Опц</a></th>
                     <th><span class="updates-only" style="font-size: 13pt; font-weight: bold; font-style: normal;">Что <a rel="modal:open" href="#c-how-to-update">донести или дослать по почте</a></span></th>
                     <td class="narrow"><a class="big-letter" rel="modal:open" href="#c-header-g">Г</a></td>
@@ -648,14 +656,26 @@
                     <th></th>
                     <th colspan="6">Легко доступно сразу, нужно просто напечатать или сделать копию</th>
                 </tr>
+                <tr class="base-only group">
+                    <th></th>
+                    <th colspan="6">Набор документов, необходимый, чтобы заявка была формально принята к рассмотрению</th>
+                </tr>
+                <tr class="base-only subgroup">
+                    <th></th>
+                    <th colspan="6">Такой набор годится для отправки почтой и подачи через канцелярию. Позже вам позвонят и согласуют дату и время личного визита. В назначенный день вы должны принести оригиналы всех необходимых документов (паспорт и прочее) и все дополнительные документы, описанные в полном варианте чек-листа.</th>
+                </tr>
+                <tr class="base-only subgroup">
+                    <th></th>
+                    <th colspan="6">На практике во многих воеводствах допускается подать еще меньший набор, отложив, например, оплату до личного визита. Тем не менее, эта практика не гарантирует отсутствие к вам юридических вопросов в последствии, поэтому для полной уверенности лучше подать базовый набор документов без исключений.</th>
+                </tr>
                 <tr class="updates-only subgroup">
                     <th></th>
                     <th colspan="6">Если поменяли паспорт</th>
                 </tr>
-                <tr class="updates">
+                <tr class="base updates">
                     <th></th>
                     <th>
-                        <a rel="modal:open" href="#c-passport-copy">Копия</a> + оригинал для сверки
+                        <a rel="modal:open" href="#c-passport-copy">Копия</a> <span class="full-only">+ оригинал для сверки</span>
                         <a rel="modal:open" href="#c-passport-pages">всех</a> страниц
                         <a rel="modal:open" href="#c-passport-actual">актуального</a> паспорта
 
@@ -1084,7 +1104,7 @@
                     <th></th>
                     <th colspan="6">Сделать самостоятельно</th>
                 </tr>
-                <tr>
+                <tr class="base">
                     <th></th>
                     <th>
                         <a href="#c-application-fee" rel="modal:open">Opłata skarbowa</a> &mdash; пошлина за рассмотрение внёска (распечатка чека)
@@ -1095,7 +1115,7 @@
                     <td></td>
                     <td></td>
                 </tr>
-                <tr>
+                <tr class="base">
                     <th></th>
                     <th>
                         <a href="#c-photo" rel="modal:open">Фотографии</a> 4 шт (3,5x4,5, стандартное фото на польские документы)
@@ -1181,7 +1201,7 @@
                     <th></th>
                     <th colspan="6">Делать в последнюю очередь, чтобы точно понимать, какие документы отмечать как приложенные</th>
                 </tr>
-                <tr>
+                <tr class="base">
                     <th></th>
                     <th>
                         <a rel="modal:open" href="#c-application-form">Wniosek o pobyt czasowy</a> (заявка) &mdash; <a rel="modal:open" href="#c-application-form-count">от одной до трёх копий</a>
