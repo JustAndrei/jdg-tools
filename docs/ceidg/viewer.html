@@ -123,13 +123,32 @@
                 var privateBankAccounts = {};
 
                 var names = Object.getOwnPropertyNames(fileContents).sort();
-                var ni = 0;
+
+                var times = {};
+                var prevName;
+                var prevTime;
+                var inDayCounter = 1;
                 for (var n in names) {
-                    ++ni;
                     var doc = fileContents[names[n]];
                     var isUpdate = sel(doc, 'RodzajWniosku') == '2';
                     var submissionDate = sel(doc, 'DataZlozeniaWniosku Czas');
                     var time = isUpdate ? sel(doc, 'DataPowstaniaZmiany Czas') : submissionDate;
+                    var timeSuffix = '';
+                    if (time == prevTime) {
+                        if (inDayCounter == 1) times[prevName] += 'A';
+                        timeSuffix = String.fromCharCode(64 + ++inDayCounter);
+                    }
+                    else inDayCounter = 1;
+                    prevTime = time;
+                    prevName = names[n];
+                    times[names[n]] = time + timeSuffix;
+                }
+
+                var ni = 0;
+                for (var n in names) {
+                    ++ni;
+                    var doc = fileContents[names[n]];
+                    var time = times[names[n]];
                     $('#version').append($('<option value="' + time + '">' + ni + '. ' + time + '</option>'));
                     $('#version').val(time);
 
