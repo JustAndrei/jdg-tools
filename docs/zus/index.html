@@ -174,7 +174,9 @@
             }
 
             function loadSettings() {
-                $('#selExemption').val(Math.min(2, localStorage.zus_exemption) || 2);
+                if (localStorage.zus_exemption == 3) localStorage.zus_exemption = 0; // fix the previously allowed value
+
+                $('#selExemption').val(localStorage.zus_exemption || 2);
                 $('#selAnnualIncomeRate').val(localStorage.zus_annualIncomeRate || 60);
                 $('#selChorobowa').val(localStorage.zus_chorobowa || 0);
             }
