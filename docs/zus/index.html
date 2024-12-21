@@ -8,9 +8,11 @@
         <script>
             var rateRanges = [
                 {
-                    name: '2025 ПРОГНОЗ',
+                    name: '2025 янв-июнь',
                     from: '2025-01-01',
                     to: '2025-06-30',
+                    estimate: true,
+                    vacationAvailable: true,
                     factualAverageIncome: 8673.00,
                     expectedAverageIncome: 8673.00,
                     minIncome: 4666.00
@@ -19,6 +21,8 @@
                     name: '2024 июль-дек',
                     from: '2024-07-01',
                     to: '2024-12-31',
+                    estimate: false,
+                    vacationAvailable: true,
                     factualAverageIncome: 7767.85,
                     expectedAverageIncome: 7824.00,
                     minIncome: 4300.00
@@ -27,6 +31,8 @@
                     name: '2024 янв-июнь',
                     from: '2024-01-01',
                     to: '2024-06-30',
+                    estimate: false,
+                    vacationAvailable: false,
                     factualAverageIncome: 7767.85,
                     expectedAverageIncome: 7824.00,
                     minIncome: 4242.00
@@ -35,6 +41,8 @@
                     name: '2023 июль-дек',
                     from: '2023-07-01',
                     to: '2023-12-31',
+                    estimate: false,
+                    vacationAvailable: false,
                     factualAverageIncome: 6965.94,
                     expectedAverageIncome: 6935.00,
                     minIncome: 3600.00
@@ -43,6 +51,8 @@
                     name: '2023 янв-июнь',
                     from: '2023-01-01',
                     to: '2023-06-30',
+                    estimate: false,
+                    vacationAvailable: false,
                     factualAverageIncome: 6965.94,
                     expectedAverageIncome: 6935.00,
                     minIncome: 3490.00
@@ -51,6 +61,8 @@
                     name: '2022',
                     from: '2022-01-01',
                     to: '2022-12-31',
+                    estimate: false,
+                    vacationAvailable: false,
                     factualAverageIncome: 6221.04,
                     expectedAverageIncome: 5922.00,
                     minIncome: 3010.00
@@ -67,7 +79,7 @@
                         }
                         return $option;
                     }));
-                $('#selRateRange, #selExemption, #selAnnualIncomeRate, #selChorobowa').change(e => render());
+                $('#selRateRange, #selExemption, #selAnnualIncomeRate, #selChorobowa, #cbVacation').change(e => render());
                 loadSettings();
                 render();
             });
@@ -88,6 +100,10 @@
                 var rateRange = rateRanges[$('#selRateRange').val()];
                 var exemption = $('#selExemption').val();
                 var chorobowaFactor = $('#selChorobowa').val();
+                $('#cbVacation').prop('disabled', !rateRange.vacationAvailable);
+                if (!rateRange.vacationAvailable) $('#cbVacation').prop('checked', false);
+                var vacation = $('#cbVacation').prop('checked');
+                var vacationFactor = vacation ? 0 : 1;
                 $('#exemptionComment').text($('#selExemption option:selected').data('comment'));
                 var noExemption = 0;
                 var annualIncomeRate = $('#selAnnualIncomeRate').val() / 100;
@@ -111,34 +127,43 @@
                 var nfp = round(exemption == 0 ? calculateSpoleczna(rateRange, exemption, 2.45) : 0);
                 var maxNfp = round(calculateSpoleczna(rateRange, noExemption, 2.45));
 
-                var total = round(zdrowotna + emerytalna + rentowa + wypadkowa + nfp + chorobowa);
-                var maxTotal = round(maxZdrowotna + maxEmerytalna + maxRentowa + maxWypadkowa + maxNfp + maxChorobowa);
+                var spoleczne = round(emerytalna + rentowa + wypadkowa + chorobowa);
+                var maxSpoleczne = round(maxEmerytalna + maxRentowa + maxWypadkowa + maxChorobowa);
+
+                var allButZdrowotna = spoleczne + nfp;
+
+                var total = round(zdrowotna + vacationFactor*(spoleczne + nfp));
+                var maxTotal = round(maxZdrowotna + maxSpoleczne + maxNfp);
 
                 var width = $('label[for=zdrowotna]').parent().prop('clientWidth');
 
                 $('#zdrowotna').text(zdrowotna.toFixed(2));
                 $('label[for=zdrowotna]').css('width', zdrowotna / maxZdrowotna * width);
                 $('#zdrowotna-in-all').css('width', zdrowotna / maxTotal * width);
+                $('.zdrowotna').toggleClass('estimate', rateRange.estimate);
 
                 $('#emerytalna').text(emerytalna.toFixed(2));
                 $('label[for=emerytalna]').css('width', emerytalna / maxEmerytalna * width);
-                $('#emerytalna-in-all').css('width', emerytalna / maxTotal * width);
+                $('#emerytalna-in-all').css('width', vacationFactor * emerytalna / maxTotal * width);
 
                 $('#rentowa').text(rentowa.toFixed(2));
                 $('label[for=rentowa]').css('width', rentowa / maxRentowa * width);
-                $('#rentowa-in-all').css('width', rentowa / maxTotal * width);
+                $('#rentowa-in-all').css('width', vacationFactor * rentowa / maxTotal * width);
 
                 $('#wypadkowa').text(wypadkowa.toFixed(2));
                 $('label[for=wypadkowa]').css('width', wypadkowa / maxWypadkowa * width);
-                $('#wypadkowa-in-all').css('width', wypadkowa / maxTotal * width);
+                $('#wypadkowa-in-all').css('width', vacationFactor * wypadkowa / maxTotal * width);
 
                 $('#chorobowa').text(chorobowa.toFixed(2));
                 $('label[for=chorobowa]').css('width', chorobowa / maxChorobowa * width);
-                $('#chorobowa-in-all').css('width', chorobowa / maxTotal * width);
+                $('#chorobowa-in-all').css('width', vacationFactor * chorobowa / maxTotal * width);
 
                 $('#nfp').text(nfp.toFixed(2));
                 $('label[for=nfp]').css('width', nfp / maxNfp * width);
-                $('#nfp-in-all').css('width', nfp / maxTotal * width);
+                $('#nfp-in-all').css('width', vacationFactor * nfp / maxTotal * width);
+
+                $('#allButZdrowotna').text(allButZdrowotna.toFixed(2));
+                $('#allButZdrowotna-box').toggleClass('estimate', vacation);
 
                 $('#total').text(total.toFixed(2));
 
@@ -177,6 +202,11 @@
                 padding: 3px;
                 border-radius: 10px;
                 font-size: 80%;
+            }
+
+            .box {
+                border: solid 1px #888;
+                border-radius: 15px;
             }
 
             .pb {
@@ -223,9 +253,21 @@
                 text-align: left;
                 font-size: 90%;
             }
-            
+
             th, td {
                 vertical-align: top;
+            }
+
+            .estimate {
+                color: #888;
+            }
+
+            .estimate-comment {
+                display: none;
+            }
+
+            .estimate .estimate-comment {
+                display: inline;
             }
         </style>
     </head>
@@ -246,6 +288,9 @@
                     <th>
                         <label for="selChorobowa">Больничные</label>
                     </th>
+                    <th>
+                        <label for="cbVacation">Отпуск</label>
+                    </th>
                 </tr>
                 <tr>
                     <td>
@@ -260,7 +305,6 @@
                             <option value="2" data-comment="первые 6/7 месяцев">Ulga na start</option>
                             <option value="1" data-comment="следующие 24 месяца">Składki preferencyjne</option>
                             <option value="0" data-comment="льготы закончились">Składki pełne</option>
-                            <option value="3" data-comment="1 месяц в году">"Отпуск" от ZUS</option>
                         </select>
                         <br/><span id="exemptionComment" style="margin-left: 15px; top: -3px; position: relative; font-size: 80%"></span>
                     </td>
@@ -271,44 +315,57 @@
                         </select>
                         <div id="chorobowaNA" style="display: none; margin: 3px 10px">недоступны</div>
                     </td>
+                    <td style="text-align: center; vertical-align: text-bottom">
+                        <input type="checkbox" id="cbVacation" />
+                    </td>
                 </tr>
             </table>
         </div>
 
-        <h3>Składka zdrowotna</h3>
+        <h3 class="zdrowotna">Składka zdrowotna <span class="estimate-comment">&ndash; прогноз, уточнится!</span></h3>
 
-        <div class="pb" style="background-color: #ddf">
+        <div class="pb zdrowotna" style="background-color: #ddf">
             <label for="zdrowotna" style="background-color: #aaf; width: 0">Składka zdrowotna</label>
             <div><div><span id="zdrowotna"></span> zł</div></div>
         </div>
 
-        <h3>Składki społeczne</h3>
+        <div id="allButZdrowotna-box" class="box" style="background-color: #f8f8f8; margin-top: 20px">
 
-        <div class="pb" style="background-color: #fdd">
-            <label for="emerytalna" style="background-color: #d88; width: 0">Emerytalna</label> 
-            <div><div><span id="emerytalna"></span> zł</div></div>
-        </div>
+            <h3>Składki społeczne</h3>
 
-        <div class="pb" style="background-color: #fde">
-            <label for="rentowa" style="background-color: #d8a; width: 0">Rentowa</label> 
-            <div><div><span id="rentowa"></span> zł</div></div>
-        </div>
+            <div class="pb" style="background-color: #fdd">
+                <label for="emerytalna" style="background-color: #d88; width: 0">Emerytalna</label> 
+                <div><div><span id="emerytalna"></span> zł</div></div>
+            </div>
 
-        <div class="pb" style="background-color: #feb">
-            <label for="wypadkowa" style="background-color: #da4; width: 0">Wypadkowa</label> 
-            <div><div><span id="wypadkowa"></span> zł</div></div>
-        </div>
+            <div class="pb" style="background-color: #fde">
+                <label for="rentowa" style="background-color: #d8a; width: 0">Rentowa</label> 
+                <div><div><span id="rentowa"></span> zł</div></div>
+            </div>
 
-        <div class="pb" style="background-color: #ddd">
-            <label for="chorobowa" style="background-color: #aaa; width: 0">Chorobowa - необязательная</label> 
-            <div><div><span id="chorobowa"></span> zł</div></div>
-        </div>
+            <div class="pb" style="background-color: #feb">
+                <label for="wypadkowa" style="background-color: #da4; width: 0">Wypadkowa</label> 
+                <div><div><span id="wypadkowa"></span> zł</div></div>
+            </div>
 
-        <h3>Na Fundusz Pracy</h3>
+            <div class="pb" style="background-color: #ddd">
+                <label for="chorobowa" style="background-color: #aaa; width: 0">Chorobowa &ndash; необязательная</label> 
+                <div><div><span id="chorobowa"></span> zł</div></div>
+            </div>
 
-        <div class="pb" style="background-color: #dfd">
-            <label for="nfp" style="background-color: #ada; width: 0">Na Fundusz Pracy</label> 
-            <div><div><span id="nfp"></span> zł</div></div>
+            <h3>Na Fundusz Pracy</h3>
+
+            <div class="pb" style="background-color: #dfd">
+                <label for="nfp" style="background-color: #ada; width: 0">Na Fundusz Pracy</label> 
+                <div><div><span id="nfp"></span> zł</div></div>
+            </div>
+
+            <div style="text-align: right; padding: 5px 12px">
+                <span class="estimate-comment" style="vertical-align: text-bottom">Сэкономлено</span> 
+                <div style="display: inline-block; border-top: solid 2px; font-weight: bold; padding: 3px 5px">
+                    <span id="allButZdrowotna"></span> zł
+                </div>
+            </div>
         </div>
 
         <h2>Всё вместе</h2>
