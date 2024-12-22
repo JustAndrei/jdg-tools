@@ -103,13 +103,13 @@
                         <input name="birthPlace" class="persisted" data-tooltip="" />
                         <script type="text/tooltip" data-target="input[name='birthPlace']">
                             Название города, посёлка и т.п. на польском языке (MIŃSK, KIJÓW).<br/>
-                            Можно использовать википедию, чтобы надёжно получить общепринятое название города:
+                            Можно использовать Википедию, чтобы надёжно получить общепринятое название города:
                             <ul>
                                 <li>Найти город, например, в русскоязычной версии &mdash; <a href="https://ru.wikipedia.org" target="_blank">ru.wikipedia.org</a></li>
                                 <li>Найти на странице переключатель на другие языки. Это может быть либо кнопка <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/OOjs_UI_icon_language-ltr-progressive.svg" style="height: 15px; vertical-align: text-bottom" />, либо меню "На других языках" в левой колонке</li>
                                 <li>Переключиться на польскую версию страницы и скопировать название города</li>
                             </ul>
-                            Если город малоизвестен и отсутствует в википедии, транслитерируйте на польский, но лучше посмотрите, нет ли его латинского названия в паспорте (в беларусском паспорте город рождения не указывается).
+                            Если город малоизвестен и отсутствует в Википедии, транслитерируйте на польский, но лучше посмотрите, нет ли его латинского названия в паспорте (в беларусском паспорте город рождения не указывается).
                         </script>
                     </td>
                     <th>Страна рождения</th>
@@ -150,7 +150,7 @@
                     <td>
                         <input name="colourOfEyes" class="persisted" data-tooltip="" />
                         <script type="text/tooltip" data-target="input[name='colourOfEyes']">
-                            Выбирайте, к какому цвету ваши глаза ближе. В системе inPOL есть только такие названия, так что лучше придерживаться их:
+                            Выбирайте, к какому цвету ваши глаза ближе. В системах inPOL и MOS есть только такие названия, так что лучше придерживаться их:
                             <table>
                                 <tr>
                                     <td style="text-align: right"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'CZARNE')">CZARNE</a></td>
@@ -177,12 +177,20 @@
                                     <td><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'SZARO-ZIELONE')">SZARO-ZIELONE</a></td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align: right; vertical-align: top; white-space: nowrap"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'CZERWONE')">CZERWONE</a><br/>(бывают у альбиносов)</td>
-                                    <td style="vertical-align: top"><img src="eyes/czerwone.jpg" class="eye" /></td>
-                                    <td style="vertical-align: top"><img src="eyes/piwne.jpg" class="eye" /></td><td colspan="3"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'PIWNE')">PIWNE</a> - карие с переходом цвета;<br/>часто так называют любые глаза со сложными переходами</td>
+                                    <td rowspan="2" style="text-align: right; vertical-align: top"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'PIWNE')">PIWNE</a> - карие с переходом цвета;<br/>часто так называют любые глаза со сложными переходами</td>
+                                    <td rowspan="2" style="vertical-align: top"><img src="eyes/piwne.jpg" class="eye" /></td>
+                                    <td style="vertical-align: top"><img src="eyes/brązowo-zielone.jpg" class="eye" /></td>
+                                    <td><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'BRĄZOWO-ZIELONE')">BRĄZOWO-ZIELONE</a><br/>(есть только в MOS)</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" style="text-align: center"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'WIELOKOLOROWE')">WIELOKOLOROWE</a> - глаза разного цвета</td>
+                                    <td style="vertical-align: top"><img src="eyes/czerwone.jpg" class="eye" /></td>
+                                    <td><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'CZERWONE')">CZERWONE</a><br/>(бывают у альбиносов)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: center"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'WIELOKOLOROWE')">WIELOKOLOROWE</a> &mdash; глаза разного цвета</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: center"><a class="script-link" href="javascript:changeValue('input[name=%22colourOfEyes%22]', 'NIEOKREŚLONE')">NIEOKREŚLONE</a> &mdash; неопределенного цвета (есть только в MOS)</td>
                                 </tr>
                             <table>
                             Можно дополнительно изучить тему цвета глаз в <a href="https://pl.wikipedia.org/wiki/Kolor_oczu" target="_blank">Википедии</a>
