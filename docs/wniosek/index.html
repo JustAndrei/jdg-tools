@@ -99,7 +99,19 @@
                     <th>Дата рождения</th>
                     <td><input name="birthDate" type="date" class="persisted" data-tooltip="" /></td>
                     <th>Место рождения</th>
-                    <td><input name="birthPlace" class="persisted" data-tooltip="Название города, посёлка и т.п." /></td>
+                    <td>
+                        <input name="birthPlace" class="persisted" data-tooltip="" />
+                        <script type="text/tooltip" data-target="input[name='birthPlace']">
+                            Название города, посёлка и т.п. на польском языке (MIŃSK, KIJÓW).<br/>
+                            Можно использовать википедию, чтобы надёжно получить общепринятое название города:
+                            <ul>
+                                <li>Найти город, например, в русскоязычной версии &mdash; <a href="https://ru.wikipedia.org" target="_blank">ru.wikipedia.org</a></li>
+                                <li>Найти на странице переключатель на другие языки. Это может быть либо кнопка <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/OOjs_UI_icon_language-ltr-progressive.svg" style="height: 15px; vertical-align: text-bottom" />, либо меню "На других языках" в левой колонке</li>
+                                <li>Переключиться на польскую версию страницы и скопировать название города</li>
+                            </ul>
+                            Если город малоизвестен и отсутствует в википедии, транслитерируйте на польский, но лучше посмотрите, нет ли его латинского названия в паспорте (в беларусском паспорте город рождения не указывается).
+                        </script>
+                    </td>
                     <th>Страна рождения</th>
                     <td><input name="birthCountry" class="persisted" /></td>
                 </tr>
