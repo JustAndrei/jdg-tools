@@ -75,7 +75,7 @@
                 </tr>
                 <tr class="block-start">
                     <th>Фамилия</th>
-                    <td><input name="lastName" class="persisted" data-tooltip="Фамилия в настоящий момент, латинскими буквами. Ни в коем случае не стоит пытаться записать на польский манер (IWANOW), нужно строго следовать написанию в паспорте." /></td>
+                    <td><input name="lastName" class="persisted" required="required" data-tooltip="Фамилия в настоящий момент, латинскими буквами. Ни в коем случае не стоит пытаться записать на польский манер (IWANOW), нужно строго следовать написанию в паспорте." /></td>
                     <th>Прежние фамилии</th>
                     <td><input name="previousLastNames" class="persisted" data-tooltip="Тут должны быть перечислены через запятую все когда-либо носимые фамилии, кроме актуальной.<br/>Пример: урождённая Иванова первый раз вышла замуж за Петрова, а сейчас состоит во втором браке с Сидоровым. В этом случае фамилия в настоящий момент - Сидорова, предыдущие фамилии - Иванова, Петрова.<br/>Можете не заполнять, если не меняли фамилию (не переживайте за правила заполнения анкеты - поле автоматически будет заполнено текущей фамилией)." /></td>
                     <th>Фамилия при рождении</th>
@@ -83,7 +83,7 @@
                 </tr>
                 <tr class="block-middle">
                     <th>Имя (имена)</th>
-                    <td><input name="firstName" class="persisted" data-tooltip="Одно или несколько имен, носимых в настоящий момент. Не путать с отчеством.<br/>Пример: ANNA MARIYA" /></td>
+                    <td><input name="firstName" class="persisted" required="required" data-tooltip="Одно или несколько имен, носимых в настоящий момент. Не путать с отчеством.<br/>Пример: ANNA MARIYA" /></td>
                     <th>Прежнее имя (имена)</th>
                     <td colspan="3"><input name="previousFirstName" class="persisted" data-tooltip="Одно или несколько имен, носимых ранее. Указывайте, если меняли имя." /></td>
                 </tr>
@@ -97,7 +97,7 @@
                 </tr>
                 <tr>
                     <th>Дата рождения</th>
-                    <td><input name="birthDate" type="date" class="persisted" data-tooltip="" /></td>
+                    <td><input name="birthDate" type="date" class="persisted" required="required" data-tooltip="" /></td>
                     <th>Место рождения</th>
                     <td>
                         <input name="birthPlace" class="persisted" data-tooltip="" />
