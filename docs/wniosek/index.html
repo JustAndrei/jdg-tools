@@ -93,7 +93,18 @@
                     <th>Имя матери</th>
                     <td><input name="motherFirstName" class="persisted" data-tooltip="Имя матери, как в её паспорте." /></td>
                     <th>Девичья фамилия матери</th>
-                    <td><input name="motherMaidenName" class="persisted" data-tooltip="Фамилия матери, данная ей при рождении." /></td>
+                    <td>
+                        <input name="motherMaidenName" class="persisted" data-tooltip="" />
+                        <script type="text/tooltip" data-target="input[name='motherMaidenName']">
+                            Фамилия матери, данная ей при рождении.<br/>
+                            Заполняется латинскими буквами как в паспорте, например, её отца.<br/>
+                            Если нет документов, где можно было бы посмотреть правильную транслитерацию по стандартам страны гражданства, можно использовать сайты:
+                            <ul>
+                                <li>Беларусь &mdash; см. правила транслитерации, например, <a href="https://france.mfa.gov.by/be/consular_issues/passport/trans/" target="_blank">тут</a>. Обратите внимание, что транслитерация обычно выполняется с беларусского языка</li>
+                                <li>Украина &mdash; <a href="https://dmsu.gov.ua/services/transliteration.html" target="_blank">dmsu.gov.ua/services/transliteration.html</a></li>
+                            </ul>
+                        </script>
+                    </td>
                 </tr>
                 <tr>
                     <th>Дата рождения</th>
