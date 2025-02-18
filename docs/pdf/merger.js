@@ -58,7 +58,7 @@ $(function() {
 
         var bytes = undoBuffer[undoBuffer.length - 1];
 
-        PDFLib.PDFDocument.load(bytes).then(newDoc => {
+        PDFLib.PDFDocument.load(bytes, {ignoreEncryption: true}).then(newDoc => {
             doc = newDoc;
             var nextPage = doc.getPages().length + 1;
             displayPdf(doc, nextPage);
@@ -116,7 +116,7 @@ $(function() {
         readFiles(true, (newFileArrayBuffer, mimeType, isLastFile, next) => {
             var nextPage = doc.getPages().length + 1;
             if (mimeType == 'application/pdf') {
-                PDFLib.PDFDocument.load(newFileArrayBuffer).then(newDoc => {
+                PDFLib.PDFDocument.load(newFileArrayBuffer, {ignoreEncryption: true}).then(newDoc => {
                     doc.copyPages(newDoc, newDoc.getPages().map((e, i, a) => i)).then(newPages => {
                         $.each(newPages, (i, p) => { doc.addPage(p); });
                         if (isLastFile) {
