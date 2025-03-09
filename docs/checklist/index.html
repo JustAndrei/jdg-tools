@@ -551,13 +551,21 @@
                 });
                 
                 $('.optional-check').on('change', function(event) {
-                    var print = this.checked;
-                    $('.optional-check-in-comment[name="' + this.name + '"]').prop('checked', this.checked);
-                    if (print) {
-                        $(this).closest('tr').removeClass('non-printable');
+                    var $cbsToToggle = $('.optional-check[name="' + this.name + '"], .optional-check-in-comment[name="' + this.name + '"]');
+                    var $cbsToInvert = $();
+                    var inverts = $cbsToToggle.attr('inverts');
+                    if (inverts) {
+                        $cbsToInvert = $('.optional-check[name="' + inverts + '"], .optional-check-in-comment[name="' + inverts + '"]');
+                    }
+                    $cbsToToggle.prop('checked', this.checked);
+                    $cbsToInvert.prop('checked', !this.checked);
+                    if (this.checked) {
+                        $cbsToToggle.not('.optional-check-in-comment').closest('tr').removeClass('non-printable');
+                        $cbsToInvert.not('.optional-check-in-comment').closest('tr').addClass('non-printable');
                     }
                     else {
-                        $(this).closest('tr').addClass('non-printable');
+                        $cbsToToggle.not('.optional-check-in-comment').closest('tr').addClass('non-printable');
+                        $cbsToInvert.not('.optional-check-in-comment').closest('tr').removeClass('non-printable');
                     }
                     saveState();
                 });
@@ -893,7 +901,7 @@
                     <th>
                         <a rel="modal:open" href="#c-study">Справка с места обучения</a> (<a href="#c-schooling-proof-copy" rel="modal:open">копия</a>, оригинал иметь с собой)
                     </th>
-                    <td>С&nbsp;Р</td>
+                    <td></td>
                     <td>+</td>
                     <td>+</td>
                     <td></td>
@@ -1161,9 +1169,20 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <th></th>
+                    <th><input class="optional-check" name="ch-zus-insurance-confirmation-pu" type="checkbox" checked="checked" inverts="ch-zus-insurance-confirmation-zua" /></th>
                     <th>
-                        <a rel="modal:open" href="#c-zus-insurance-confirmation">Potwierdzenie ubezpieczenia</a> либо ZUS ZZA/ZUA
+                        <a rel="modal:open" href="#c-zus-insurance-confirmation">Potwierdzenie ubezpieczenia</a>
+                    </th>
+                    <td>+</td>
+                    <td>Г</td>
+                    <td>Г</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th><input class="optional-check" name="ch-zus-insurance-confirmation-zua" type="checkbox" checked="checked" inverts="ch-zus-insurance-confirmation-pu" /></th>
+                    <th>
+                        <a rel="modal:open" href="#c-zus-insurance-confirmation">ZUS ZZA/ZUA</a>
                     </th>
                     <td>+</td>
                     <td>Г</td>
@@ -1172,7 +1191,7 @@
                     <td></td>
                 </tr>
                 <tr class="spouse-specific child-specific">
-                    <th></th>
+                    <th><input class="optional-check" name="ch-zus-insurance-confirmation-zua" type="checkbox" checked="checked" inverts="ch-zus-insurance-confirmation-pu" /></th>
                     <th>
                         <a rel="modal:open" href="#c-zus-insurance-confirmation">ZUS ZCNA</a>
                     </th>
@@ -1324,6 +1343,11 @@
                         <td>Выбрали способ?</td>
                         <td><a target="_blank" href="https://www.zus.pl/o-zus/kontakt/oddzialy-inspektoraty-biura-terenowe">Поиск отдела ZUS по почтовому коду</a></td>
                         <td><a target="_blank" href="https://docs.google.com/document/d/1aAIAQ3Vu-5SzS3fGV7HrX6TzN-xys0_7IRowv5zhSIk/edit?usp=sharing">Как запросить справку онлайн</a></td>
+                    </tr>
+                    <tr>
+                        <td>Ваш выбор</td>
+                        <td><input class="optional-check-in-comment" id="ch-zus-insurance-confirmation-zua-comment" name="ch-zus-insurance-confirmation-zua" type="checkbox" /><label for="ch-zus-insurance-confirmation-zua-comment">ZUS ZZA/ZUA и ZCNA</label></td>
+                        <td><input class="optional-check-in-comment" id="ch-zus-insurance-confirmation-pu-comment" name="ch-zus-insurance-confirmation-pu" type="checkbox" /><label for="ch-zus-insurance-confirmation-pu-comment">Potwierdzenie ubezpieczenia</label></td>
                     </tr>
                 </table>
                 <h4>Подробнее о ZZA и ZUA</h4>
