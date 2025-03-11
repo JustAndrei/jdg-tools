@@ -181,7 +181,6 @@
 
             tr.non-printable * {
                 text-decoration: line-through;
-                background-color: transparent;
                 color: #aaa;
             }
 
@@ -272,6 +271,10 @@
             p.paperclip:before {
                 content: "📎";
                 font-size: 150%;
+            }
+
+            .check-specific {
+                font-style: italic;
             }
 
             @media screen and (max-width: 550px) {
@@ -436,6 +439,12 @@
                     } while (false);
                     $r.toggle(visible);
                 });
+
+                $('span.check-specific').each(function() {
+                    var $span = $(this);
+                    var $check = $('input.optional-check[name="' + $span.attr('check') + '"]');
+                    $span.toggle($check.prop('checked'));
+                });
             }
 
             function removeHash() {
@@ -567,6 +576,8 @@
                         $cbsToToggle.not('.optional-check-in-comment').closest('tr').addClass('non-printable');
                         $cbsToInvert.not('.optional-check-in-comment').closest('tr').removeClass('non-printable');
                     }
+                    $('span.check-specific[check="' + this.name + '"]').toggle(this.checked);
+                    $('span.check-specific[check="' + inverts + '"]').toggle(!this.checked);
                     saveState();
                 });
                 $('.optional-check-in-comment').on('change', function(event) {
@@ -586,7 +597,8 @@
                 
                 restoreState();
                 updateRows();
-                
+                saveState();
+
                 if (window.location.hash == '#updates') {
                     $('#listType').val('updates').change();
                     removeHash();
@@ -684,7 +696,10 @@
                     <th></th>
                     <th>
                         <a rel="modal:open" href="#c-passport-copy">Копия</a> <span class="full-only">+ оригинал для сверки</span>
-                        <a rel="modal:open" href="#c-passport-pages">всех</a> страниц
+                        <a rel="modal:open" href="#c-passport-pages">
+                            <span class="check-specific" check="ch-passport-pages-all">всех</span>
+                            <span class="check-specific" check="ch-passport-pages-nonempty">непустых</span>
+                        </a> страниц
                         <a rel="modal:open" href="#c-passport-actual">актуального</a> паспорта
 
                         <div class="modal" id="c-passport-copy">
@@ -701,10 +716,6 @@
                             <p>В день сдачи отпечатков надо будет показать <b>оригинал паспорта,</b> чтобы копию могли заверить.</p>
                         </div>
 
-                        <div class="modal" id="c-passport-pages">
-                            <p>В зависимости от воеводства может потребоваться копия абсолютно всех страниц, либо только тех, где есть какая-либо информация (виза, штамп, любые отметки). Проверяем своё воеводство <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">тут</a></p>
-                        </div>
-
                         <div class="modal" id="c-passport-actual">
                             <p>Предыдущий паспорт ужонду не интересен, за исключением случая, когда в нём стоит действующая виза, на основании которой вы пребываете в Польше в данный момент.</p>
                             <p>Т.е., допустим, вы въехали по визе, затем поменяли паспорт на новый и только после этого подаёте документы на побыт. Поскольку это ваша первая подача, в заявке в пункте об основании текущего пребывания в Польше вы отметите опцию "виза", а значит вам надо приложить к делу копию визы, если это возможно. Надеюсь, при замене паспорта вы сообщили (написали заявление) о том, что вам нужно сохранить старый паспорт ради действующей визы. В этом случае вам должны были отдать старый паспорт (целый, либо проштампованный "аннулировано", либо пробитый дыроколом, либо просто лишь одну вырванную страницу с визой), поэтому у вас должна быть возможность предоставить в ужонд копию визы, по которой вы въехали и легально пребываете в данный момент.</p>
@@ -718,13 +729,24 @@
                     <td></td>
                 </tr>
                 <tr class="updates">
-                    <th></th>
+                    <th><input class="optional-check" name="ch-passport-last-page-copy" type="checkbox" checked="checked" /></th>
                     <th>
-                        + <a rel="modal:open" href="#c-passport-last-page-copy">2 копии страницы с фото</a>, а ребенку – дополнительно по 1 копии этой страницы родителей
+                        + <a rel="modal:open" href="#c-passport-last-page-copy">1-2 дополнительных копии страницы с фото</a> (зависит от воеводства)
                     </th>
                     <td>+</td>
                     <td>+</td>
-                    <td><a rel="modal:open" href="#c-passport-last-page-copy-child">Р Г С</a></td>
+                    <td>+</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="updates spouse-specific child-specific">
+                    <th></th>
+                    <th>
+                        + копия страницы с фото из паспорта Главного подающегося <span class="child-specific">(ребенку - каждого родителя)</span>
+                    </th>
+                    <td></td>
+                    <td>Г</td>
+                    <td>Г С</td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -1249,6 +1271,21 @@
             </table>
         </div>
 
+        <div class="modal" id="c-passport-pages">
+            <p>
+                В зависимости от воеводства может потребоваться копия абсолютно всех страниц, либо только тех, где есть какая-либо информация (виза, штамп, любые отметки). Проверяем своё воеводство <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">тут</a>
+            </p>
+            <p>
+                В моём воеводстве нужны копии
+                <br/>
+                <input class="optional-check" id="ch-passport-pages-all" name="ch-passport-pages-all" type="checkbox" inverts="ch-passport-pages-nonempty" checked="checked" />
+                <label for="ch-passport-pages-all">всех страниц паспорта</label>
+                <br/>
+                <input class="optional-check" id="ch-passport-pages-nonempty" name="ch-passport-pages-nonempty" type="checkbox" inverts="ch-passport-pages-all" />
+                <label for="ch-passport-pages-nonempty">только непустых страниц</label>
+            </p>
+        </div>
+
         <div class="non-printable page" style="padding-bottom: 50px; min-height: auto">
             <p>Чек-лист обработал и скомпоновал в один лист формата А4 Андрей Митин.
             Информация в основном взята с <a target="_blank" href="https://sobolevbel.github.io/jdg/legalization/">гитхаб-страницы Евгения Соболева</a> и
@@ -1573,12 +1610,12 @@
 
             <div class="modal" id="c-passport-last-page-copy">
                 <p>Сколько делать дополнительных копий страницы с фото &mdash; зависит от возраста человека и воеводства. Проверяем своё воеводство <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">тут</a>.</p>
+                <p>
+                    <input class="optional-check-in-comment" id="ch-passport-last-page-copy" name="ch-passport-last-page-copy" type="checkbox" checked="checked" />
+                    <label for="ch-passport-last-page-copy">В моём воеводстве нужно сделать дополнительные копии</label>
+                </p>
             </div>
-            
-            <div class="modal" id="c-passport-last-page-copy-child">
-                <p>Ребенку делаем полную копию его собственного паспорта и добавляем по одной копии страницы с фото из паспорта каждого из родителей.</p>
-            </div>
-            
+
             <div class="modal" id="c-ceidg">
                 <ul>
                     <li>Заходим на <a target="_blank" href="https://konto.biznes.gov.pl/pl/moje-konto/moja-firma/dane-firmy">konto.biznes.gov.pl</a>, в Dane firmy</li>
