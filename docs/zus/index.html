@@ -8,6 +8,28 @@
         <script>
             var rateRanges = [
                 {
+                    name: '2026 (прогноз)',
+                    from: '2026-01-01',
+                    to: '2026-12-31',
+                    estimate: true,
+                    zdrowotnaMode: 'v2026',
+                    zdrowotnaMax: 1384.97, // 2025
+                    vacationAvailable: true,
+                    factualAverageIncome: 9219.00,
+                    expectedAverageIncome: 9219.00,
+                    minIncome: 5070.00
+                },
+                {
+                    name: '2025 июль-дек',
+                    from: '2025-07-01',
+                    to: '2025-12-31',
+                    estimate: true,
+                    vacationAvailable: true,
+                    factualAverageIncome: 8549.18,
+                    expectedAverageIncome: 8673.00,
+                    minIncome: 4666.00
+                },
+                {
                     name: '2025 янв-июнь',
                     from: '2025-01-01',
                     to: '2025-06-30',
@@ -79,10 +101,28 @@
                         }
                         return $option;
                     }));
-                $('#selRateRange, #selExemption, #selAnnualIncomeRate, #selChorobowa, #cbVacation').change(e => render());
+                $('#selRateRange, #selExemption, #selAnnualIncomeRate, #tbMonthlyIncomeRate, #selChorobowa, #cbVacation').change(e => render());
                 loadSettings();
                 render();
             });
+
+            function calculateZdrowotna(rateRange, mode) {
+                if ((rateRange.zdrowotnaMode || '') == '') {
+                    var annualIncomeRate = $(mode == 'current' ? '#selAnnualIncomeRate' : '#selAnnualIncomeRate option:last').val() / 100;
+                    return round(rateRange.factualAverageIncome * 0.09 * annualIncomeRate);
+                }
+
+                if (rateRange.zdrowotnaMode == 'v2026') {
+                    var value = round(rateRange.minIncome * 0.09 * 0.75);
+                    var threshold = rateRange.factualAverageIncome * 3;
+                    var monthlyIncomeRate = $('#tbMonthlyIncomeRate').val();
+                    if (monthlyIncomeRate > threshold) value += round((monthlyIncomeRate - threshold) * 0.035);
+                    if (mode == 'max') return Math.max(rateRange.zdrowotnaMax, value);
+                    return value;
+                }
+
+                return 0;
+            }
 
             function calculateSpoleczna(rateRange, exemption, percent) {
                 return (
@@ -91,7 +131,7 @@
                     0
                 );
             }
-            
+
             function round(value) {
                 return Math.round(value * 100) / 100;
             }
@@ -106,11 +146,14 @@
                 var vacationFactor = vacation ? 0 : 1;
                 $('#exemptionComment').text($('#selExemption option:selected').data('comment'));
                 var noExemption = 0;
-                var annualIncomeRate = $('#selAnnualIncomeRate').val() / 100;
-                var maxAnnualIncomeRate = $('#selAnnualIncomeRate option:last').val() / 100;
 
-                var zdrowotna = round(rateRange.factualAverageIncome * 0.09 * annualIncomeRate);
-                var maxZdrowotna = round(rateRange.factualAverageIncome * 0.09 * maxAnnualIncomeRate);
+                var zdrowotnaMode = rateRange.zdrowotnaMode || '';
+                $('*[data-zdrowotna-mode]').each(function(i, el) {
+                    $(el).toggle($(el).data('zdrowotnaMode') === zdrowotnaMode);
+                });
+
+                var zdrowotna = calculateZdrowotna(rateRange, 'current');
+                var maxZdrowotna = calculateZdrowotna(rateRange, 'max');
 
                 var emerytalna = round(calculateSpoleczna(rateRange, exemption, 19.52));
                 var maxEmerytalna = round(calculateSpoleczna(rateRange, noExemption, 19.52));
@@ -137,10 +180,11 @@
 
                 var width = $('label[for=zdrowotna]').parent().prop('clientWidth');
 
+                $('#estimate-warning').toggle(rateRange.estimate);
+
                 $('#zdrowotna').text(zdrowotna.toFixed(2));
                 $('label[for=zdrowotna]').css('width', zdrowotna / maxZdrowotna * width);
                 $('#zdrowotna-in-all').css('width', zdrowotna / maxTotal * width);
-                $('.zdrowotna').toggleClass('estimate', rateRange.estimate);
 
                 $('#emerytalna').text(emerytalna.toFixed(2));
                 $('label[for=emerytalna]').css('width', emerytalna / maxEmerytalna * width);
@@ -178,12 +222,14 @@
 
                 $('#selExemption').val(localStorage.zus_exemption || 2);
                 $('#selAnnualIncomeRate').val(localStorage.zus_annualIncomeRate || 60);
+                $('#tbMonthlyIncomeRate').val(localStorage.zus_monthlyIncomeRate || 10000);
                 $('#selChorobowa').val(localStorage.zus_chorobowa || 0);
             }
 
             function saveSettings() {
                 localStorage.zus_exemption = $('#selExemption').val();
                 localStorage.zus_annualIncomeRate = $('#selAnnualIncomeRate').val();
+                localStorage.zus_monthlyIncomeRate = $('#tbMonthlyIncomeRate').val();
                 localStorage.zus_chorobowa = $('#selChorobowa').val();
             }
         </script>
@@ -199,7 +245,7 @@
                 text-align: center;
             }
             
-            select {
+            select, input {
                 margin: 3px;
                 padding: 3px;
                 border-radius: 10px;
@@ -282,7 +328,8 @@
             <table style="display: inline-block" cellpadding="0" cellspacing="0">
                 <tr>
                     <th>
-                        <label for="selAnnualIncomeRate">Годовой доход</label>
+                        <label for="selAnnualIncomeRate" data-zdrowotna-mode="">Годовой доход</label>
+                        <label for="tbMonthlyIncomeRate" data-zdrowotna-mode="v2026" style="display: none">Месячный доход</label>
                     </th>
                     <th>
                         <label for="selExemption">Льгота</label>
@@ -292,12 +339,13 @@
                     </th>
                 </tr>
                 <tr>
-                    <td>
-                        <select id="selAnnualIncomeRate">
+                    <td style="text-align: right">
+                        <select id="selAnnualIncomeRate" data-zdrowotna-mode="">
                             <option value="60">≤ 60,000 zł</option>
                             <option value="100">≤ 300,000 zł</option>
                             <option value="180">&gt; 300,000 zł</option>
                         </select>
+                        <input id="tbMonthlyIncomeRate" data-zdrowotna-mode="v2026" type="number" min="0" max="700000" step="0.01" style="display: none; text-align: right; width: 90px"></input>
                     </td>
                     <td>
                         <select id="selExemption">
@@ -317,8 +365,21 @@
                 </tr>
             </table>
         </div>
-
-        <h3 class="zdrowotna">Składka zdrowotna <span class="estimate-comment">&ndash; прогноз, уточнится!</span></h3>
+        <div class="box" id="estimate-warning" style="background-color: fff8f8; display: none">
+            <h3>Это прогноз, будет уточняться!</h3>
+        </div>
+        <h3 class="zdrowotna">Składka zdrowotna</h3>
+        <h4 data-zdrowotna-mode="v2026" class="box" style="display: none; text-align: center; background-color: #f8f8ff; padding: 5px">
+            Новые правила расчёта складки здровотной с 2026-го года:<br/>
+            она составит как минимум 6.75% от минимальной зарплаты (которая ~ 5070 zł в 2026-м),
+            а в случае, когда месячный доход трёхкратно превысит среднее вознаграждение (которое ~ 9219 zł в 2026-м),
+            нужно будет доплатить 3.5% от превышения.<br/>
+            Т.е. при доходе до ~27657 zł в месяц здровотная фиксирована на уровне ~342.23 zł,
+            потом плавно повышается и достигает максимального уровня 2025-го года только при доходе ~57449 zł в месяц,
+            однако продолжает расти дальше с ростом дохода.<br/>
+            <br/>
+            Отображается в сравнении с максимумом 2025-го года.
+        </h4>
 
         <div class="pb zdrowotna" style="background-color: #ddf">
             <label for="zdrowotna" style="background-color: #aaf; width: 0">Składka zdrowotna</label>
