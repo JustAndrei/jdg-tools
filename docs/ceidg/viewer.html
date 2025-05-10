@@ -100,9 +100,9 @@
                     return !mod || mod.value == '1';
                 }
                 
-                function recm(key, time, doc, selector, additionalSelector) {
+                function recm(key, time, doc, selector, additionalSelector, formatter) {
                     if (modified(doc, selector)) {
-                        rec(key, time, sel(doc, selector + (additionalSelector ? ' ' + additionalSelector : '')));
+                        rec(key, time, (formatter || ((x) => x))(sel(doc, selector + (additionalSelector ? ' ' + additionalSelector : ''))));
                     }
                 }
                 
@@ -116,6 +116,10 @@
                     if (value == 1) return 'имеется';
                     if (value == 2) return 'отсутствует';
                     return 'Не касается';
+                }
+                
+                function formatPkd(value) {
+                    return value.replace(/^(\d{2})(\d{2})(.*)$/, '$1.$2.$3');
                 }
                 
                 var pkd = {};
@@ -214,15 +218,16 @@
                     var added = [];
                     var removed = [];
                     if (modified(doc, context)) {
-                        recm(prefix + 'Основной код деятельности', time, doc, context + ' Przewazajacy');
-                        var codes = doc.querySelectorAll(context + ' PKD2007');
+                        recm(prefix + 'Основной код деятельности', time, doc, context + ' Przewazajacy', null, formatPkd);
+                        var codes = doc.querySelectorAll(context + ' PKD2007,' + context + ' PKD');
                         for (var c = 0; c < codes.length; ++c) {
                             var code = codes[c];
+                            var codeText = {"ns6:PKD2007": "PKD2007", "ns6:PKD": "PKD2025"}[code.tagName] + "." + formatPkd(code.innerHTML);
                             if (code.attributes.wykreslenie.value == '0') {
-                                added.push(code.innerHTML);
+                                added.push(codeText);
                             }
                             else {
-                                removed.push(code.innerHTML);
+                                removed.push(codeText);
                             }
                         }
                     }
