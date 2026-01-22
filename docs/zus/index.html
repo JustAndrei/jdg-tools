@@ -8,12 +8,12 @@
         <script>
             var rateRanges = [
                 {
-                    name: '2026 (прогноз)',
+                    name: '2026',
                     from: '2026-01-01',
                     to: '2026-12-31',
-                    estimate: true,
+                    estimate: false,
                     vacationAvailable: true,
-                    factualAverageIncome: 9420.00,
+                    factualAverageIncome: 9228.64,
                     expectedAverageIncome: 9420.00,
                     minIncome: 4806.00
                 },
@@ -83,7 +83,7 @@
                 var today = new Date();
                 $('#selRateRange')
                     .append(rateRanges.map((o, i, a) => {
-                        var $option = $('<option value="' + i + '">' + o.name + '</option>');
+                        var $option = $('<option value="' + i + '">' + o.name + (o.estimate ? ' (прогноз)' : '') + '</option>');
                         if (new Date(o.from) <= today && today <= new Date(o.to)) {
                             $option.attr('selected', 'selected');
                         }
