@@ -214,6 +214,19 @@ function draw() {
   ctx.drawImage(imgData,0,0);
 }
 
+function applyZoom(newScale, anchorX, anchorY) {
+  // anchorX/anchorY are in viewport (canvas CSS) coordinates
+  const minScale = Math.max(VIEW_W / imgData.width, VIEW_H / imgData.height);
+  newScale = Math.max(newScale, minScale);
+
+  // Shift pos so the point under the anchor stays fixed
+  pos.x = anchorX - (anchorX - pos.x) * (newScale / scale);
+  pos.y = anchorY - (anchorY - pos.y) * (newScale / scale);
+
+  scale = newScale;
+  draw();
+}
+
 canvas.addEventListener('mousedown', e => {
   dragging = true;
   last = { x: e.clientX, y: e.clientY };
@@ -233,16 +246,11 @@ window.addEventListener('mouseup', () => dragging = false);
 
 canvas.addEventListener('wheel', e => {
   e.preventDefault();
-
-  const zoomFactor = e.deltaY < 0 ? 1.05 : 0.95;
-  const newScale = scale * zoomFactor;
-
-  // enforce minimum scale so image always covers viewport
-  const minScale = Math.max(VIEW_W / imgData.width, VIEW_H / imgData.height);
-  scale = Math.max(newScale, minScale);
-
-  draw();
-});
+  const rect = canvas.getBoundingClientRect();
+  const anchorX = e.clientX - rect.left;
+  const anchorY = e.clientY - rect.top;
+  applyZoom(scale * (e.deltaY < 0 ? 1.05 : 0.95), anchorX, anchorY);
+}, { passive: false });
 
 // touch
 let lastTouchDist = null;
@@ -277,10 +285,10 @@ canvas.addEventListener('touchmove', e => {
       e.touches[1].clientY - e.touches[0].clientY
     );
     if (lastTouchDist !== null) {
-      const zoomFactor = dist / lastTouchDist;
-      const minScale = Math.max(VIEW_W / imgData.width, VIEW_H / imgData.height);
-      scale = Math.max(scale * zoomFactor, minScale);
-      draw();
+      const rect = canvas.getBoundingClientRect();
+      const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+      const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+      applyZoom(scale * (dist / lastTouchDist), midX, midY);
     }
     lastTouchDist = dist;
   }
