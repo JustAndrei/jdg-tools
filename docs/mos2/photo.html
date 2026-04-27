@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOS 2 фото</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #eef2ff, #fdf2f8);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      max-width: 900px;
+      width: 100%;
+      text-align: center;
+    }
+    .dropzone {
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .dropzone.dragover {
+      border-color: #4f46e5;
+      background: #eef2ff;
+    }
+    input { display:none; }
+    .error { color: red; }
+
+    .viewport {
+      position: relative;
+      width: 342px;
+      height: 441.5px;
+      margin: 20px auto;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #000;
+    }
+
+    canvas.preview {
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: grab;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.6);
+      pointer-events: none;
+    }
+
+    button {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Подготовка фото для MOS 2</h1>
+  <div id="dropstep">
+      <div class="dropzone" id="dropzone">Перетащи сюда фото или нажми и выбери</div>
+      <input type="file" id="input" accept="image/jpeg" />
+      <div class="error" id="error"></div>
+      <div id="bmc" style="margin-top: 20px; display: none">
+        <a target="_blank" href="https://justandrei.github.io/coffee" style="text-decoration: none">
+            <img src="https://justandrei.github.io/jdg-tools/checklist/bmc.svg">
+        </a>
+      </div>
+  </div>
+
+  <div id="cropstep" style="display: none;">
+    <div>Двигай и растягивай или сжимай, чтобы фотография совпала с рамкой</div>
+    <div class="viewport" id="viewport">
+      <canvas id="canvas" class="preview"></canvas>
+      <div class="overlay"></div>
+    </div>
+    <button id="download">Готово</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+<script>
+const input = document.getElementById('input');
+const dropstep = document.getElementById('dropstep');
+const cropstep = document.getElementById('cropstep');
+const dropzone = document.getElementById('dropzone');
+const error = document.getElementById('error');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const viewport = document.getElementById('viewport');
+const downloadBtn = document.getElementById('download');
+const bmc = document.getElementById('bmc');
+
+let imgData;
+let pos = { x: 0, y: 0 };
+let scale = 1;
+let dragging = false;
+let last = { x: 0, y: 0 };
+
+const TARGET_W = 684;
+const TARGET_H = 883;
+const VIEW_W = 342;
+const VIEW_H = 441.5;
+
+function handleFile(file) {
+  if (!file) return;
+  error.textContent = '';
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => fixOrientation(img, file);
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function fixOrientation(img, file) {
+  EXIF.getData(file, function() {
+    const o = EXIF.getTag(this, 'Orientation');
+    const c = document.createElement('canvas');
+    const cx = c.getContext('2d');
+
+    let w = img.width, h = img.height;
+
+    if ([5,6,7,8].includes(o)) {
+      c.width = h; c.height = w;
+    } else {
+      c.width = w; c.height = h;
+    }
+
+    switch(o) {
+      case 6: cx.rotate(Math.PI/2); cx.drawImage(img, 0, -h); break;
+      case 3: cx.rotate(Math.PI); cx.drawImage(img, -w, -h); break;
+      case 8: cx.rotate(-Math.PI/2); cx.drawImage(img, -w, 0); break;
+      default: cx.drawImage(img,0,0);
+    }
+
+    const fixed = new Image();
+    fixed.onload = () => initEditor(fixed);
+    fixed.src = c.toDataURL('image/jpeg');
+  });
+}
+
+function initEditor(img) {
+  if (img.width < TARGET_W || img.height < TARGET_H) {
+    error.textContent = 'Минимум 684×883';
+    return;
+  }
+
+  dropstep.style.display = 'none';
+  cropstep.style.display = 'block';
+
+  // fit image to cover viewport
+  const scaleX = VIEW_W / img.width;
+  const scaleY = VIEW_H / img.height;
+  scale = Math.max(scaleX, scaleY);
+
+  canvas.width = img.width;
+  canvas.height = img.height;
+  imgData = img;
+
+  pos.x = (VIEW_W - img.width * scale) / 2;
+  pos.y = (VIEW_H - img.height * scale) / 2;
+
+  draw();
+}
+
+function clamp() {
+  const scaledW = imgData.width * scale;
+  const scaledH = imgData.height * scale;
+
+  // horizontal
+  if (scaledW <= VIEW_W) {
+    pos.x = (VIEW_W - scaledW) / 2;
+  } else {
+    const minX = VIEW_W - scaledW;
+    const maxX = 0;
+    pos.x = Math.min(maxX, Math.max(minX, pos.x));
+  }
+
+  // vertical
+  if (scaledH <= VIEW_H) {
+    pos.y = (VIEW_H - scaledH) / 2;
+  } else {
+    const minY = VIEW_H - scaledH;
+    const maxY = 0;
+    pos.y = Math.min(maxY, Math.max(minY, pos.y));
+  }
+}
+
+function draw() {
+  clamp();
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.setTransform(scale,0,0,scale,pos.x,pos.y);
+  ctx.drawImage(imgData,0,0);
+}
+
+canvas.addEventListener('mousedown', e => {
+  dragging = true;
+  last = { x: e.clientX, y: e.clientY };
+});
+
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const dx = e.clientX - last.x;
+  const dy = e.clientY - last.y;
+  pos.x += dx;
+  pos.y += dy;
+  last = { x: e.clientX, y: e.clientY };
+  draw();
+});
+
+window.addEventListener('mouseup', () => dragging = false);
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+
+  const zoomFactor = e.deltaY < 0 ? 1.05 : 0.95;
+  const newScale = scale * zoomFactor;
+
+  // enforce minimum scale so image always covers viewport
+  const minScale = Math.max(VIEW_W / imgData.width, VIEW_H / imgData.height);
+  scale = Math.max(newScale, minScale);
+
+  draw();
+});
+
+// touch
+canvas.addEventListener('touchstart', e => {
+  dragging = true;
+  last = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+});
+
+canvas.addEventListener('touchmove', e => {
+  const t = e.touches[0];
+  const dx = t.clientX - last.x;
+  const dy = t.clientY - last.y;
+  pos.x += dx;
+  pos.y += dy;
+  last = { x: t.clientX, y: t.clientY };
+  draw();
+});
+
+canvas.addEventListener('touchend', () => dragging = false);
+
+// export
+
+downloadBtn.onclick = () => {
+  const out = document.createElement('canvas');
+  out.width = TARGET_W;
+  out.height = TARGET_H;
+  const octx = out.getContext('2d');
+
+  octx.setTransform(scale * (TARGET_W / VIEW_W), 0, 0,
+                    scale * (TARGET_H / VIEW_H),
+                    pos.x * (TARGET_W / VIEW_W),
+                    pos.y * (TARGET_H / VIEW_H));
+
+  octx.drawImage(imgData, 0, 0);
+
+  out.toBlob(blob => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'result.jpg';
+    a.click();
+  }, 'image/jpeg', 0.92);
+
+  dropstep.style.display = 'block';
+  cropstep.style.display = 'none';
+  bmc.style.display = 'block';
+};
+
+// DnD
+
+dropzone.onclick = () => input.click();
+
+dropzone.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropzone.classList.add('dragover');
+});
+
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropzone.classList.remove('dragover');
+  handleFile(e.dataTransfer.files[0]);
+});
+
+input.addEventListener('change', e => handleFile(e.target.files[0]));
+</script>
+</body>
+</html>
