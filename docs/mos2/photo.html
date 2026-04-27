@@ -245,22 +245,51 @@ canvas.addEventListener('wheel', e => {
 });
 
 // touch
+let lastTouchDist = null;
+
 canvas.addEventListener('touchstart', e => {
-  dragging = true;
-  last = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-});
+  e.preventDefault();
+  if (e.touches.length === 1) {
+    dragging = true;
+    last = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  } else if (e.touches.length === 2) {
+    dragging = false;
+    lastTouchDist = Math.hypot(
+      e.touches[1].clientX - e.touches[0].clientX,
+      e.touches[1].clientY - e.touches[0].clientY
+    );
+  }
+}, { passive: false });  // ← required for preventDefault to work on Android
 
 canvas.addEventListener('touchmove', e => {
-  const t = e.touches[0];
-  const dx = t.clientX - last.x;
-  const dy = t.clientY - last.y;
-  pos.x += dx;
-  pos.y += dy;
-  last = { x: t.clientX, y: t.clientY };
-  draw();
-});
+  e.preventDefault();
+  if (e.touches.length === 1 && dragging) {
+    const t = e.touches[0];
+    const dx = t.clientX - last.x;
+    const dy = t.clientY - last.y;
+    pos.x += dx;
+    pos.y += dy;
+    last = { x: t.clientX, y: t.clientY };
+    draw();
+  } else if (e.touches.length === 2) {
+    const dist = Math.hypot(
+      e.touches[1].clientX - e.touches[0].clientX,
+      e.touches[1].clientY - e.touches[0].clientY
+    );
+    if (lastTouchDist !== null) {
+      const zoomFactor = dist / lastTouchDist;
+      const minScale = Math.max(VIEW_W / imgData.width, VIEW_H / imgData.height);
+      scale = Math.max(scale * zoomFactor, minScale);
+      draw();
+    }
+    lastTouchDist = dist;
+  }
+}, { passive: false });  // ← required
 
-canvas.addEventListener('touchend', () => dragging = false);
+canvas.addEventListener('touchend', e => {
+  if (e.touches.length < 2) lastTouchDist = null;
+  if (e.touches.length === 0) dragging = false;
+});
 
 // export
 
