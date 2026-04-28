@@ -71,14 +71,22 @@
       cursor: pointer;
       margin-top: 10px;
     }
-    
+
     #download {
       background-color: green;
       height: 90px;
     }
-    
+
     #replace {
       background-color: grey;
+    }
+
+    #zoomIn, #zoomOut {
+        background-color: #8881ff;
+    }
+
+    #rotateLeft, #rotateRight {
+        background-color: #d446e5;
     }
   </style>
 </head>
@@ -110,10 +118,14 @@
           <button id="moveUp">⬆️</button>
           <button id="zoomOut">🔎</button>
         </div>
-        <div>
+        <div style="display: flex; justify-content: space-between">
           <button id="moveLeft">⬅️</button>
-          <button id="moveDown">⬇️</button>
           <button id="moveRight">➡️</button>
+        </div>
+        <div>
+          <button id="rotateLeft">↪️</button>
+          <button id="moveDown">⬇️</button>
+          <button id="rotateRight">↩️</button>
         </div>
       </div>
       <div>
@@ -160,37 +172,10 @@ function handleFile(file) {
   const reader = new FileReader();
   reader.onload = e => {
     const img = new Image();
-    img.onload = () => fixOrientation(img, file);
+    img.onload = () => initEditor(img);
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
-}
-
-function fixOrientation(img, file) {
-  EXIF.getData(file, function() {
-    const o = EXIF.getTag(this, 'Orientation');
-    const c = document.createElement('canvas');
-    const cx = c.getContext('2d');
-
-    let w = img.width, h = img.height;
-
-    if ([5,6,7,8].includes(o)) {
-      c.width = h; c.height = w;
-    } else {
-      c.width = w; c.height = h;
-    }
-
-    switch(o) {
-      case 6: cx.rotate(Math.PI/2); cx.drawImage(img, 0, -h); break;
-      case 3: cx.rotate(Math.PI); cx.drawImage(img, -w, -h); break;
-      case 8: cx.rotate(-Math.PI/2); cx.drawImage(img, -w, 0); break;
-      default: cx.drawImage(img,0,0);
-    }
-
-    const fixed = new Image();
-    fixed.onload = () => initEditor(fixed);
-    fixed.src = c.toDataURL('image/jpeg');
-  });
 }
 
 function initEditor(img) {
@@ -258,6 +243,47 @@ function applyZoom(newScale, anchorX, anchorY) {
   pos.y = anchorY - (anchorY - pos.y) * (newScale / scale);
   scale = newScale;
   draw();
+}
+
+let rotation = 0;
+
+function rotateImage(degrees) {
+  rotation = (rotation + degrees + 360) % 360;
+
+  const offscreen = document.createElement('canvas');
+  const oc = offscreen.getContext('2d');
+
+  if (degrees === 90 || degrees === 270 || rotation % 180 !== 0) {
+    offscreen.width  = imgData.height;
+    offscreen.height = imgData.width;
+  } else {
+    offscreen.width  = imgData.width;
+    offscreen.height = imgData.height;
+  }
+
+  oc.translate(offscreen.width / 2, offscreen.height / 2);
+  oc.rotate(degrees * Math.PI / 180);
+  oc.drawImage(imgData, -imgData.width / 2, -imgData.height / 2);
+
+  const rotated = new Image();
+  rotated.onload = () => {
+    imgData = rotated;
+
+    // recalculate scale so image still covers the frame
+    const scaleX = VIEW_W / imgData.width;
+    const scaleY = VIEW_H / imgData.height;
+    scale = Math.max(scaleX, scaleY);
+
+    canvas.width = CANVAS_W;
+    canvas.height = CANVAS_H;
+
+    // re-center
+    pos.x = MARGIN + (VIEW_W - imgData.width  * scale) / 2;
+    pos.y = MARGIN + (VIEW_H - imgData.height * scale) / 2;
+
+    draw();
+  };
+  rotated.src = offscreen.toDataURL('image/jpeg');
 }
 
 canvas.addEventListener('mousedown', e => {
@@ -392,6 +418,8 @@ document.getElementById('moveLeft').addEventListener('click',  () => { pos.x -= 
 document.getElementById('moveRight').addEventListener('click', () => { pos.x += NUDGE; draw(); });
 document.getElementById('zoomIn').addEventListener('click',  () => applyZoom(scale * ZOOM_STEP, MARGIN + VIEW_W / 2, MARGIN + VIEW_H / 2));
 document.getElementById('zoomOut').addEventListener('click', () => applyZoom(scale / ZOOM_STEP, MARGIN + VIEW_W / 2, MARGIN + VIEW_H / 2));
+document.getElementById('rotateLeft').addEventListener('click',  () => rotateImage(270));
+document.getElementById('rotateRight').addEventListener('click', () => rotateImage(90));
 </script>
 </body>
 </html>
