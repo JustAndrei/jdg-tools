@@ -43,7 +43,6 @@
       height: 441.5px;
       margin: 20px auto;
       overflow: hidden;
-      border-radius: 12px;
       background: #000;
     }
 
@@ -59,6 +58,7 @@
       inset: 0;
       box-shadow: 0 0 0 9999px rgba(0,0,0,0.6);
       pointer-events: none;
+      border: solid 1px red;
     }
 
     button {
@@ -77,7 +77,7 @@
   <h1>Подготовка фото для MOS 2</h1>
   <div id="dropstep">
       <div class="dropzone" id="dropzone">Перетащи сюда фото или нажми и выбери</div>
-      <input type="file" id="input" accept="image/jpeg" />
+      <input type="file" id="input" accept="image/*" />
       <div class="error" id="error"></div>
       <div id="bmc" style="margin-top: 20px; display: none">
         <a target="_blank" href="https://justandrei.github.io/coffee" style="text-decoration: none">
