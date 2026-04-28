@@ -39,10 +39,9 @@
 
     .viewport {
       position: relative;
-      width: 342px;
-      height: 441.5px;
+      width: 442px;        /* 342 + 50*2 */
+      height: 541.5px;     /* 441.5 + 50*2 */
       margin: 20px auto;
-      overflow: hidden;
       background: #000;
     }
 
@@ -55,10 +54,12 @@
 
     .overlay {
       position: absolute;
-      inset: 0;
-      box-shadow: 0 0 0 9999px rgba(0,0,0,0.6);
+      left: 50px;
+      top: 50px;
+      width: 342px;
+      height: 441.5px;
+      border: 1px solid red;
       pointer-events: none;
-      border: solid 1px red;
     }
 
     button {
@@ -69,6 +70,15 @@
       border-radius: 8px;
       cursor: pointer;
       margin-top: 10px;
+    }
+    
+    #download {
+      background-color: green;
+      height: 90px;
+    }
+    
+    #replace {
+      background-color: grey;
     }
   </style>
 </head>
@@ -92,7 +102,27 @@
       <canvas id="canvas" class="preview"></canvas>
       <div class="overlay"></div>
     </div>
-    <button id="download">Готово</button>
+    <div style="display: flex; justify-content: space-evenly">
+      <div>
+        <div>Подстрой точно</div>
+        <div>
+          <button id="zoomIn">🔍</button>
+          <button id="moveUp">⬆️</button>
+          <button id="zoomOut">🔎</button>
+        </div>
+        <div>
+          <button id="moveLeft">⬅️</button>
+          <button id="moveDown">⬇️</button>
+          <button id="moveRight">➡️</button>
+        </div>
+      </div>
+      <div>
+        <div>Сохрани</div>
+        <div>
+          <button id="download">Готово!</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -119,6 +149,9 @@ const TARGET_W = 684;
 const TARGET_H = 883;
 const VIEW_W = 342;
 const VIEW_H = 441.5;
+const MARGIN = 50;
+const CANVAS_W = VIEW_W + MARGIN * 2;  // 442
+const CANVAS_H = VIEW_H + MARGIN * 2;  // 541.5
 
 function handleFile(file) {
   if (!file) return;
@@ -169,17 +202,17 @@ function initEditor(img) {
   dropstep.style.display = 'none';
   cropstep.style.display = 'block';
 
-  // fit image to cover viewport
   const scaleX = VIEW_W / img.width;
   const scaleY = VIEW_H / img.height;
   scale = Math.max(scaleX, scaleY);
 
-  canvas.width = img.width;
-  canvas.height = img.height;
+  canvas.width = CANVAS_W;
+  canvas.height = CANVAS_H;
   imgData = img;
 
-  pos.x = (VIEW_W - img.width * scale) / 2;
-  pos.y = (VIEW_H - img.height * scale) / 2;
+  // center within the frame area (offset by MARGIN)
+  pos.x = MARGIN + (VIEW_W - img.width * scale) / 2;
+  pos.y = MARGIN + (VIEW_H - img.height * scale) / 2;
 
   draw();
 }
@@ -188,41 +221,41 @@ function clamp() {
   const scaledW = imgData.width * scale;
   const scaledH = imgData.height * scale;
 
-  // horizontal
   if (scaledW <= VIEW_W) {
-    pos.x = (VIEW_W - scaledW) / 2;
+    pos.x = MARGIN + (VIEW_W - scaledW) / 2;
   } else {
-    const minX = VIEW_W - scaledW;
-    const maxX = 0;
-    pos.x = Math.min(maxX, Math.max(minX, pos.x));
+    pos.x = Math.min(MARGIN, Math.max(MARGIN + VIEW_W - scaledW, pos.x));
   }
 
-  // vertical
   if (scaledH <= VIEW_H) {
-    pos.y = (VIEW_H - scaledH) / 2;
+    pos.y = MARGIN + (VIEW_H - scaledH) / 2;
   } else {
-    const minY = VIEW_H - scaledH;
-    const maxY = 0;
-    pos.y = Math.min(maxY, Math.max(minY, pos.y));
+    pos.y = Math.min(MARGIN, Math.max(MARGIN + VIEW_H - scaledH, pos.y));
   }
 }
 
 function draw() {
   clamp();
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.setTransform(scale,0,0,scale,pos.x,pos.y);
-  ctx.drawImage(imgData,0,0);
+  ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+
+  // draw full image
+  ctx.setTransform(scale, 0, 0, scale, pos.x, pos.y);
+  ctx.drawImage(imgData, 0, 0);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  // dim the margin strips
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillRect(0,            0,             CANVAS_W,  MARGIN);           // top
+  ctx.fillRect(0,            MARGIN + VIEW_H, CANVAS_W, MARGIN);          // bottom
+  ctx.fillRect(0,            MARGIN,        MARGIN,    VIEW_H);           // left
+  ctx.fillRect(MARGIN + VIEW_W, MARGIN,     MARGIN,    VIEW_H);           // right
 }
 
 function applyZoom(newScale, anchorX, anchorY) {
-  // anchorX/anchorY are in viewport (canvas CSS) coordinates
   const minScale = Math.max(VIEW_W / imgData.width, VIEW_H / imgData.height);
   newScale = Math.max(newScale, minScale);
-
-  // Shift pos so the point under the anchor stays fixed
   pos.x = anchorX - (anchorX - pos.x) * (newScale / scale);
   pos.y = anchorY - (anchorY - pos.y) * (newScale / scale);
-
   scale = newScale;
   draw();
 }
@@ -307,10 +340,14 @@ downloadBtn.onclick = () => {
   out.height = TARGET_H;
   const octx = out.getContext('2d');
 
-  octx.setTransform(scale * (TARGET_W / VIEW_W), 0, 0,
-                    scale * (TARGET_H / VIEW_H),
-                    pos.x * (TARGET_W / VIEW_W),
-                    pos.y * (TARGET_H / VIEW_H));
+  const scaleRatio = TARGET_W / VIEW_W; // same as TARGET_H / VIEW_H
+
+  octx.setTransform(
+    scale * scaleRatio, 0, 0,
+    scale * scaleRatio,
+    (pos.x - MARGIN) * scaleRatio,
+    (pos.y - MARGIN) * scaleRatio
+  );
 
   octx.drawImage(imgData, 0, 0);
 
@@ -344,6 +381,17 @@ dropzone.addEventListener('drop', e => {
 });
 
 input.addEventListener('change', e => handleFile(e.target.files[0]));
+
+// Fine-tune buttons
+const NUDGE = 1; // px
+const ZOOM_STEP = 1.005;
+
+document.getElementById('moveUp').addEventListener('click',    () => { pos.y -= NUDGE; draw(); });
+document.getElementById('moveDown').addEventListener('click',  () => { pos.y += NUDGE; draw(); });
+document.getElementById('moveLeft').addEventListener('click',  () => { pos.x -= NUDGE; draw(); });
+document.getElementById('moveRight').addEventListener('click', () => { pos.x += NUDGE; draw(); });
+document.getElementById('zoomIn').addEventListener('click',  () => applyZoom(scale * ZOOM_STEP, MARGIN + VIEW_W / 2, MARGIN + VIEW_H / 2));
+document.getElementById('zoomOut').addEventListener('click', () => applyZoom(scale / ZOOM_STEP, MARGIN + VIEW_W / 2, MARGIN + VIEW_H / 2));
 </script>
 </body>
 </html>
