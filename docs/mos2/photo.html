@@ -39,8 +39,8 @@
 
     .viewport {
       position: relative;
-      width: 442px;        /* 342 + 50*2 */
-      height: 541.5px;     /* 441.5 + 50*2 */
+      width: 392px;        /* 342 + 25*2 */
+      height: 491.5px;     /* 441.5 + 25*2 */
       margin: 20px auto;
       background: #000;
     }
@@ -54,8 +54,8 @@
 
     .overlay {
       position: absolute;
-      left: 50px;
-      top: 50px;
+      left: 25px;
+      top: 25px;
       width: 342px;
       height: 441.5px;
       border: 1px solid red;
@@ -84,7 +84,7 @@
 </head>
 <body>
 <div class="container">
-  <h1>Подготовка фото для MOS 2</h1>
+  <h3>Подготовка фото для MOS 2</h3>
   <div id="dropstep">
       <div class="dropzone" id="dropzone">Перетащи сюда фото или нажми и выбери</div>
       <input type="file" id="input" accept="image/*" />
@@ -97,7 +97,7 @@
   </div>
 
   <div id="cropstep" style="display: none;">
-    <div>Двигай и растягивай или сжимай, чтобы фотография совпала с рамкой</div>
+    <div>Совмести фото с рамкой</div>
     <div class="viewport" id="viewport">
       <canvas id="canvas" class="preview"></canvas>
       <div class="overlay"></div>
@@ -149,7 +149,7 @@ const TARGET_W = 684;
 const TARGET_H = 883;
 const VIEW_W = 342;
 const VIEW_H = 441.5;
-const MARGIN = 50;
+const MARGIN = 25;
 const CANVAS_W = VIEW_W + MARGIN * 2;  // 442
 const CANVAS_H = VIEW_H + MARGIN * 2;  // 541.5
 
