@@ -225,36 +225,36 @@
                 color: #fff;
             }
 
-            table.zus-explanation th,
-            table.zus-explanation td {
+            table.table-comparison th,
+            table.table-comparison td {
                 font-size: 75%;
                 text-align: left;
                 line-height: normal;
             }
 
-            table.zus-explanation th {
+            table.table-comparison th {
                 font-weight: bold;
                 background-color: #eee;
                 text-align: center;
             }
 
-            table.zus-explanation td {
+            table.table-comparison td {
                 vertical-align: top;
             }
 
-            table.zus-explanation .zus-best {
+            table.table-comparison .table-comparison-best {
                 background-color: #cfc;
             }
 
-            table.zus-explanation .zus-good {
+            table.table-comparison .table-comparison-good {
                 background-color: #efe;
             }
 
-            table.zus-explanation .zus-worse {
+            table.table-comparison .table-comparison-worse {
                 background-color: #fed;
             }
 
-            table.zus-explanation .zus-worst {
+            table.table-comparison .table-comparison-worst {
                 background-color: #fcc;
             }
 
@@ -934,17 +934,6 @@
                     <th colspan="6">Потрудиться написать</th>
                 </tr>
                 <tr>
-                    <th><input class="optional-check" name="ch-oswiadczenie-cudzoziemca" type="checkbox" checked="checked"/></th>
-                    <th>
-                        <a href="#c-oswiadczenie-cudzoziemca" rel="modal:open">Oświadczenie cudzoziemca</a>
-                    </th>
-                    <td>?</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
                     <th><input class="optional-check" name="ch-about-work" type="checkbox" checked="checked"/></th>
                     <th>
                         <a href="#c-about-work" rel="modal:open">Заявление о работе и налоговых расчётах за прошлый год (т.н. "tabelka")</a>
@@ -956,44 +945,11 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <th></th>
-                    <th>
-                        <a href="#c-jdg-form" rel="modal:open">Анкета предпринимателя</a> (подготовить заранее всё, кроме чек-листа документов)
-                    </th>
-                    <td>+</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
                     <th><input id="ch-business-plan" name="ch-business-plan" class="optional-check" type="checkbox" checked="checked"/></th>
                     <th>
                         <a href="#c-business-plan" rel="modal:open">Бизнес-план</a>
                     </th>
                     <td>+</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th><input class="optional-check" name="ch-jdg-description" type="checkbox" checked="checked"/></th>
-                    <th>
-                        <a href="#c-jdg-description" rel="modal:open">Описание деятельности &mdash; краткая выжимка некоторых глав вашего бизнес-плана</a>
-                    </th>
-                    <td>?</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th><input class="optional-check" name="ch-attachment1" type="checkbox" checked="checked"/></th>
-                    <th>
-                        <a href="#c-attachment1" rel="modal:open">Załącznik nr. 1</a>
-                    </th>
-                    <td>?</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -1084,10 +1040,8 @@
 
                         <!-- popup -->
                         <div class="modal" id="c-declaration">
-                            <p style="color: blue">Если ИП &mdash; гражданин Украины (не важно, PESEL UKR или обычный), то до 30 сентября 2025 г. ему не нужно доказывать наличие стабильного дохода, поэтому декларацию можно не подавать.</p>
                             <p>Годовая декларация, если она есть, это самый веский аргумент наличия стабильного дохода.</p>
                             <p>PIT-28 &mdash; декларация рычалтовца. Если пользуетесь другой налоговой системой, в вашем случае будет другой формуляр.</p>
-                            <p>Если у вас есть годовая декларация и если в ней набирается нужная сумма, то вам не нужно писать бизнес-план. Также нет необходимости подавать фактуры, эвиденцию приходов и ZUS DRA за тот год, который задекларирован, но есть смысл сделать эти документы для месяцев текущего года, чтобы показать, что вы продолжаете вести деятельность.</p>
                             <p class="paperclip">Скрепите канцелярской скрепкой листы декларации вместе.</p>
                             <p><input class="optional-check-in-comment" id="ch-declaration" name="ch-declaration" type="checkbox" checked="checked" /><label for="ch-declaration">У вас есть декларация, будете подавать</label></p>
                         </div>
@@ -1254,9 +1208,9 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <th></th>
+                    <th><input class="optional-check" name="ch-jdg-form" type="checkbox"/></th>
                     <th>
-                        Анкета предпринимателя (заполнить чек-лист в конце и распечатать)
+                        <a href="#c-jdg-form" rel="modal:open">Анкета предпринимателя</a>
                     </th>
                     <td>+</td>
                     <td></td>
@@ -1264,6 +1218,7 @@
                     <td></td>
                     <td></td>
                 </tr>
+
                 <tr class="group spouse-specific child-specific">
                     <th></th>
                     <th colspan="6">Кому идти в ужонд: всем взрослым <span class="child-specific"> и детям 6+ лет (у них берут отпечатки пальцев)</span></th>
@@ -1323,7 +1278,7 @@
 
             <div class="modal" id="c-zus-insurance-confirmation">
                 <p>Есть два способа показать инспектору, что вы платите взносы ZUS, а соответственно вы и члены Вашей семьи имеете страховку NFZ для медицинского обслуживания.</p>
-                <table class="zus-explanation" cellpadding="0" cellspacing="0">
+                <table class="table-comparison" cellpadding="0" cellspacing="0">
                     <tr>
                         <th>Свойства</th>
                         <th>ZUS ZZA/ZUA и ZCNA</th>
@@ -1331,7 +1286,7 @@
                     </tr>
                     <tr>
                         <td>Суть документов</td>
-                        <td class="zus-worse">
+                        <td class="table-comparison-worse">
                             ZZA и ZUA &mdash; <b>формы-заявки</b>, отправляемые <b>Вами в ZUS</b> для регистрации Вас в роли застрахованного (иначе говоря, плательщика взносов)
                             <ul>
                                 <li>ZZA &mdash; при возможности получать льготу Ulga na start</li>
@@ -1339,45 +1294,45 @@
                             </ul>
                             ZCNA &mdash; форма-заявка для регистрации члена семьи, находящегося у Вас на иждивении, чтобы он также был включён в Вашу страховку
                         </td>
-                        <td class="zus-best">
+                        <td class="table-comparison-best">
                             <p><b>Справка</b> &mdash; официальное подтверждение <b>Вам от ZUS</b> о наличии страховки и уплате взносов</p>
                             <p>Одна эта справка предоставляет информацию сразу о всех членах семьи</p>
                         </td>
                     </tr>
                     <tr>
                         <td>Сложившаяся практика</td>
-                        <td class="zus-best">
+                        <td class="table-comparison-best">
                             <p>Упоминается в списке требуемых документов во многих воеводствах.</p>
                             <p>Удивительно, но факт: вместо официальной справки Вас фактически просят принести заявку на регистрацию. Это как если бы в качестве подтверждения обучения в ВУЗе просили не справку, выданную ВУЗом, а Ваше заявление на поступление в ВУЗ</p>
                         </td>
-                        <td class="zus-good">Почему-то не упоминается, но принимается без проблем</td>
+                        <td class="table-comparison-good">Почему-то не упоминается, но принимается без проблем</td>
                     </tr>
                     <tr>
                         <td>Формальный срок действия</td>
-                        <td class="zus-best">
+                        <td class="table-comparison-best">
                             <p>Бессрочно</p>
                             <p>Парадокс в том, что этот документ вообще не является справкой, но именно поэтому и не ограничен по времени)</p>
                         </td>
-                        <td class="zus-worse">
+                        <td class="table-comparison-worse">
                             <p>30 дней</p>
                             <p>Т.е. теоретически могут попросить прислать еще раз свежую справку</p>
                         </td>
                     </tr>
                     <tr>
                         <td>Получение в электронном виде</td>
-                        <td class="zus-worst">
+                        <td class="table-comparison-worst">
                             <p>Возможно теоретически, сложно на практике:</p>
-                            <p>99% людей регистрируются в ZUS одновременно с регистрацией фирмы в CEIDG на сайте biznes.gov.pl. Получить файлы ZZA/ZUA и ZCNA, созданные сайтом, в принципе возможно, однако невозможно получить файлы UPP (подтверждение получения), выданные ZUS-ом сайту в ответ, а без UPP нельзя формально подтвердить подлинность распечатанных форм. Чтобы получить UPP, нужно было бы отправлять формы в ZUS самостоятельно, минуя сайт biznes.gov.pl, но это значительно менее удобно. И конечно вы узнаете об этом тогда, когда уже зарегистрировали фирму и UPP уже никак не получить</p>
+                            <p>99% людей регистрируются в ZUS одновременно с регистрацией фирмы в CEIDG на сайте biznes.gov.pl. Получить файлы ZZA/ZUA и ZCNA, созданные сайтом, в принципе возможно, однако невозможно получить файлы UPP (подтверждение получения), выданные table-comparison-ом сайту в ответ, а без UPP нельзя формально подтвердить подлинность распечатанных форм. Чтобы получить UPP, нужно было бы отправлять формы в ZUS самостоятельно, минуя сайт biznes.gov.pl, но это значительно менее удобно. И конечно вы узнаете об этом тогда, когда уже зарегистрировали фирму и UPP уже никак не получить</p>
                         </td>
-                        <td class="zus-best">Удобно запрашивается через zus.pl, даётся в электронном виде</td>
+                        <td class="table-comparison-best">Удобно запрашивается через zus.pl, даётся в электронном виде</td>
                     </tr>
                     <tr>
                         <td>Получение в бумажном виде</td>
-                        <td class="zus-worse">
+                        <td class="table-comparison-worse">
                             <p>Можно и нужно идти в отделение ZUS и просить эти документы в распечатанном виде <b>с подписью и печатью.</b> Поясняйте, что нужны для внёска на побыт часовы.</p>
                             <p>Распечатки без подписи и печати инспектор может отказаться принять</p>
                         </td>
-                        <td class="zus-worse">Также можно получить в отделении ZUS, хотя лёгкость получения в электронном виде является явным преимуществом</td>
+                        <td class="table-comparison-worse">Также можно получить в отделении ZUS, хотя лёгкость получения в электронном виде является явным преимуществом</td>
                     </tr>
                     <tr>
                         <td>Выбрали способ?</td>
@@ -1558,14 +1513,6 @@
                 <p><a target="_blank" href="https://docs.google.com/document/d/1C9quNvXmyQBwDHE55Qouc9J0_84f5eOkmc3W83A02_8/edit?usp=sharing">Шаблон заявления</a></p>
             </div>
             
-            <div class="modal" id="c-attachment1">
-                <p>Вообще, этот документ сам по себе задуман для заполнения <i>работодателем</i> при подаче на ВНЖ с целью <i>работы</i> (не ИП), но почему-то в <a target="_blank" href="https://docs.google.com/spreadsheets/d/1lkwXxQ5XXMzJWHYZWHEekATBrO2soxKcIvy6TyHkWl4/edit?usp=sharing">некоторых воеводствах</a> от предпринимателей его могут потребовать. В этом случае надо заполнять так, словно сам себя нанял на работу.</p>
-                <p>С 1 января 2023 года многие воеводства, которые ранее требовали Załącznik nr. 1 от предпринимателей, перестали это делать. На данный момент нам достоверно известно, что в ряде (самых популярных) воеводств этот документ точно не нужен, а про остальные (не самые популярные) &mdash; просто нет сведений. Скорее всего, что не нужен и там.</p>
-                <p>Тем не менее, на всякий случай &mdash; бланк: <a target="_blank" href="https://drive.google.com/file/d/1wAZBGo9LE2cT9jtgiUtuVc3ROnvVEc8O/view?usp=sharing">PDF</a>, <a target="_blank" href="https://migrant.poznan.uw.gov.pl/pl/system/files/pliki/zalacznik_nr_1_do_wniosku_o_udzielenie_zezwolenia_na_pobyt_czasowy_i_prace.doc">DOC</a></p>
-                <p><a target="_blank" href="https://drive.google.com/file/d/1wXMRV7mISy9f9fwcBDbb8xXGDqYlBnTH/view?usp=sharing">Пример заполнения</a></p>
-                <p><input class="optional-check-in-comment" id="ch-attachment1" name="ch-attachment1" type="checkbox" checked="checked" /><label for="ch-attachment1">Ваше воеводство требует Załącznik nr. 1, будете подавать</label></p>
-            </div>
-            
             <div class="modal" id="c-header-g">
                 <p>В этой колонке отмечено, какие документы нужно иметь в пакете <b>Г</b>лавного подающегося на ВНЖ.</p>
                 <p>На распечатанном листике можно обводить кружочками то, что уже подготовлено.</p>
@@ -1681,13 +1628,7 @@
                 <p>Оплату могут как попросить перевести заранее, так и при встрече.</p>
                 <p>На встречу обязательно возьмите с собой оригинал(ы) документа(-ов) &mdash; по закону переводчик обязан убедиться, что переводит настоящий документ.</p>
             </div>
-            
-            <div class="modal" id="c-oswiadczenie-cudzoziemca">
-                <p><a target="_blank" href="https://docs.google.com/document/d/1gr0w9wyzOE6c52si58hrxmdlt3tG8M5aZ1P1dHLxASk/edit?usp=sharing">Шаблон документа</a></p>
-                <p>Внимание! Документ <i>не</i> обязателен, но при этом часто вызывает вопросы по заполнению. Поэтому подход такой: если нет трудностей с заполнением, все пункты понятны и ответы однозначны &mdash; почему бы и не заполнить. Если же есть какие-то затруднения, можете смело этот документ игнорировать.</p>
-                <p><input class="optional-check-in-comment" id="ch-oswiadczenie-cudzoziemca" name="ch-oswiadczenie-cudzoziemca" type="checkbox" checked="checked" /><label for="ch-oswiadczenie-cudzoziemca">Документ не вызвал трудностей, собираетесь подавать</label></p>
-            </div>
-            
+                        
             <div class="modal" id="c-header-optional">
                 После изучения комментариев к документам можете выключить ненужные вам строки, тогда они не будут напечатаны.
             </div>
@@ -1699,24 +1640,59 @@
             </div>
             
             <div class="modal" id="c-jdg-form">
+                <p>Практика показывает, что этот документ не является обязательным. В официальном источнике (новом MOS) также нет требований подавать этот документ. На всякий случай оставляем для истории:</p>
                 <p><a target="_blank" href="https://docs.google.com/document/d/1JIjog1ZHP9-ZqX3Z9MQQQhZrBHFAGjtL/edit?usp=sharing">Бланк для заполнения</a></p>
                 <p><a target="_blank" href="https://docs.google.com/document/d/1NBTNAKqmfw0J01wNdR54oR8-6k-9-_NxMXOmb6bVBE4/edit?usp=sharing">Образец для программиста</a></p>
                 <p><a target="_blank" href="https://drive.google.com/file/d/1zM60Fm1tLJ16vq_GMtZ8kEZxK0KGcEov/view">Общая инструкция</a></p>
                 <p>Большинство людей используют переводчик <a target="_blank" href="https://deepl.com">DeepL</a>, некоторые писали, что очень помог ChatGPT</p>
+                <p><input class="optional-check-in-comment" id="ch-jdg-form" name="ch-jdg-form" type="checkbox" checked="checked" /><label for="ch-jdg-form">Я очень хочу подать этот документ сомнительной нужности</label></p>
             </div>
             
             <div class="modal" id="c-business-plan">
-                <p style="color: blue">Если ИП &mdash; гражданин Украины (не важно, PESEL UKR или обычный), то до 30 сентября 2025 г. ему не нужно доказывать наличие стабильного дохода, поэтому бизнес-план можно не подавать.</p>
-                <p>Пожалуй, самый сложный документ из всех, цена у "помогаторов" доходит до 1000 zł. Я пересмотрел разные примеры и шаблоны и остановился на том, что просто написал свой с нуля, следуя <a target="_blank" href="https://drive.google.com/file/d/1RtpHWN5JEBMH2rIR7iau0QDU4T0r1ttB/view?usp=sharing">пошаговому руководству</a>. Часть вещей конечно просто выкинул, например, про найм сотрудников в штат. Получилось девять страниц вместе с титульной.</p>
-                <p><b style="color: red">Новинка!</b> Теперь, когда у меня есть положительная децизия, я наконец могу поделиться <a href="https://docs.google.com/document/d/1jGvMM-CwCIf6-rxhytQdgIlzXHuGoNRpNd9AvtWzbQI/edit?usp=sharing" target="_blank">шаблоном</a>. Разумеется, все личные данные искажены, любые совпадения случайны.</p>
-                <p>Насколько БП нужен. Если не работали в прошлом году либо сумма в годовой декларации не достигла 12 средних месячных доходов в секторе предпринимательства, то во многих ужендах могут буквально потребовать бизнес-план. Но некоторым везёт проскочить и без него.</p>
+                <h4>Нужен ли бизнес-план?</h4>
+                <table class="table-comparison" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th>Критерий</th>
+                        <th>Бизнес-план</th>
+                    </tr>
+                    <tr>
+                        <td>Фирма в прошлом году не вела деятельность</td>
+                        <td class="table-comparison-worst">Нужен</td>
+                    </tr>
+                    <tr>
+                        <td>Декларация PIT за прошлый год отсутствует</td>
+                        <td class="table-comparison-worst">Нужен</td>
+                    </tr>
+                    <tr>
+                        <td>Общая сумма в годовой декларации ниже порога (см. ниже)</td>
+                        <td class="table-comparison-worse">Нужен</td>
+                    </tr>
+                    <tr>
+                        <td>PIT есть, сумма достаточная</td>
+                        <td class="table-comparison-best">Не нужен</td>
+                    </tr>
+                </table>
+                <h4>Как считать сумму</h4>
+                <p>Нужно посмотреть средний месячный доход за определенный год в вашем воеводтве и умножить на 12.</p>
+                <ul>
+                    <li>Заходим на <a href="https://stat.gov.pl/wyszukiwarka/szukaj.html" target="_blank">stat.gov.pl</a></li>
+                    <li>Вводим в поиск фразу <span style="font: monospace">obwieszczenie w sprawie wysokości przeciętnego miesięcznego wynagrodzenia brutto w gospodarce narodowej w województwach</span></li>
+                    <li>В результатах находим самый свежий год. Если сегодня, к примеру, 2026-й год, значит декларация должна быть за 2025-й год, а требуемые уровни дохода определяются по статистике 2024-го года.</li>
+                </ul>
+                <p>
+                    <input class="optional-check-in-comment" id="ch-с-business-plan" name="ch-business-plan" type="checkbox" checked="checked" />
+                    <label for="ch-с-business-plan">Мне нужно подать бизнес-план</label>
+                </p>
+                <h4>Бизнес-план нужен. Как написать?</h4>
+                <p>
+                    Пожалуй, самый сложный документ из всех, цена у "помогаторов" доходит до 1000 zł.
+                    Я пересмотрел разные примеры и шаблоны и остановился на том, что просто написал свой с нуля, следуя
+                    <a target="_blank" href="https://drive.google.com/file/d/1RtpHWN5JEBMH2rIR7iau0QDU4T0r1ttB/view?usp=sharing">пошаговому руководству</a>.
+                    Часть вещей конечно просто выкинул, например, про найм сотрудников в штат. Получилось девять страниц вместе с титульной.
+                </p>
+                <p>
+                    На основе своего плана я сделал <a href="https://docs.google.com/document/d/1jGvMM-CwCIf6-rxhytQdgIlzXHuGoNRpNd9AvtWzbQI/edit?usp=sharing" target="_blank">шаблон для айтишников</a>. Разумеется, все личные данные искажены, любые совпадения случайны.</p>
                 <p class="paperclip">Скрепите канцелярской скрепкой листы бизнес-плана.</p>
-                <p><input class="optional-check-in-comment" id="ch-с-business-plan" name="ch-business-plan" type="checkbox" checked="checked" /><label for="ch-с-business-plan">У вас нет PIT-28 за прошлый год, либо в нём нет достаточной суммы дохода, поэтому подаёте бизнес-план</label></p>
-            </div>
-            
-            <div class="modal" id="c-jdg-description">
-                <p>Заполнив анкету предпринимателя и написав бизнес-план, я почувствовал, что описание деятельности &mdash; это уже лишнее, просто повтор информации. Не стал этого делать.</p>
-                <p><input class="optional-check-in-comment" id="ch-jdg-description" name="ch-jdg-description" type="checkbox" checked="checked" /><label for="ch-jdg-description">На всякий случай собираетесь подавать описание деятельности</label></p>
             </div>
         </div>
     </body>
