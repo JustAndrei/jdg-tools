@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Чек-лист</title>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-EC8HTZ6XGV"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-EC8HTZ6XGV');
+        </script>
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-KQ9P2NG5');
+        </script>
+        <!-- End Google Tag Manager -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+        <link rel="stylesheet" href="style.css" />
+        <script src="checklist-data.js"></script>
+        <script src="checklist.js"></script>
+    </head>
+    <body>
+        <div class="page non-printable banner">
+            <div>
+                <div class="banner-check">☑️</div>
+                <div style="text-align: center">
+                    <div style="margin-bottom: 10px">Хочешь поблагодарить автора?</div>
+                    <a target="_blank" href="https://justandrei.github.io/coffee" title="Поддержать проект" style="text-decoration: none">
+                        <img src="bmc.svg" style="" />
+                    </a>
+                </div>
+                <div class="banner-check">☑️</div>
+            </div>
+        </div>
+        <div class="page non-printable" style="min-height: auto">
+            <a href="https://justandrei.github.io/jdg-tools" title="Инструменты JDG"><div class="toolbox-button">🧰</div></a>
+            <div class="print-button" title="Распечатать как лист A4">🖨️</div>
+            <a target="_blank" href="https://justandrei.github.io/coffee" title="Поддержать проект"><img class="donate-button" src="bmc-icon.svg" /></a>
+            <a target="_blank" href="https://t.me/JDG_PBH" title="Задать вопрос в Telegram"><div class="help-button">?</div></a>
+            <h2>Чек-лист для подачи на ВНЖ с целью ведения деятельности</h2>
+            Чек-лист
+            <select class="persisted" name="listType" id="listType">
+                <option value="full" selected="selected">полный (в т.ч. очередная подача)</option>
+                <option value="updates">актуализации документов</option>
+            </select>
+            <h3>Для кого этот чек-лист</h3>
+            <div id="role-picker">
+                <button type="button" class="role-btn active" data-role="g">
+                    <b>Владелец JDG</b>
+                    <span>Тот, кто ведёт деятельность и обеспечивает доход всех членов семьи</span>
+                </button>
+                <button type="button" class="role-btn" data-role="s">
+                    <b>Супруг владельца JDG</b>
+                    <span>Подаётся вместе с владельцем JDG, если находится на его содержании</span>
+                </button>
+                <button type="button" class="role-btn" data-role="r">
+                    <b>Ребёнок владельца JDG</b>
+                    <span>Подаётся вместе с родителем. Детей несколько &mdash; распечатайте лист на каждого</span>
+                </button>
+            </div>
+            Чек-лист составляется для одного человека. Если с вами подаются супруг и/или дети, выберите каждую роль по очереди и распечатайте свой лист для каждого.
+            <!-- TODO: разрешить давать людям имена и инициалы -->
+        </div>
+        <div class="page">
+            <h3 class="print-title">Чек-лист для подачи на ВНЖ &mdash; <span id="role-title"></span></h3>
+            <table id="checklist" cellpadding="0" cellspacing="0">
+                <tr class="base updates head-row neutral">
+                    <th><a rel="modal:open" href="#c-header-optional">Опц</a></th>
+                    <td class="diff-head" title="Сложность"><a rel="modal:open" href="#c-header-difficulty">Сл.</a></td>
+                    <th><span class="updates-only" style="font-size: 13pt; font-weight: bold; font-style: normal;">Что <a rel="modal:open" href="#c-how-to-update">донести или дослать по почте</a></span></th>
+                    <td class="narrow"><a class="big-letter" style="font-size: 15pt" rel="modal:open" href="#c-header-check">&check;</a></td>
+                    <td class="narrow"><a class="big-letter" style="font-size: 15pt; line-height: 5mm" rel="modal:open" href="#c-header-printed">🖶</a></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="non-printable page" style="padding-bottom: 50px; min-height: auto">
+            <p>Чек-лист обработал и скомпоновал в один лист формата А4 Андрей Митин.
+            Информация в основном взята с <a target="_blank" href="https://sobolevbel.github.io/jdg/legalization/">гитхаб-страницы Евгения Соболева</a> и
+            из чата <a target="_blank" href="https://t.me/JDG_PBH">ИП в Польше</a>.
+            Рекомендую в любом случае почитать гитхаб-страницу и конечно <a target="_blank" href="https://sobolevbel.github.io/jdg/support/">поддержать</a>
+            проект Евгения добровольным пожертвованием.</p>
+            <p>Прошу задавать любые вопросы, касающиеся подачи на ВНЖ, в чате <a target="_blank" href="https://t.me/JDG_PBH">ИП в Польше</a>. Там много опытных, отзывчивых людей, готовых помогать чуть ли не круглосуточно.</p>
+        </div>
+
+        <div class="non-printable" id="comments"></div>
+    </body>
+</html>
