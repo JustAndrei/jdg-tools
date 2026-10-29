@@ -46,12 +46,6 @@
             <a target="_blank" href="https://justandrei.github.io/coffee" title="Поддержать проект"><img class="donate-button" src="bmc-icon.svg" /></a>
             <a target="_blank" href="https://t.me/JDG_PBH" title="Задать вопрос в Telegram"><div class="help-button">?</div></a>
             <h2>Чек-лист для подачи на ВНЖ с целью ведения деятельности</h2>
-            Чек-лист
-            <select class="persisted" name="listType" id="listType">
-                <option value="full" selected="selected">полный (в т.ч. очередная подача)</option>
-                <option value="updates">актуализации документов</option>
-            </select>
-            <h3>Для кого этот чек-лист</h3>
             <div id="role-picker">
                 <button type="button" class="role-btn active" data-role="g">
                     <b>Владелец JDG</b>
@@ -67,15 +61,26 @@
                 </button>
             </div>
             Чек-лист составляется для одного человека. Если с вами подаются супруг и/или дети, выберите каждую роль по очереди и распечатайте свой лист для каждого.
-            <!-- TODO: разрешить давать людям имена и инициалы -->
         </div>
-        <div class="page">
-            <h3 class="print-title">Чек-лист для подачи на ВНЖ &mdash; <span id="role-title"></span></h3>
-            <table id="checklist" cellpadding="0" cellspacing="0">
-                <tr class="base updates head-row neutral">
+        <div class="page" id="page-full">
+            <h3 class="print-title">Чек-лист для подачи на ВНЖ &mdash; <span class="role-title"></span></h3>
+            <table id="checklist" class="checklist" data-list="full" cellpadding="0" cellspacing="0">
+                <tr class="head-row neutral">
                     <th><a rel="modal:open" href="#c-header-optional">Опц</a></th>
                     <td class="diff-head" title="Сложность"><a rel="modal:open" href="#c-header-difficulty">Сл.</a></td>
-                    <th><span class="updates-only" style="font-size: 13pt; font-weight: bold; font-style: normal;">Что <a rel="modal:open" href="#c-how-to-update">донести или дослать по почте</a></span></th>
+                    <th></th>
+                    <td class="narrow"><a class="big-letter" style="font-size: 15pt" rel="modal:open" href="#c-header-check">&check;</a></td>
+                    <td class="narrow"><a class="big-letter" style="font-size: 15pt; line-height: 5mm" rel="modal:open" href="#c-header-printed">🖶</a></td>
+                </tr>
+            </table>
+        </div>
+        <div class="page" id="page-updates">
+            <h3 class="print-title">Актуализация документов &mdash; <span class="role-title"></span></h3>
+            <table id="checklist-updates" class="checklist" data-list="updates" cellpadding="0" cellspacing="0">
+                <tr class="head-row neutral">
+                    <th><a rel="modal:open" href="#c-header-optional">Опц</a></th>
+                    <td class="diff-head" title="Сложность"><a rel="modal:open" href="#c-header-difficulty">Сл.</a></td>
+                    <th><span style="font-size: 13pt; font-weight: bold; font-style: normal;">Что и когда <a rel="modal:open" href="#c-how-to-update">донести или дослать по почте</a></span></th>
                     <td class="narrow"><a class="big-letter" style="font-size: 15pt" rel="modal:open" href="#c-header-check">&check;</a></td>
                     <td class="narrow"><a class="big-letter" style="font-size: 15pt; line-height: 5mm" rel="modal:open" href="#c-header-printed">🖶</a></td>
                 </tr>

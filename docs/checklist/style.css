@@ -295,7 +295,7 @@ p.paperclip:before {
     font-size: 13pt;
 }
 
-#checklist {
+.checklist {
     width: 100%;
 }
 
@@ -390,8 +390,8 @@ tr.non-printable a.diff-square {
         font-size: 14pt;
     }
     
-    #checklist tr td:last-child:not(:first-child),
-    #checklist tr td:nth-last-child(2) {
+    .checklist tr td:last-child:not(:first-child),
+    .checklist tr td:nth-last-child(2) {
         display: none;
     }
     
@@ -442,7 +442,7 @@ tr.non-printable a.diff-square {
         display: none;
     }
 
-    #checklist tr > *:nth-child(1) {
+    .checklist tr > *:nth-child(1) {
         display: none;
     }
 

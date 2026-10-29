@@ -1,7 +1,7 @@
 // Страница делится на две части:
 //   checklist-data.js — только содержание (CHECKLIST, DIFFICULTY, POPUPS; формат описан в начале файла);
 //   этот скрипт — превращает данные в таблицу и модальные окна.
-// Таблица перерисовывается целиком при смене списка и роли.
+// Обе таблицы (full и updates) перерисовываются целиком при смене роли.
 
 var ROLES = {
     g: {key: 'jdg', title: 'Владелец JDG'},
@@ -181,7 +181,7 @@ function setRole(role) {
     currentRole = role;
     $('body').attr('data-role', role);
     $('.role-btn').removeClass('active').filter('[data-role="' + role + '"]').addClass('active');
-    $('#role-title').text(ROLES[role].title);
+    $('.role-title').text(ROLES[role].title);
     render();
 }
 
@@ -237,12 +237,15 @@ function rowHtml(entry, kind, ctx) {
 }
 
 function fixColspans() {
-    // число реально видимых колонок зависит от ширины экрана
-    var n = $('#checklist tr.head-row > td').filter(function() {
-        return $(this).css('display') != 'none';
-    }).length;
-    $('#checklist tr.group > th:nth-child(2), #checklist tr.subgroup > th:nth-child(2)').attr('colspan', n + 1);
-    $('#checklist td.ad').attr('colspan', n + 2);
+    $('table.checklist').each(function() {
+        var $t = $(this);
+        // число реально видимых колонок зависит от ширины экрана
+        var n = $t.find('tr.head-row > td').filter(function() {
+            return $(this).css('display') != 'none';
+        }).length;
+        $t.find('tr.group > th:nth-child(2), tr.subgroup > th:nth-child(2)').attr('colspan', n + 1);
+        $t.find('td.ad').attr('colspan', n + 2);
+    });
 }
 
 // чекбоксы, зачёркивание строк и тексты, зависящие от чекбоксов
@@ -250,7 +253,7 @@ function applyFlags() {
     $('input.optional-check, input.optional-check-in-comment').each(function() {
         this.checked = !!flags[$(this).attr('data-key')];
     });
-    $('#checklist tr[data-key]').each(function() {
+    $('table.checklist tr[data-key]').each(function() {
         $(this).toggleClass('non-printable', !flags[$(this).attr('data-key')]);
     });
     $('span.check-specific').each(function() {
@@ -271,7 +274,14 @@ function setFlag(key, value) {
 }
 
 function render() {
-    var listType = $('#listType').val();
+    $('table.checklist').each(function() {
+        renderTable($(this), $(this).attr('data-list'));
+    });
+    applyFlags();
+    fixColspans();
+}
+
+function renderTable($table, listType) {
     var ctx = {
         role: ROLES[currentRole].key,
         list: listType
@@ -336,12 +346,10 @@ function render() {
     $.each(REASONS, function(key) { groupHtml(key); });
     groupHtml('');   // документы без известного reason
     $.each(tail, function(i, it) { html += rowHtml(it.entry, it.kind, ctx); });
-    $('#checklist tr').not('.head-row').remove();
-    $('#checklist > tbody').append(html);
-
-    $('.updates-only').toggle(listType == 'updates');
-    applyFlags();
-    fixColspans();
+    $table.find('tr').not('.head-row').remove();
+    $table.children('tbody').append(html);
+    // если для этой роли в списке нет ни одной строки, страницу не показываем и не печатаем
+    $table.closest('.page').toggle(html != '');
 }
 
 /* ---------- адресная строка и модальные окна ---------- */
@@ -385,9 +393,6 @@ function openModalFromHash() {
 
 function getState() {
     var state = {};
-    $('select.persisted').each(function(i, c) {
-        state[c.name] = $(c).find(':selected').val();
-    });
     $('input.persisted').each(function(i, c) {
         state[c.name] = $(c).val();
     });
@@ -404,13 +409,6 @@ function setState(json) {
     if (state.role && ROLES[state.role]) {
         currentRole = state.role;
     }
-    $('select.persisted').each(function(i, c) {
-        var $c = $(c);
-        if (c.name in state) {
-            $c.find('option').prop('selected', false);
-            $c.find('option[value="' + state[c.name] + '"]').prop('selected', true);
-        }
-    });
     $('input.persisted').each(function(i, c) {
         if (c.name in state) {
             $(c).val(state[c.name]);
@@ -452,11 +450,6 @@ $(function() {
         saveState();
     });
 
-    $('#listType').on('change', function() {
-        render();
-        saveState();
-    });
-
     $(window).on('resize', fixColspans);
 
     // чекбокс в таблице и такой же чекбокс в окне — одно и то же состояние
@@ -469,9 +462,11 @@ $(function() {
     setRole(currentRole);
     saveState();
 
+    // старая ссылка page.html#updates ведёт к странице актуализации
     if (window.location.hash == '#updates') {
-        $('#listType').val('updates').change();
         removeHash();
+        var upd = document.getElementById('page-updates');
+        if (upd) upd.scrollIntoView();
     }
     openModalFromHash();
 });
