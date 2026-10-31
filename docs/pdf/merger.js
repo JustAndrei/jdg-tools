@@ -1,4 +1,41 @@
 $(function() {
+    // qpdf (WASM) подключается скриптом из merger.html и создаёт глобальную функцию Module.
+    // Файл .wasm лежит рядом с qpdf.js на том же CDN, версии должны совпадать.
+    var QPDF_WASM_URL = 'https://cdn.jsdelivr.net/npm/@neslinesli93/qpdf-wasm@0.3.0/dist/qpdf.wasm';
+
+    // Снимает шифрование (в т.ч. с пустым пользовательским паролем и owner-ограничениями),
+    // которое pdf-lib не умеет обрабатывать. Возвращает Promise<Uint8Array>.
+    function decryptWithQpdf(arrayBuffer) {
+        var messages = [];
+        return window.Module({
+            locateFile: () => QPDF_WASM_URL,
+            print: m => messages.push(m),
+            printErr: m => messages.push(m)
+        }).then(qpdf => {
+            qpdf.FS.writeFile('/in.pdf', new Uint8Array(arrayBuffer));
+            var code = qpdf.callMain(['--decrypt', '/in.pdf', '/out.pdf']);
+            var out;
+            try { out = qpdf.FS.readFile('/out.pdf'); } catch (e) {}
+            if (!out) {
+                throw new Error('qpdf: ' + (messages.join(' ') || 'код выхода ' + code));
+            }
+            return out;
+        });
+    }
+
+    // Сначала пробуем открыть файл как есть; если pdf-lib не справился
+    // (зашифрован и т.п.), прогоняем через qpdf и пробуем ещё раз.
+    // Проверять тип ошибки через instanceof EncryptedPDFError нельзя: в pdf-lib 1.17.1 это не работает.
+    function loadPdf(arrayBuffer) {
+        return PDFLib.PDFDocument.load(arrayBuffer).catch(err => {
+            console.info('pdf-lib не открыл файл (' + err.message + '), пробую расшифровать через qpdf');
+            return decryptWithQpdf(arrayBuffer).then(
+                bytes => PDFLib.PDFDocument.load(bytes),
+                qpdfErr => { throw new Error(err.message + ' | ' + qpdfErr.message); }
+            );
+        });
+    }
+
     function readFiles(multiple, callback) {
         var $i = $('#readFilesProxy');
         if ($i.length == 0) {
@@ -17,16 +54,15 @@ $(function() {
                     };
                     for (var f = 0; f < files.length; ++f) {
                         results.push(null);
-                        var mimeType = files[f].type;
                         var reader = new FileReader();
-                        reader.onload = function(fileIndex) {
+                        reader.onload = function(fileIndex, mimeType) {
                             return e => {
                                 results[fileIndex] = { buffer: e.target.result, type: mimeType };
                                 if (--resultsCounter <= 0) {
                                     next();
                                 }
                             };
-                        }(f);
+                        }(f, files[f].type);
                         reader.readAsArrayBuffer(files[f]);
                     }
                     $i.val('');
@@ -116,14 +152,20 @@ $(function() {
         readFiles(true, (newFileArrayBuffer, mimeType, isLastFile, next) => {
             var nextPage = doc.getPages().length + 1;
             if (mimeType == 'application/pdf') {
-                PDFLib.PDFDocument.load(newFileArrayBuffer, {ignoreEncryption: true}).then(newDoc => {
-                    doc.copyPages(newDoc, newDoc.getPages().map((e, i, a) => i)).then(newPages => {
+                loadPdf(newFileArrayBuffer).then(newDoc => {
+                    return doc.copyPages(newDoc, newDoc.getPages().map((e, i, a) => i)).then(newPages => {
                         $.each(newPages, (i, p) => { doc.addPage(p); });
                         if (isLastFile) {
                             displayPdf(doc, nextPage);
                         }
                         else next();
                     });
+                }).catch(err => {
+                    alert('Не удалось прочитать PDF-файл: ' + err.message);
+                    if (isLastFile) {
+                        if (doc.getPages().length) displayPdf(doc, nextPage);
+                    }
+                    else next();
                 });
             }
             else if (mimeType == 'image/jpeg') {
