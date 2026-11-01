@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Паспорт в PDF</title>
+        <style>
+            * { box-sizing: border-box; }
+            body {
+                margin: 0;
+                padding: 16px;
+                font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+                line-height: 1.45;
+                color: #222;
+                background: #f2f3f5;
+            }
+            main { max-width: 640px; margin: 0 auto; }
+            h1 { font-size: 22px; margin: 4px 0 12px; }
+            p { margin: 0 0 12px; }
+            .muted { color: #667; font-size: 14px; }
+            .btn {
+                display: block;
+                width: 100%;
+                padding: 14px 16px;
+                border: 0;
+                border-radius: 8px;
+                font: inherit;
+                font-weight: 600;
+                text-align: center;
+                text-decoration: none;
+                cursor: pointer;
+                color: #fff;
+                background: #2a8a3e;
+            }
+            .btn.big { padding: 18px 16px; font-size: 18px; }
+            .btn.blue { background: #2457c5; }
+            .btn.light { color: #222; background: #fff; border: 1px solid #c5c8ce; }
+            .btn:focus-visible { outline: 3px solid #f2a900; outline-offset: 2px; }
+            .row { display: flex; gap: 8px; margin-top: 8px; }
+            .row > * { flex: 1; }
+            .busy .btn { opacity: .5; pointer-events: none; }
+            #status { margin: 12px 0 4px; }
+            #sheets { margin-top: 12px; }
+            #actions { margin-top: 8px; padding-bottom: 16px; }
+            .sheet {
+                position: relative;
+                width: 100%;
+                aspect-ratio: 210 / 297;
+                margin-bottom: 14px;
+                background: #fff;
+                border: 1px solid #c5c8ce;
+            }
+            .sheet img { position: absolute; }
+            .flip {
+                position: absolute;
+                transform: translate(-50%, -50%);
+                width: 48px;
+                height: 48px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid #fff;
+                border-radius: 50%;
+                color: #fff;
+                background: rgba(0, 0, 0, .55);
+                cursor: pointer;
+            }
+            .flip:focus-visible { outline: 3px solid #f2a900; outline-offset: 2px; }
+            [hidden] { display: none !important; }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>Паспорт в один PDF</h1>
+
+            <div id="intro">
+                <p>Выберите сразу все JPG-файлы или добавляйте их по одному. Два разворота помещаются на одну страницу A4.</p>
+                <p class="muted">Файлы не загружаются в Интернет: PDF собирается прямо в вашем браузере.</p>
+            </div>
+
+            <div id="result" hidden>
+                <p class="muted" id="status"></p>
+                <div id="sheets"></div>
+            </div>
+
+            <button class="btn big" id="add" type="button">Добавить отсканированные развороты паспорта</button>
+
+            <div id="actions" hidden>
+                <div class="row">
+                    <a class="btn blue" id="save" href="#" download="passport.pdf">Сохранить PDF</a>
+                    <a class="btn blue" id="open" href="#" target="_blank">Открыть / печать</a>
+                </div>
+                <div class="row">
+                    <button class="btn light" id="undo" type="button">Отменить</button>
+                    <button class="btn light" id="reset" type="button">Очистить</button>
+                </div>
+            </div>
+        </main>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"
+                integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ=="
+                crossorigin="anonymous"
+                referrerpolicy="no-referrer"></script>
+        <script src="pdf.js"></script>
+        <script src="passport.js"></script>
+    </body>
+</html>
