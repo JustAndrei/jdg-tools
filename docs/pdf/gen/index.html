@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Заполнение PDF</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Third-party libraries (classic scripts: they define the globals $, PDFLib, fontkit, moment) -->
+    <script defer src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://unpkg.com/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js" integrity="sha384-2p6U+1mmqF10USehFeRiyG2ESG9FwIqN+jxULn5w9jjQIihSn9Pt13dVCn/Hawjn" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js" integrity="sha512-QoJS4DOhdmG8kbbHkxmB/rtPdN62cGWXAdAFWWJPvUFF1/zxcPSdAnn4HhYZSIlVoLVEJ0LesfNlusgm2bPfnA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- The application (ES modules are deferred too and run after the scripts above, in document order) -->
+    <script type="module" src="js/main.js"></script>
+</head>
+<body>
+    <noscript>Для работы страницы нужен JavaScript.</noscript>
+    <a href="?gen#Wniosek-PDP">Заявка на польский документ подружи (PDP)</a>
+    <span style="width: 100%"></span>
+    <a href="?gen#Wniosek-SP-KP-swiadczenie">Заявка на денежное пособие для обладателя Карты Поляка в связи с решением поселиться в Польше на постоянной основе</a>
+</body>
+</html>

@@ -1,0 +1,425 @@
+{
+    "global": {
+        "fonts": {
+            "*": "CourierPrime-Regular.ttf"
+        },
+        "coordinateCorrection": {
+            "y": 3
+        },
+        "defaultTransform": "caps"
+    },
+    "title": "Заявка на денежное пособие для обладателя Карты Поляка в связи с решением поселиться в Польше на постоянной основе",
+    "annotations": [
+        {
+            "type": "comment",
+            "text": "Заявка должна быть подана в течение трёх месяцев от даты подачи заявки на сталый побыт."
+        },
+        {
+            "value": "GDAŃSK",
+            "type": "text",
+            "title": "Место подачи заявки (город)",
+            "name": "applicationCity"
+        },
+        {
+            "value": "01 01 2025",
+            "type": "date",
+            "title": "Дата подачи",
+            "name": "applicationDate",
+            "format": "DD MM YYYY"
+        },
+        {
+            "value": "×",
+            "type": "check",
+            "title": "Первая заявка?",
+            "option": "первая",
+            "default": true
+        },
+        {
+            "value": "×",
+            "type": "check",
+            "title": "Первая заявка?",
+            "option": "последующая"
+        },
+        {
+            "value": "WOJEWODA",
+            "type": "static"
+        },
+        {
+            "value": "POMORSKI",
+            "type": "select",
+            "title": "Воеводство, где подаётся заявка",
+            "options": "standard.voivodeship",
+            "transform": "voivodeshipAsMasculineNominative"
+        },
+        {
+            "type": "section",
+            "title": "Личные данные заявителя"
+        },
+        {
+            "type": "comment",
+            "text": "Заполнять латинскими буквами, точно так же, как написано в паспорте."
+        },
+        {
+            "value": "IVANOVA",
+            "type": "text",
+            "title": "Фамилия сейчас",
+            "name": "lastName"
+        },
+        {
+            "value": "SIDOROVA",
+            "newValue": "",
+            "type": "text",
+            "title": "Фамилия при рождении (если отличается)",
+            "ifEmpty": "lastName"
+        },
+        {
+            "value": "SIDOROVA",
+            "newValue": "",
+            "type": "text",
+            "title": "Предыдущая фамилия (если менялась)",
+            "ifEmpty": "lastName"
+        },
+        {
+            "value": "EKATERINA",
+            "type": "text",
+            "title": "Имя"
+        },
+        {
+            "value": "1999 01 01",
+            "type": "date",
+            "title": "Дата рождения",
+            "format": "YYYY MM DD"
+        },
+        {
+            "value": "K",
+            "type": "select",
+            "title": "Пол",
+            "name": "gender",
+            "options": {
+                "K": "женский",
+                "M": "мужской"
+            }
+        },
+        {
+            "value": "MIŃSK",
+            "type": "text",
+            "title": "Место рождения (населенный пункт)"
+        },
+        {
+            "value": "BIAŁORUŚ",
+            "type": "text",
+            "title": "Страна рождения"
+        },
+        {
+            "value": "BIAŁORUŚ",
+            "type": "text",
+            "title": "Гражданство"
+        },
+        {
+            "type": "section",
+            "title": "Адрес проживания за границей"
+        },
+        {
+            "type": "comment",
+            "text": "Заполнять латинскими буквами."
+        },
+        {
+            "value": "BIAŁORUŚ",
+            "type": "text",
+            "title": "Страна"
+        },
+        {
+            "value": "MIŃSK",
+            "type": "text",
+            "title": "Город"
+        },
+        {
+            "value": "NEREALNAYA",
+            "type": "text",
+            "title": "Улица"
+        },
+        {
+            "value": "12",
+            "type": "text",
+            "title": "Номер дома"
+        },
+        {
+            "value": "345",
+            "type": "text",
+            "title": "Номер квартиры"
+        },
+        {
+            "value": "220000",
+            "type": "text",
+            "title": "Почтовый индекс"
+        },
+        {
+            "type": "section",
+            "title": "Текущий адрес проживания в Польше"
+        },
+        {
+            "value": "POMORSKIE",
+            "type": "select",
+            "title": "Воеводство",
+            "options": "standard.voivodeship"
+        },
+        {
+            "value": "GDAŃSK",
+            "type": "text",
+            "title": "Округ (powiat)"
+        },
+        {
+            "value": "GDAŃSK",
+            "type": "text",
+            "title": "Город"
+        },
+        {
+            "value": "NIEISTNIEJĄCA",
+            "type": "text",
+            "title": "Улица"
+        },
+        {
+            "value": "1",
+            "type": "text",
+            "title": "Номер дома"
+        },
+        {
+            "value": "123",
+            "type": "text",
+            "title": "Номер квартиры"
+        },
+        {
+            "value": "80-800",
+            "type": "text",
+            "title": "Почтовый индекс"
+        },
+        {
+            "value": "+48571123456",
+            "type": "text",
+            "title": "Номер телефона"
+        },
+        {
+            "value": "KATERINA.IVANOVA@GMAIL.COM",
+            "type": "text",
+            "title": "E-mail",
+            "maxCharsPerLine": 20
+        },
+        {
+            "type": "section",
+            "title": "Предполагаемый адрес постоянного проживания в Польше"
+        },
+        {
+            "value": "POMORSKIE",
+            "type": "select",
+            "title": "Воеводство",
+            "options": "standard.voivodeship"
+        },
+        {
+            "value": "GDAŃSK",
+            "type": "text",
+            "title": "Округ (powiat)"
+        },
+        {
+            "value": "GDAŃSK",
+            "type": "text",
+            "title": "Город"
+        },
+        {
+            "value": "NIEISTNIEJĄCA",
+            "type": "text",
+            "title": "Улица"
+        },
+        {
+            "value": "1",
+            "type": "text",
+            "title": "Номер дома"
+        },
+        {
+            "value": "123",
+            "type": "text",
+            "title": "Номер квартиры"
+        },
+        {
+            "value": "80-800",
+            "type": "text",
+            "title": "Почтовый индекс"
+        },
+        {
+            "type": "section",
+            "title": "Супруг и/или дети, пребывающие в Польше вместе с заявителем"
+        },
+        {
+            "type": "comment",
+            "text": "Супруг, вписанный в заявку, также получит 100% пособия, как и сам заявитель."
+        },
+        {
+            "type": "comment",
+            "text": "Внимание! Каждый ребенок, вписанный в заявку, получит только 50% пособия!"
+        },
+        {
+            "type": "comment",
+            "text": "Но если у ребенка есть собственная Карта Поляка, можно оформить отдельное заявление от его имени, тогда он получит 100% пособия."
+        },
+        {
+            "type": "table",
+            "title": "Родственники"
+        },
+        {
+            "value": "1",
+            "type": "row-number",
+            "title": "Родственник №{row-number}"
+        },
+        {
+            "value": "VASILI PUPKIN",
+            "type": "text",
+            "title": "Имя и фамилия",
+            "mode": "fit",
+            "maxWidth": 115
+        },
+        {
+            "value": "1989/01/01",
+            "type": "date",
+            "title": "Дата рождения",
+            "format": "YYYY/MM/DD"
+        },
+        {
+            "value": "MAŁŻONEK",
+            "type": "select",
+            "title": "Основание получения денег",
+            "options": {
+                "MAŁŻONEK": "супруг",
+                "DZIECKO": "ребенок"
+            }
+        },
+        {
+            "value": "GDAŃSK",
+            "type": "text",
+            "title": "Город проживания",
+            "mode": "fit",
+            "maxWidth": 105
+        },
+        {
+            "value": "7",
+            "type": "last-row-number"
+        },
+        {
+            "type": "end-of-table",
+            "add": "Добавить родственника"
+        },
+        {
+            "type": "section",
+            "title": "Данные Карты Поляка"
+        },
+        {
+            "value": "ZAD123456",
+            "type": "text",
+            "title": "Номер карты"
+        },
+        {
+            "value": "WOJEWODA OPOLSKI",
+            "type": "text",
+            "title": "Орган, выдавший карту"
+        },
+        {
+            "value": "2024 01 01",
+            "type": "date",
+            "title": "Дата выдачи",
+            "format": "YYYY MM DD"
+        },
+        {
+            "value": "2034 01 01",
+            "type": "date",
+            "title": "Действительна до",
+            "format": "YYYY MM DD"
+        },
+        {
+            "type": "section",
+            "title": "Приложения к заявке"
+        },
+        {
+            "type": "comment",
+            "text": "Если в заявку вписан муж, прикладывается свидетельство о браке (заверенная копия) - ODPIS AKTU MAŁŻEŃSTWA."
+        },
+        {
+            "type": "comment",
+            "text": "Если в заявку вписан ребенок или несколько детей, прикладывается свидетельство о рождении (заверенная копия) для каждого - ODPIS (или ODPISY) AKTU URODZENIA."
+        },
+        {
+            "value": "POTWIERDZENIE OPŁATY SKARBOWEJ\nKSEROKOPIA PASZPORTU\nKSEROKOPIA KARTY POLAKA I DECYZJI\nKSEROKOPIA UMOWY NAJMU LOKALU MIESZKALNEGO\nKSEROKOPIA POWIADOMIENIA O NADANIU NUMERU PESEL\nODPIS AKTU MAŁŻEŃSTWA",
+            "newValue": "POTWIERDZENIE OPŁATY SKARBOWEJ\nKSEROKOPIA PASZPORTU\nKSEROKOPIA KARTY POLAKA I DECYZJI\nKSEROKOPIA UMOWY NAJMU LOKALU MIESZKALNEGO\nKSEROKOPIA POWIADOMIENIA O NADANIU NUMERU PESEL\nODPIS AKTU MAŁŻEŃSTWA\nODPIS(Y) AKTU URODZENIA",
+            "type": "text",
+            "title": "Приложения",
+            "multiline": true
+        },
+        {
+            "type": "section",
+            "title": "Заявление"
+        },
+        {
+            "value": "_______",
+            "type": "static",
+            "dependsOn": "gender",
+            "comparison": "equals",
+            "argument": "K"
+        },
+        {
+            "value": "_______",
+            "type": "static",
+            "dependsOn": "gender",
+            "comparison": "equals",
+            "argument": "M"
+        },
+        {
+            "value": "01/01/2025",
+            "type": "date",
+            "title": "Дата заявки на сталый побыт",
+            "format": "DD/MM/YYYY"
+        },
+        {
+            "value": "POMORSKIEGO",
+            "type": "select",
+            "title": "Воеводство, где подана заявка на сталый побыт",
+            "options": "standard.voivodeship",
+            "transform": "voivodeshipAsGenitiveAdjective"
+        },
+        {
+            "value": "______",
+            "type": "static",
+            "dependsOn": "gender",
+            "comparison": "equals",
+            "argument": "K"
+        },
+        {
+            "value": "______",
+            "type": "static",
+            "dependsOn": "gender",
+            "comparison": "equals",
+            "argument": "M"
+        },
+        {
+            "value": "____",
+            "type": "static",
+            "dependsOn": "gender",
+            "comparison": "equals",
+            "argument": "K"
+        },
+        {
+            "value": "____",
+            "type": "static",
+            "dependsOn": "gender",
+            "comparison": "equals",
+            "argument": "M"
+        },
+        {
+            "value": "01/01/2025,",
+            "type": "copy",
+            "from": "applicationDate",
+            "format": "DD/MM/YYYY,"
+        },
+        {
+            "value": "GDAŃSK",
+            "type": "copy",
+            "from": "applicationCity"
+        }
+    ]
+}
