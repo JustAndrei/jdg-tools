@@ -8,496 +8,2489 @@
         },
         "defaultTransform": "caps"
     },
-    "title": "Заявка на польский документ подружи - Polski dokument podróży (PDP)",
-    "annotations": [
-        {
-            "value": "GDAŃSK",
-            "type": "text",
-            "title": "Место подачи заявки (город)",
-            "name": "applicationCity"
-        },
-        {
-            "value": "2027 01 01",
-            "type": "date",
-            "format": "YYYY MM DD",
-            "title": "Дата подачи",
-            "name": "applicationDate"
-        },
-        {
-            "value": "WOJEWODA",
-            "type": "static"
-        },
-        {
-            "value": "POMORSKI",
-            "type": "select",
-            "title": "Воеводство, где подаётся заявка",
-            "transform": "voivodeshipAsMasculineNominative",
-            "options": "standard.voivodeship",
-            "name": "voivodeship"
-        },
-        {
-            "type": "section",
-            "title": "A. Личные данные"
-        },
-        {
-            "type": "comment",
-            "text": "Заполнять латинскими буквами, точно так же, как написано в паспорте."
-        },
-        {
-            "value": "IVANOV",
-            "type": "text",
-            "title": "Фамилия сейчас",
-            "name": "lastName"
-        },
-        {
-            "value": "IVANOV",
-            "newValue": "",
-            "type": "text",
-            "title": "Фамилия при рождении (если отличается)",
-            "ifEmpty": "lastName"
-        },
-        {
-            "value": "IVANOV",
-            "newValue": "",
-            "type": "text",
-            "title": "Предыдущая фамилия (если менялась)",
-            "ifEmpty": "lastName"
-        },
-        {
-            "type": "break"
-        },
-        {
-            "value": "ANDREI",
-            "type": "text",
-            "title": "Имя сейчас",
-            "name": "firstName"
-        },
-        {
-            "value": "ANDREI",
-            "newValue": "",
-            "type": "text",
-            "title": "Предыдущие имена (если менялись)",
-            "ifEmpty": "firstName"
-        },
-        {
-            "type": "break"
-        },
-        {
-            "value": "PIOTR",
-            "type": "text",
-            "title": "Имя отца (как в паспорте латинскими)"
-        },
-        {
-            "value": "TAMARA",
-            "type": "text",
-            "title": "Имя матери (как в паспорте латинскими)"
-        },
-        {
-            "type": "break"
-        },
-        {
-            "value": "1990 01 01",
-            "type": "date",
-            "title": "Дата рождения",
-            "format": "YYYY MM DD"
-        },
-        {
-            "value": "M",
-            "type": "select",
-            "title": "Пол",
-            "name": "gender",
-            "options": "standard.gender"
-        },
-        {
-            "value": "MIŃSK",
-            "type": "text",
-            "title": "Место рождения (населенный пункт)"
-        },
-        {
-            "value": "BIAŁORUŚ",
-            "type": "text",
-            "title": "Страна рождения"
-        },
-        {
-            "value": "BIAŁORUŚ",
-            "type": "text",
-            "title": "Гражданство"
-        },
-        {
-            "value": "ŻONATY",
-            "type": "select",
-            "title": "Семейное положение",
-            "name": "maritalStatus",
-            "options": {
-                "KAWALER|PANNA": "холост / незамужняя",
-                "ŻONATY|ZAMĘŻNA": "женат / замужняя",
-                "ROZWIEDZONY|ROZWIEDZIONA": "разведён / разведена",
-                "WDOWIEC|WDOWA": "вдовец / вдова"
-            },
-            "indexer": "gender",
-            "indices": "M|K"
-        },
-        {
-            "value": "175",
-            "type": "text",
-            "title": "Рост (см)"
-        },
-        {
-            "value": "PIWNE",
-            "type": "select",
-            "title": "Цвет глаз",
-            "name": "colourOfEyes",
-            "options": {
-                "BRĄZOWE": "карие",
-                "CZARNE": "чёрные",
-                "ZIELONE": "зелёные",
-                "SZARE": "серые",
-                "NIEBIESKIE": "голубые",
-                "ZIELONO-NIEBIESKIE": "зелёно-голубые",
-                "BRĄZOWO-ZIELONE": "зелёно-карие",
-                "SZARO-NIEBIESKIE": "серо-голубые",
-                "SZARO-ZIELONE": "серо-зелёные",
-                "PIWNE": "сложное сочетание цветов (piwne)",
-                "NIEOKREŚLONE": "неопределенного цвета",
-                "WIELOKOLOROWE": "глаза разного цвета",
-                "CZERWONE": "красные (альбинос)"
-            }
-        },
-        {
-            "value": "BRAK",
-            "type": "text",
-            "title": "Особые приметы (родинки, татуировки, ...)"
-        },
-        {
-            "value": "512345678",
-            "type": "text",
-            "title": "Номер телефона"
-        },
-        {
-            "type": "section",
-            "title": "B. Несовершеннолетние под присмотром"
-        },
-        {
-            "type": "table",
-            "title": "Дети и прочие"
-        },
-        {
-            "value": "1",
-            "type": "row-number",
-            "title": "Несовершеннолетний №{row-number}",
-            "render": false
-        },
-        {
-            "value": "M",
-            "type": "select",
-            "title": "Пол",
-            "options": {
-                "K": "женский",
-                "M": "мужской"
-            }
-        },
-        {
-            "value": "SYN",
-            "type": "text",
-            "title": "Степень родства (SYN, CÓRKA, ...)"
-        },
-        {
-            "value": "NIKITA IVANOV",
-            "type": "text",
-            "title": "Имя и фамилия",
-            "mode": "fit",
-            "maxWidth": 135
-        },
-        {
-            "value": "2020/01/01,",
-            "type": "date",
-            "title": "Дата рождения",
-            "format": "YYYY/MM/DD,"
-        },
-        {
-            "value": "BIAŁORUŚ, MIŃSK",
-            "type": "text",
-            "title": "Страна, место (город) рождения"
-        },
-        {
-            "value": "7",
-            "type": "last-row-number"
-        },
-        {
-            "type": "end-of-table",
-            "add": "Добавить несовершеннолетнего"
-        },
-        {
-            "type": "section",
-            "title": "C. Адрес постоянного проживания (либо временного от двух месяцев)"
-        },
-        {
-            "value": "POMORSKIE",
-            "type": "copy",
-            "from": "voivodeship"
-        },
-        {
-            "value": "GDAŃSK",
-            "type": "text",
-            "title": "Повет"
-        },
-        {
-            "value": "GDAŃSK",
-            "type": "text",
-            "title": "Гмина"
-        },
-        {
-            "value": "GDAŃSK",
-            "type": "text",
-            "title": "Населённый пункт"
-        },
-        {
-            "type": "break"
-        },
-        {
-            "value": "NIEISTNIEJĄCA",
-            "type": "text",
-            "title": "Улица"
-        },
-        {
-            "value": "12",
-            "type": "text",
-            "title": "Номер дома"
-        },
-        {
-            "value": "3",
-            "type": "text",
-            "title": "Номер квартиры"
-        },
-        {
-            "type": "break"
-        },
-        {
-            "value": "80-000",
-            "type": "text",
-            "title": "Почтовый индекс"
-        },
-        {
-            "type": "section",
-            "title": "D. Информация о пребывании в Польше"
-        },
-        {
-            "type": "section",
-            "title": "D1"
-        },
-        {
-            "type": "comment",
-            "text": "D1 - заполняется в общем случае, но не беларусами, получающими PDP на льготных условиях."
-        },
-        {
-            "type": "comment",
-            "text": "Пока что заполнение этого раздела не реализовано. Обратитесь к автору, если в вашем случае нужно заполнить именно раздел D1."
-        },
-        {
-            "type": "section",
-            "title": "D2"
-        },
-        {
-            "type": "comment",
-            "text": "D2 - заполняется беларусами, получающими PDP на льготных условиях − бесплатно и годится любой вид карты побыта."
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Основание пребывания",
-            "option": "сталый побыт"
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Основание пребывания",
-            "option": "карта долгосрочного резидента ЕС"
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Основание пребывания",
-            "option": "часовый побыт",
-            "default": true
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Основание пребывания",
-            "option": "доп. защита (ochrona uzupełniająca)"
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Основание пребывания",
-            "option": "согласие на пребывание по гум. причинам"
-        },
-        {
-            "value": "WOJEWODA POMORSKI",
-            "type": "text",
-            "title": "Кем выдано"
-        },
-        {
-            "value": "2025 01 01",
-            "type": "date",
-            "format": "YYYY MM DD",
-            "title": "Когда выдано (дата децизии)"
-        },
-        {
-            "type": "comment",
-            "text": "<br/>Данные карты побыта / документа, подтверждающего основание пребывания"
-        },
-        {
-            "value": "AA",
-            "type": "text",
-            "title": "Серия"
-        },
-        {
-            "value": "1234567",
-            "type": "text",
-            "title": "Номер"
-        },
-        {
-            "type": "break"
-        },
-        {
-            "value": "2026 01 01",
-            "type": "date",
-            "format": "YYYY MM DD",
-            "title": "Когда выдана"
-        },
-        {
-            "value": "2029 01 01",
-            "type": "date",
-            "format": "YYYY MM DD",
-            "title": "Когда истекает"
-        },
-        {
-            "value": "WOJEWODA POMORSKI",
-            "type": "text",
-            "title": "Кем выдана"
-        },
-        {
-            "type": "section",
-            "title": "Обоснование заявки"
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Причина ВЫДАЧИ проездного документа",
-            "option": "утерян"
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Причина ВЫДАЧИ проездного документа",
-            "option": "повреждён"
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Причина ВЫДАЧИ проездного документа",
-            "option": "истёк срок действия",
-            "default": true
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Причина ВЫДАЧИ проездного документа",
-            "option": "отсутствие выездного документа"
-        },
-        {
-            "type": "section",
-            "title": "E. Информация для ЗАМЕНЫ ПДП, который ещё действует"
-        },
-        {
-            "type": "comment",
-            "text": "Этот раздел, как правило, заполнять не нужно"
-        },
-        {
-            "type": "check",
-            "title": "Причина ЗАМЕНЫ проездного документа",
-            "option": "не заполнено"
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Причина ЗАМЕНЫ проездного документа",
-            "option": "данные изменились"
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Причина ЗАМЕНЫ проездного документа",
-            "option": "документ повреждён"
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Причина ЗАМЕНЫ проездного документа",
-            "option": "существенное изменение лица по сравнению с фото"
-        },
-        {
-            "value": "×",
-            "type": "check",
-            "title": "Причина ЗАМЕНЫ проездного документа",
-            "option": "документ утерян"
-        },
-        {
-            "type": "section",
-            "title": "F. Образец подписи"
-        },
-        {
-            "value": "2027 01 01",
-            "type": "date",
-            "format": "YYYY MM DD",
-            "title": "Дата подписи",
-            "name": "signatureDateInSectionF"
-        },
-        {
-            "type": "sameAs",
-            "title": "Как дата подачи заявки",
-            "source": "applicationDate",
-            "target": "signatureDateInSectionF"
-        },
-        {
-            "type": "section",
-            "title": "Приложения к заявке"
-        },
-        {
-            "type": "comment",
-            "text": "Прилагаются:<ol><li>Копии документов, подтверждающих основание пребывания (например, децизии и карты побыта)</li><li>Копия предыдущего документа (истёкшего паспорта или предыдущего PDP)</li><li>Мельдунек – можно получить в городском ужонде за 17 злотых, но можно и самостоятельно бесплатно <a href=\"https://www.gov.pl/web/gov/sprawdz-swoje-dane-w-rejestrze-pesel\" target=\"_blank\">сделать выписку из реестра PESEL</a>, если у вас есть e-doręczenia. Чтобы распечатку выписки приняли, можно дополнительно распечатать верификацию цифровой подписи, загрузив документ с выпиской <a href=\"https://puesc.gov.pl/wer/\" target=\"_blank\">сюда</a></li><li>Две фотографии</li><li>Для ребенка дополнительно:<ul><li>копии документов, подтверждающих основание пребывания (например, децизии и карты побыта), одного из родителей</li><li>копия страницы с фото из паспорта/ПДП родителя</li><li>подтверждение родства − копия перевода свидетельства о рождении (или польский одпис)</li></ul></li></ol>"
-        },
-        {
-            "value": "____________________",
-            "type": "static"
-        },
-        {
-            "value": "__________________",
-            "type": "static"
-        },
-        {
-            "value": "KOPIA DECYZJI I KARTY POBYTU\nKOPIA POLSKIEGO DOKUMENTU PODRÓŻY\nZAŚWIADCZENIE Z REJESTRU PESEL Z ADRESEM ZAMELDOWANIA\nFOTOGRAFIE BIOMETRYCZNE 2 SZT.",
-            "type": "text",
-            "title": "Приложения",
-            "multiline": true
-        },
-        {
-            "type": "section",
-            "title": "G. Заявление о правдивости информации и невозможности получения другого проездного документа"
-        },
-        {
-            "value": "2027 01 01",
-            "type": "date",
-            "format": "YYYY MM DD",
-            "title": "Дата подписи",
-            "name": "signatureDateInSectionG"
-        },
-        {
-            "type": "sameAs",
-            "title": "Как дата подачи заявки",
-            "source": "applicationDate",
-            "target": "signatureDateInSectionG"
+    "local": {
+        "ru": {
+            "title": "Заявка на польский документ подружи - Polski dokument podróży (PDP)",
+            "annotations": [
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Место подачи заявки (город)",
+                    "name": "applicationCity"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Дата подачи",
+                    "name": "applicationDate"
+                },
+                {
+                    "value": "WOJEWODA",
+                    "type": "static"
+                },
+                {
+                    "value": "POMORSKI",
+                    "type": "select",
+                    "title": "Воеводство, где подаётся заявка",
+                    "transform": "voivodeshipAsMasculineNominative",
+                    "options": "standard.voivodeship",
+                    "name": "voivodeship"
+                },
+                {
+                    "type": "section",
+                    "title": "A. Личные данные"
+                },
+                {
+                    "type": "comment",
+                    "text": "Заполнять латинскими буквами, точно так же, как написано в паспорте."
+                },
+                {
+                    "value": "IVANOV",
+                    "type": "text",
+                    "title": "Фамилия сейчас",
+                    "name": "lastName"
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Фамилия при рождении (если отличается)",
+                    "ifEmpty": "lastName"
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Предыдущая фамилия (если менялась)",
+                    "ifEmpty": "lastName"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "ANDREI",
+                    "type": "text",
+                    "title": "Имя сейчас",
+                    "name": "firstName"
+                },
+                {
+                    "value": "ANDREI",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Предыдущие имена (если менялись)",
+                    "ifEmpty": "firstName"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "PIOTR",
+                    "type": "text",
+                    "title": "Имя отца (как в паспорте латинскими)"
+                },
+                {
+                    "value": "TAMARA",
+                    "type": "text",
+                    "title": "Имя матери (как в паспорте латинскими)"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "1990 01 01",
+                    "type": "date",
+                    "title": "Дата рождения",
+                    "format": "YYYY MM DD"
+                },
+                {
+                    "value": "M",
+                    "type": "select",
+                    "title": "Пол",
+                    "name": "gender",
+                    "options": {
+                        "K": "женский",
+                        "M": "мужской"
+                    }
+                },
+                {
+                    "value": "MIŃSK",
+                    "type": "text",
+                    "title": "Место рождения (населенный пункт)"
+                },
+                {
+                    "value": "BIAŁORUŚ",
+                    "type": "text",
+                    "title": "Страна рождения"
+                },
+                {
+                    "value": "BIAŁORUŚ",
+                    "type": "text",
+                    "title": "Гражданство"
+                },
+                {
+                    "value": "ŻONATY",
+                    "type": "select",
+                    "title": "Семейное положение",
+                    "name": "maritalStatus",
+                    "options": {
+                        "KAWALER|PANNA": "холост / незамужняя",
+                        "ŻONATY|ZAMĘŻNA": "женат / замужняя",
+                        "ROZWIEDZONY|ROZWIEDZIONA": "разведён / разведена",
+                        "WDOWIEC|WDOWA": "вдовец / вдова"
+                    },
+                    "indexer": "gender",
+                    "indices": "M|K"
+                },
+                {
+                    "value": "175",
+                    "type": "text",
+                    "title": "Рост (см)"
+                },
+                {
+                    "value": "PIWNE",
+                    "type": "select",
+                    "title": "Цвет глаз",
+                    "name": "colourOfEyes",
+                    "options": {
+                        "BRĄZOWE": "карие",
+                        "CZARNE": "чёрные",
+                        "ZIELONE": "зелёные",
+                        "SZARE": "серые",
+                        "NIEBIESKIE": "голубые",
+                        "ZIELONO-NIEBIESKIE": "зелёно-голубые",
+                        "BRĄZOWO-ZIELONE": "зелёно-карие",
+                        "SZARO-NIEBIESKIE": "серо-голубые",
+                        "SZARO-ZIELONE": "серо-зелёные",
+                        "PIWNE": "сложное сочетание цветов (piwne)",
+                        "NIEOKREŚLONE": "неопределенного цвета",
+                        "WIELOKOLOROWE": "глаза разного цвета",
+                        "CZERWONE": "красные (альбинос)"
+                    }
+                },
+                {
+                    "value": "BRAK",
+                    "type": "text",
+                    "title": "Особые приметы (родинки, татуировки, ...)"
+                },
+                {
+                    "value": "512345678",
+                    "type": "text",
+                    "title": "Номер телефона"
+                },
+                {
+                    "type": "section",
+                    "title": "B. Несовершеннолетние под присмотром"
+                },
+                {
+                    "type": "table",
+                    "title": "Дети и прочие"
+                },
+                {
+                    "value": "1",
+                    "type": "row-number",
+                    "title": "Несовершеннолетний №{row-number}",
+                    "render": false
+                },
+                {
+                    "value": "M",
+                    "type": "select",
+                    "title": "Пол",
+                    "options": {
+                        "K": "женский",
+                        "M": "мужской"
+                    }
+                },
+                {
+                    "value": "SYN",
+                    "type": "text",
+                    "title": "Степень родства (SYN, CÓRKA, ...)"
+                },
+                {
+                    "value": "NIKITA IVANOV",
+                    "type": "text",
+                    "title": "Имя и фамилия",
+                    "mode": "fit",
+                    "maxWidth": 135
+                },
+                {
+                    "value": "2020/01/01,",
+                    "type": "date",
+                    "title": "Дата рождения",
+                    "format": "YYYY/MM/DD,"
+                },
+                {
+                    "value": "BIAŁORUŚ, MIŃSK",
+                    "type": "text",
+                    "title": "Страна, место (город) рождения"
+                },
+                {
+                    "value": "7",
+                    "type": "last-row-number"
+                },
+                {
+                    "type": "end-of-table",
+                    "add": "Добавить несовершеннолетнего"
+                },
+                {
+                    "type": "section",
+                    "title": "C. Адрес постоянного проживания (либо временного от двух месяцев)"
+                },
+                {
+                    "value": "POMORSKIE",
+                    "type": "copy",
+                    "from": "voivodeship"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Повет"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Гмина"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Населённый пункт"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "NIEISTNIEJĄCA",
+                    "type": "text",
+                    "title": "Улица"
+                },
+                {
+                    "value": "12",
+                    "type": "text",
+                    "title": "Номер дома"
+                },
+                {
+                    "value": "3",
+                    "type": "text",
+                    "title": "Номер квартиры"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "80-000",
+                    "type": "text",
+                    "title": "Почтовый индекс"
+                },
+                {
+                    "type": "section",
+                    "title": "D. Информация о пребывании в Польше"
+                },
+                {
+                    "type": "comment",
+                    "text": "Этот раздел имеет две части, D1 и D2. Заполняется только одна из них, в зависимости от гражданства."
+                },
+                {
+                    "type": "group-selector",
+                    "title": "Гражданство",
+                    "options": {
+                        "d2": "беларус, заполняю D2",
+                        "d1": "другой иностранец, заполняю D1"
+                    }
+                },
+                {
+                    "type": "group-start",
+                    "group": "d1"
+                },
+                {
+                    "type": "section",
+                    "title": "D1"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Основание пребывания (D1)",
+                    "option": "сталый побыт"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Основание пребывания (D1)",
+                    "option": "карта долгосрочного резидента ЕС"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Основание пребывания (D1)",
+                    "option": "часовый побыт по Art. 186 ust. 1 pkt 9"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Основание пребывания (D1)",
+                    "option": "доп. защита (ochrona uzupełniająca)",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Основание пребывания (D1)",
+                    "option": "согласие на пребывание по гум. причинам"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Кем выдано"
+                },
+                {
+                    "value": "2025 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Когда выдано (дата децизии)"
+                },
+                {
+                    "type": "comment",
+                    "text": "<br/>Данные карты побыта / документа, подтверждающего основание пребывания"
+                },
+                {
+                    "value": "AA",
+                    "type": "text",
+                    "title": "Серия"
+                },
+                {
+                    "value": "1234567",
+                    "type": "text",
+                    "title": "Номер"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "2026 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Когда выдана"
+                },
+                {
+                    "value": "2029 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Когда истекает"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Кем выдана"
+                },
+                {
+                    "type": "section",
+                    "title": "Обоснование заявки"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВЫДАЧИ PDP (D1)",
+                    "option": "утерян свой документ"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВЫДАЧИ PDP (D1)",
+                    "option": "повреждён свой документ"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВЫДАЧИ PDP (D1)",
+                    "option": "истёк срок действия своего документа",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВЫДАЧИ PDP (D1)",
+                    "option": "истёк срок действия PDP"
+                },
+                {
+                    "type": "group-end",
+                    "group": "d1"
+                },
+                {
+                    "type": "group-start",
+                    "group": "d2"
+                },
+                {
+                    "type": "section",
+                    "title": "D2"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Основание пребывания",
+                    "option": "сталый побыт"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Основание пребывания",
+                    "option": "карта долгосрочного резидента ЕС"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Основание пребывания",
+                    "option": "часовый побыт",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Основание пребывания",
+                    "option": "доп. защита (ochrona uzupełniająca)"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Основание пребывания",
+                    "option": "согласие на пребывание по гум. причинам"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Кем выдано"
+                },
+                {
+                    "value": "2025 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Когда выдано (дата децизии)"
+                },
+                {
+                    "type": "comment",
+                    "text": "<br/>Данные карты побыта / документа, подтверждающего основание пребывания"
+                },
+                {
+                    "value": "AA",
+                    "type": "text",
+                    "title": "Серия"
+                },
+                {
+                    "value": "1234567",
+                    "type": "text",
+                    "title": "Номер"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "2026 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Когда выдана"
+                },
+                {
+                    "value": "2029 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Когда истекает"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Кем выдана"
+                },
+                {
+                    "type": "section",
+                    "title": "Обоснование заявки"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВЫДАЧИ PDP",
+                    "option": "утерян"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВЫДАЧИ PDP",
+                    "option": "повреждён"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВЫДАЧИ PDP",
+                    "option": "истёк срок действия",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВЫДАЧИ PDP",
+                    "option": "отсутствие выездного документа"
+                },
+                {
+                    "type": "group-end",
+                    "group": "d2"
+                },
+                {
+                    "type": "section",
+                    "title": "E. Информация для ЗАМЕНЫ ПДП, который ещё действует"
+                },
+                {
+                    "type": "comment",
+                    "text": "Этот раздел, как правило, заполнять не нужно"
+                },
+                {
+                    "type": "check",
+                    "title": "Причина ЗАМЕНЫ PDP",
+                    "option": "не заполнено"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ЗАМЕНЫ PDP",
+                    "option": "данные изменились"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ЗАМЕНЫ PDP",
+                    "option": "документ повреждён"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ЗАМЕНЫ PDP",
+                    "option": "изменение лица по сравнению с фото"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ЗАМЕНЫ PDP",
+                    "option": "документ утерян"
+                },
+                {
+                    "type": "section",
+                    "title": "F. Образец подписи"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Дата подписи",
+                    "name": "signatureDateInSectionF"
+                },
+                {
+                    "type": "same-as",
+                    "title": "Как дата подачи заявки",
+                    "source": "applicationDate",
+                    "target": "signatureDateInSectionF"
+                },
+                {
+                    "type": "section",
+                    "title": "Приложения к заявке"
+                },
+                {
+                    "type": "comment",
+                    "text": "Прилагаются:<ol><li>Копии документов, подтверждающих основание пребывания (например, децизии и карты побыта)</li><li>Копия предыдущего документа (истёкшего паспорта или предыдущего PDP)</li><li>Мельдунек – можно получить в городском ужонде за 17 злотых, но можно и самостоятельно бесплатно <a href=\"https://www.gov.pl/web/gov/sprawdz-swoje-dane-w-rejestrze-pesel\" target=\"_blank\">сделать выписку из реестра PESEL</a>, если у вас есть e-doręczenia. Чтобы распечатку выписки приняли, можно дополнительно распечатать верификацию цифровой подписи, загрузив документ с выпиской <a href=\"https://puesc.gov.pl/wer/\" target=\"_blank\">сюда</a></li><li>Две фотографии</li><li>Для ребенка дополнительно:<ul><li>копии документов, подтверждающих основание пребывания (например, децизии и карты побыта), одного из родителей</li><li>копия страницы с фото из паспорта/ПДП родителя</li><li>подтверждение родства − копия перевода свидетельства о рождении (или польский одпис)</li></ul></li></ol>"
+                },
+                {
+                    "value": "____________________",
+                    "type": "static"
+                },
+                {
+                    "value": "__________________",
+                    "type": "static"
+                },
+                {
+                    "value": "KOPIA DECYZJI I KARTY POBYTU\nKOPIA POLSKIEGO DOKUMENTU PODRÓŻY\nZAŚWIADCZENIE Z REJESTRU PESEL Z ADRESEM ZAMELDOWANIA\nFOTOGRAFIE BIOMETRYCZNE 2 SZT.",
+                    "type": "text",
+                    "title": "Приложения",
+                    "multiline": true
+                },
+                {
+                    "type": "section",
+                    "title": "G. Заявление о правдивости информации и невозможности получения другого проездного документа"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Дата подписи",
+                    "name": "signatureDateInSectionG"
+                },
+                {
+                    "type": "same-as",
+                    "title": "Как дата подачи заявки",
+                    "source": "applicationDate",
+                    "target": "signatureDateInSectionG"
+                }
+            ]
+        },
+        "en": {
+            "title": "Application for a Polish travel document - Polski dokument podróży (PDP)",
+            "annotations": [
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Place of submission of the application (city)",
+                    "name": "applicationCity"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Date of submission",
+                    "name": "applicationDate"
+                },
+                {
+                    "value": "WOJEWODA",
+                    "type": "static"
+                },
+                {
+                    "value": "POMORSKI",
+                    "type": "select",
+                    "title": "The voivodeship where the application is submitted",
+                    "transform": "voivodeshipAsMasculineNominative",
+                    "options": "standard.voivodeship",
+                    "name": "voivodeship"
+                },
+                {
+                    "type": "section",
+                    "title": "A. Personal data"
+                },
+                {
+                    "type": "comment",
+                    "text": "Use the Latin letters, exactly as in your passport"
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "SMITH",
+                    "type": "text",
+                    "title": "Surname as of now",
+                    "name": "lastName"
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Surname at birth (if different)",
+                    "ifEmpty": "lastName"
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Previous surname (if it has changed)",
+                    "ifEmpty": "lastName"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "ANDREI",
+                    "newValue": "JOHN",
+                    "type": "text",
+                    "title": "First name as of now",
+                    "name": "firstName"
+                },
+                {
+                    "value": "ANDREI",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Previous first names (if changed)",
+                    "ifEmpty": "firstName"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "PIOTR",
+                    "newValue": "JAMES",
+                    "type": "text",
+                    "title": "Father's first name (as in your passport, Latin letters)"
+                },
+                {
+                    "value": "TAMARA",
+                    "newValue": "MARY",
+                    "type": "text",
+                    "title": "Mother's first name (as in your passport, Latin letters)"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "1990 01 01",
+                    "type": "date",
+                    "title": "Date of birth",
+                    "format": "YYYY MM DD"
+                },
+                {
+                    "value": "M",
+                    "type": "select",
+                    "title": "Sex",
+                    "name": "gender",
+                    "options": {
+                        "K": "female",
+                        "M": "male"
+                    }
+                },
+                {
+                    "value": "MIŃSK",
+                    "type": "text",
+                    "title": "Place of birth (town/city)"
+                },
+                {
+                    "value": "BIAŁORUŚ",
+                    "type": "text",
+                    "title": "Country of birth"
+                },
+                {
+                    "value": "BIAŁORUŚ",
+                    "type": "text",
+                    "title": "Citizenship"
+                },
+                {
+                    "value": "ŻONATY",
+                    "type": "select",
+                    "title": "Marital status",
+                    "name": "maritalStatus",
+                    "options": {
+                        "KAWALER|PANNA": "single",
+                        "ŻONATY|ZAMĘŻNA": "married",
+                        "ROZWIEDZONY|ROZWIEDZIONA": "divorced",
+                        "WDOWIEC|WDOWA": "widowed"
+                    },
+                    "indexer": "gender",
+                    "indices": "M|K"
+                },
+                {
+                    "value": "175",
+                    "type": "text",
+                    "title": "Height (cm)"
+                },
+                {
+                    "value": "PIWNE",
+                    "type": "select",
+                    "title": "Eye colour",
+                    "name": "colourOfEyes",
+                    "options": {
+                        "BRĄZOWE": "brown",
+                        "CZARNE": "black",
+                        "ZIELONE": "green",
+                        "SZARE": "grey",
+                        "NIEBIESKIE": "blue",
+                        "ZIELONO-NIEBIESKIE": "green-blue",
+                        "BRĄZOWO-ZIELONE": "green-brown",
+                        "SZARO-NIEBIESKIE": "grey-blue",
+                        "SZARO-ZIELONE": "grey-green",
+                        "PIWNE": "a complex mix of colours (piwne)",
+                        "NIEOKREŚLONE": "undetermined colour",
+                        "WIELOKOLOROWE": "different-coloured eyes",
+                        "CZERWONE": "red (albino)"
+                    }
+                },
+                {
+                    "value": "BRAK",
+                    "type": "text",
+                    "title": "Distinguishing marks (moles, tattoos, ...)"
+                },
+                {
+                    "value": "512345678",
+                    "type": "text",
+                    "title": "Phone number"
+                },
+                {
+                    "type": "section",
+                    "title": "B. Minors in your care"
+                },
+                {
+                    "type": "table",
+                    "title": "Children and others"
+                },
+                {
+                    "value": "1",
+                    "type": "row-number",
+                    "title": "Minor No. {row-number}",
+                    "render": false
+                },
+                {
+                    "value": "M",
+                    "type": "select",
+                    "title": "Sex",
+                    "options": {
+                        "K": "female",
+                        "M": "male"
+                    }
+                },
+                {
+                    "value": "SYN",
+                    "type": "text",
+                    "title": "Degree of kinship (SYN, CÓRKA, ...)"
+                },
+                {
+                    "value": "NIKITA IVANOV",
+                    "newValue": "JACK SMITH",
+                    "type": "text",
+                    "title": "First name and surname",
+                    "mode": "fit",
+                    "maxWidth": 135
+                },
+                {
+                    "value": "2020/01/01,",
+                    "type": "date",
+                    "title": "Date of birth",
+                    "format": "YYYY/MM/DD,"
+                },
+                {
+                    "value": "BIAŁORUŚ, MIŃSK",
+                    "type": "text",
+                    "title": "Country, place (city) of birth"
+                },
+                {
+                    "value": "7",
+                    "type": "last-row-number"
+                },
+                {
+                    "type": "end-of-table",
+                    "add": "Add a minor"
+                },
+                {
+                    "type": "section",
+                    "title": "C. Permanent residence address (or temporary, for two months or more)"
+                },
+                {
+                    "value": "POMORSKIE",
+                    "type": "copy",
+                    "from": "voivodeship"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Powiat (county)"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Gmina (municipality)"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Locality (town, village)"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "NIEISTNIEJĄCA",
+                    "type": "text",
+                    "title": "Street"
+                },
+                {
+                    "value": "12",
+                    "type": "text",
+                    "title": "House number"
+                },
+                {
+                    "value": "3",
+                    "type": "text",
+                    "title": "Flat number"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "80-000",
+                    "type": "text",
+                    "title": "Postal code"
+                },
+                {
+                    "type": "section",
+                    "title": "D. Information about your stay in Poland"
+                },
+                {
+                    "type": "comment",
+                    "text": "This section has two parts, D1 and D2. Only one of them is filled in, depending on citizenship."
+                },
+                {
+                    "type": "group-selector",
+                    "title": "Citizenship",
+                    "options": {
+                        "d1": "other foreigner, filling in D1",
+                        "d2": "Belarusian, filling in D2"
+                    }
+                },
+                {
+                    "type": "group-start",
+                    "group": "d1"
+                },
+                {
+                    "type": "section",
+                    "title": "D1"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Basis of stay (D1)",
+                    "option": "permanent residence (stały pobyt)"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Basis of stay (D1)",
+                    "option": "EU long-term resident's card"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Basis of stay (D1)",
+                    "option": "temporary residence (czasowy pobyt) under Art. 186 ust. 1 pkt 9"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Basis of stay (D1)",
+                    "option": "subsidiary protection (ochrona uzupełniająca)",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Basis of stay (D1)",
+                    "option": "consent to stay on humanitarian grounds"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Issued by"
+                },
+                {
+                    "value": "2025 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Issued on (date of the decision)"
+                },
+                {
+                    "type": "comment",
+                    "text": "<br/>Details of the residence card / document confirming the basis of stay"
+                },
+                {
+                    "value": "AA",
+                    "type": "text",
+                    "title": "Series"
+                },
+                {
+                    "value": "1234567",
+                    "type": "text",
+                    "title": "Number"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "2026 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Issued on"
+                },
+                {
+                    "value": "2029 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Expires on"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Issued by"
+                },
+                {
+                    "type": "section",
+                    "title": "Justification of the application"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for ISSUING the travel document (D1)",
+                    "option": "own document lost"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for ISSUING the travel document (D1)",
+                    "option": "own document damaged"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for ISSUING the travel document (D1)",
+                    "option": "own document expired",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for ISSUING the travel document (D1)",
+                    "option": "PDP expired"
+                },
+                {
+                    "type": "group-end",
+                    "group": "d1"
+                },
+                {
+                    "type": "group-start",
+                    "group": "d2"
+                },
+                {
+                    "type": "section",
+                    "title": "D2"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Basis of stay",
+                    "option": "permanent residence (stały pobyt)"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Basis of stay",
+                    "option": "EU long-term resident's card"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Basis of stay",
+                    "option": "temporary residence (czasowy pobyt)",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Basis of stay",
+                    "option": "subsidiary protection (ochrona uzupełniająca)"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Basis of stay",
+                    "option": "consent to stay on humanitarian grounds"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Issued by"
+                },
+                {
+                    "value": "2025 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Issued on (date of the decision)"
+                },
+                {
+                    "type": "comment",
+                    "text": "<br/>Details of the residence card / document confirming the basis of stay"
+                },
+                {
+                    "value": "AA",
+                    "type": "text",
+                    "title": "Series"
+                },
+                {
+                    "value": "1234567",
+                    "type": "text",
+                    "title": "Number"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "2026 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Issued on"
+                },
+                {
+                    "value": "2029 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Expires on"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Issued by"
+                },
+                {
+                    "type": "section",
+                    "title": "Justification of the application"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for ISSUING the travel document",
+                    "option": "lost"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for ISSUING the travel document",
+                    "option": "damaged"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for ISSUING the travel document",
+                    "option": "expired",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for ISSUING the travel document",
+                    "option": "no travel document"
+                },
+                {
+                    "type": "group-end",
+                    "group": "d2"
+                },
+                {
+                    "type": "section",
+                    "title": "E. Information for REPLACING a PDP that is still valid"
+                },
+                {
+                    "type": "comment",
+                    "text": "This section usually does not need to be filled in"
+                },
+                {
+                    "type": "check",
+                    "title": "Reason for REPLACING the travel document",
+                    "option": "not filled in"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for REPLACING the travel document",
+                    "option": "data has changed"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for REPLACING the travel document",
+                    "option": "document damaged"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for REPLACING the travel document",
+                    "option": "significant change in appearance compared to the photo"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Reason for REPLACING the travel document",
+                    "option": "document lost"
+                },
+                {
+                    "type": "section",
+                    "title": "F. Specimen signature"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Date of signature",
+                    "name": "signatureDateInSectionF"
+                },
+                {
+                    "type": "same-as",
+                    "title": "Same as the application date",
+                    "source": "applicationDate",
+                    "target": "signatureDateInSectionF"
+                },
+                {
+                    "type": "section",
+                    "title": "Attachments to the application"
+                },
+                {
+                    "type": "comment",
+                    "text": "Attachments:<ol><li>Copies of documents confirming the basis of stay (e.g. the decision and the residence card)</li><li>Copy of the previous document (expired passport or previous PDP)</li><li>Proof of registered address (meldunek) – you can get it at the city office (urząd miasta) for 17 PLN, or you can generate a free <a href=\"https://www.gov.pl/web/gov/sprawdz-swoje-dane-w-rejestrze-pesel\" target=\"_blank\">extract from the PESEL register</a> yourself if you have e-Doręczenia. To get the printout accepted, you can additionally print the digital signature verification by uploading the extract document <a href=\"https://puesc.gov.pl/wer/\" target=\"_blank\">here</a></li><li>Two photographs</li><li>For a child, additionally:<ul><li>copies of documents confirming the basis of stay (e.g. the decision and the residence card) of one of the parents</li><li>copy of the photo page of the parent's passport/PDP</li><li>proof of kinship − a copy of the translated birth certificate (or a Polish odpis)</li></ul></li></ol>"
+                },
+                {
+                    "value": "____________________",
+                    "type": "static"
+                },
+                {
+                    "value": "__________________",
+                    "type": "static"
+                },
+                {
+                    "value": "KOPIA DECYZJI I KARTY POBYTU\nKOPIA POLSKIEGO DOKUMENTU PODRÓŻY\nZAŚWIADCZENIE Z REJESTRU PESEL Z ADRESEM ZAMELDOWANIA\nFOTOGRAFIE BIOMETRYCZNE 2 SZT.",
+                    "type": "text",
+                    "title": "Attachments",
+                    "multiline": true
+                },
+                {
+                    "type": "section",
+                    "title": "G. Declaration that the information is true and that it is impossible to obtain another travel document"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Date of signature",
+                    "name": "signatureDateInSectionG"
+                },
+                {
+                    "type": "same-as",
+                    "title": "Same as the application date",
+                    "source": "applicationDate",
+                    "target": "signatureDateInSectionG"
+                }
+            ]
+        },
+        "be": {
+            "title": "Заява на польскі праязны дакумент - Polski dokument podróży (PDP)",
+            "annotations": [
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Месца падачы заявы (горад)",
+                    "name": "applicationCity"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Дата падачы",
+                    "name": "applicationDate"
+                },
+                {
+                    "value": "WOJEWODA",
+                    "type": "static"
+                },
+                {
+                    "value": "POMORSKI",
+                    "type": "select",
+                    "title": "Ваяводства, дзе падаецца заява",
+                    "transform": "voivodeshipAsMasculineNominative",
+                    "options": "standard.voivodeship",
+                    "name": "voivodeship"
+                },
+                {
+                    "type": "section",
+                    "title": "A. Асабістыя даныя"
+                },
+                {
+                    "type": "comment",
+                    "text": "Запаўняць лацінкай, дакладна так, як напісана ў пашпарце."
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "IVANOU",
+                    "type": "text",
+                    "title": "Прозвішча зараз",
+                    "name": "lastName"
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Прозвішча пры нараджэнні (калі адрозніваецца)",
+                    "ifEmpty": "lastName"
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Папярэдняе прозвішча (калі змянялася)",
+                    "ifEmpty": "lastName"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "ANDREI",
+                    "type": "text",
+                    "title": "Імя зараз",
+                    "name": "firstName"
+                },
+                {
+                    "value": "ANDREI",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Папярэднія імёны (калі змяняліся)",
+                    "ifEmpty": "firstName"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "PIOTR",
+                    "type": "text",
+                    "title": "Імя бацькі (як у пашпарце лацінкай)"
+                },
+                {
+                    "value": "TAMARA",
+                    "type": "text",
+                    "title": "Імя маці (як у пашпарце лацінкай)"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "1990 01 01",
+                    "type": "date",
+                    "title": "Дата нараджэння",
+                    "format": "YYYY MM DD"
+                },
+                {
+                    "value": "M",
+                    "type": "select",
+                    "title": "Пол",
+                    "name": "gender",
+                    "options": {
+                        "K": "жаночы",
+                        "M": "мужчынскі"
+                    }
+                },
+                {
+                    "value": "MIŃSK",
+                    "type": "text",
+                    "title": "Месца нараджэння (населены пункт)"
+                },
+                {
+                    "value": "BIAŁORUŚ",
+                    "type": "text",
+                    "title": "Краіна нараджэння"
+                },
+                {
+                    "value": "BIAŁORUŚ",
+                    "type": "text",
+                    "title": "Грамадзянства"
+                },
+                {
+                    "value": "ŻONATY",
+                    "type": "select",
+                    "title": "Сямейны стан",
+                    "name": "maritalStatus",
+                    "options": {
+                        "KAWALER|PANNA": "нежанаты / незамужняя",
+                        "ŻONATY|ZAMĘŻNA": "жанаты / замужняя",
+                        "ROZWIEDZONY|ROZWIEDZIONA": "разведзены / разведзеная",
+                        "WDOWIEC|WDOWA": "удавец / удава"
+                    },
+                    "indexer": "gender",
+                    "indices": "M|K"
+                },
+                {
+                    "value": "175",
+                    "type": "text",
+                    "title": "Рост (см)"
+                },
+                {
+                    "value": "PIWNE",
+                    "type": "select",
+                    "title": "Колер вачэй",
+                    "name": "colourOfEyes",
+                    "options": {
+                        "BRĄZOWE": "карычневыя",
+                        "CZARNE": "чорныя",
+                        "ZIELONE": "зялёныя",
+                        "SZARE": "шэрыя",
+                        "NIEBIESKIE": "блакітныя",
+                        "ZIELONO-NIEBIESKIE": "зялёна-блакітныя",
+                        "BRĄZOWO-ZIELONE": "зялёна-карычневыя",
+                        "SZARO-NIEBIESKIE": "шэра-блакітныя",
+                        "SZARO-ZIELONE": "шэра-зялёныя",
+                        "PIWNE": "складанае спалучэнне колераў (piwne)",
+                        "NIEOKREŚLONE": "нявызначанага колеру",
+                        "WIELOKOLOROWE": "вочы рознага колеру",
+                        "CZERWONE": "чырвоныя (альбінос)"
+                    }
+                },
+                {
+                    "value": "BRAK",
+                    "type": "text",
+                    "title": "Асаблівыя прыметы (радзімкі, татуіроўкі, ...)"
+                },
+                {
+                    "value": "512345678",
+                    "type": "text",
+                    "title": "Нумар тэлефона"
+                },
+                {
+                    "type": "section",
+                    "title": "B. Непаўналетнія пад апекай"
+                },
+                {
+                    "type": "table",
+                    "title": "Дзеці і іншыя"
+                },
+                {
+                    "value": "1",
+                    "type": "row-number",
+                    "title": "Непаўналетні №{row-number}",
+                    "render": false
+                },
+                {
+                    "value": "M",
+                    "type": "select",
+                    "title": "Пол",
+                    "options": {
+                        "K": "жаночы",
+                        "M": "мужчынскі"
+                    }
+                },
+                {
+                    "value": "SYN",
+                    "type": "text",
+                    "title": "Ступень роднасці (SYN, CÓRKA, ...)"
+                },
+                {
+                    "value": "NIKITA IVANOV",
+                    "newValue": "MIKITA IVANOU",
+                    "type": "text",
+                    "title": "Імя і прозвішча",
+                    "mode": "fit",
+                    "maxWidth": 135
+                },
+                {
+                    "value": "2020/01/01,",
+                    "type": "date",
+                    "title": "Дата нараджэння",
+                    "format": "YYYY/MM/DD,"
+                },
+                {
+                    "value": "BIAŁORUŚ, MIŃSK",
+                    "type": "text",
+                    "title": "Краіна, месца (горад) нараджэння"
+                },
+                {
+                    "value": "7",
+                    "type": "last-row-number"
+                },
+                {
+                    "type": "end-of-table",
+                    "add": "Дадаць непаўналетняга"
+                },
+                {
+                    "type": "section",
+                    "title": "C. Адрас пастаяннага пражывання (або часовага ад двух месяцаў)"
+                },
+                {
+                    "value": "POMORSKIE",
+                    "type": "copy",
+                    "from": "voivodeship"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Павет"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Гміна"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Населены пункт"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "NIEISTNIEJĄCA",
+                    "type": "text",
+                    "title": "Вуліца"
+                },
+                {
+                    "value": "12",
+                    "type": "text",
+                    "title": "Нумар дома"
+                },
+                {
+                    "value": "3",
+                    "type": "text",
+                    "title": "Нумар кватэры"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "80-000",
+                    "type": "text",
+                    "title": "Паштовы індэкс"
+                },
+                {
+                    "type": "section",
+                    "title": "D. Інфармацыя аб знаходжанні ў Польшчы"
+                },
+                {
+                    "type": "comment",
+                    "text": "Гэты раздзел мае дзве часткі, D1 і D2. Запаўняецца толькі адна з іх, у залежнасці ад грамадзянства."
+                },
+                {
+                    "type": "group-selector",
+                    "title": "Грамадзянства",
+                    "options": {
+                        "d2": "беларус, запаўняю D2",
+                        "d1": "іншы замежнік, запаўняю D1"
+                    }
+                },
+                {
+                    "type": "group-start",
+                    "group": "d1"
+                },
+                {
+                    "type": "section",
+                    "title": "D1"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Падстава знаходжання (D1)",
+                    "option": "пастаянны побыт (stały pobyt)"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Падстава знаходжання (D1)",
+                    "option": "карта доўгатэрміновага рэзідэнта ЕС"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Падстава знаходжання (D1)",
+                    "option": "часовы побыт (czasowy pobyt) згодна з Art. 186 ust. 1 pkt 9"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Падстава знаходжання (D1)",
+                    "option": "дадатковая абарона (ochrona uzupełniająca)",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Падстава знаходжання (D1)",
+                    "option": "згода на знаходжанне па гуманітарных прычынах"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Кім выдадзена"
+                },
+                {
+                    "value": "2025 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Калі выдадзена (дата дэцызіі)"
+                },
+                {
+                    "type": "comment",
+                    "text": "<br/>Даныя карты побыту / дакумента, які пацвярджае падставу знаходжання"
+                },
+                {
+                    "value": "AA",
+                    "type": "text",
+                    "title": "Серыя"
+                },
+                {
+                    "value": "1234567",
+                    "type": "text",
+                    "title": "Нумар"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "2026 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Калі выдадзена"
+                },
+                {
+                    "value": "2029 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Калі заканчваецца"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Кім выдадзена"
+                },
+                {
+                    "type": "section",
+                    "title": "Абгрунтаванне заявы"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
+                    "option": "страчаны ўласны дакумент"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
+                    "option": "пашкоджаны ўласны дакумент"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
+                    "option": "скончыўся тэрмін дзеяння ўласнага дакумента",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
+                    "option": "скончыўся тэрмін дзеяння PDP"
+                },
+                {
+                    "type": "group-end",
+                    "group": "d1"
+                },
+                {
+                    "type": "group-start",
+                    "group": "d2"
+                },
+                {
+                    "type": "section",
+                    "title": "D2"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Падстава знаходжання",
+                    "option": "пастаянны побыт (stały pobyt)"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Падстава знаходжання",
+                    "option": "карта доўгатэрміновага рэзідэнта ЕС"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Падстава знаходжання",
+                    "option": "часовы побыт (czasowy pobyt)",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Падстава знаходжання",
+                    "option": "дадатковая абарона (ochrona uzupełniająca)"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Падстава знаходжання",
+                    "option": "згода на знаходжанне па гуманітарных прычынах"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Кім выдадзена"
+                },
+                {
+                    "value": "2025 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Калі выдадзена (дата дэцызіі)"
+                },
+                {
+                    "type": "comment",
+                    "text": "<br/>Даныя карты побыту / дакумента, які пацвярджае падставу знаходжання"
+                },
+                {
+                    "value": "AA",
+                    "type": "text",
+                    "title": "Серыя"
+                },
+                {
+                    "value": "1234567",
+                    "type": "text",
+                    "title": "Нумар"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "2026 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Калі выдадзена"
+                },
+                {
+                    "value": "2029 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Калі заканчваецца"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Кім выдадзена"
+                },
+                {
+                    "type": "section",
+                    "title": "Абгрунтаванне заявы"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ВЫДАЧЫ праязнога дакумента",
+                    "option": "страчаны"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ВЫДАЧЫ праязнога дакумента",
+                    "option": "пашкоджаны"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ВЫДАЧЫ праязнога дакумента",
+                    "option": "скончыўся тэрмін дзеяння",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ВЫДАЧЫ праязнога дакумента",
+                    "option": "адсутнасць выязнога дакумента"
+                },
+                {
+                    "type": "group-end",
+                    "group": "d2"
+                },
+                {
+                    "type": "section",
+                    "title": "E. Інфармацыя для ЗАМЕНЫ PDP, які яшчэ дзейнічае"
+                },
+                {
+                    "type": "comment",
+                    "text": "Гэты раздзел, як правіла, запаўняць не трэба"
+                },
+                {
+                    "type": "check",
+                    "title": "Прычына ЗАМЕНЫ праязнога дакумента",
+                    "option": "не запоўнена"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ЗАМЕНЫ праязнога дакумента",
+                    "option": "даныя змяніліся"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ЗАМЕНЫ праязнога дакумента",
+                    "option": "дакумент пашкоджаны"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ЗАМЕНЫ праязнога дакумента",
+                    "option": "істотная змена знешнасці ў параўнанні з фота"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Прычына ЗАМЕНЫ праязнога дакумента",
+                    "option": "дакумент страчаны"
+                },
+                {
+                    "type": "section",
+                    "title": "F. Узор подпісу"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Дата подпісу",
+                    "name": "signatureDateInSectionF"
+                },
+                {
+                    "type": "same-as",
+                    "title": "Як дата падачы заявы",
+                    "source": "applicationDate",
+                    "target": "signatureDateInSectionF"
+                },
+                {
+                    "type": "section",
+                    "title": "Дадаткі да заявы"
+                },
+                {
+                    "type": "comment",
+                    "text": "Далучаюцца:<ol><li>Копіі дакументаў, якія пацвярджаюць падставу знаходжання (напрыклад, дэцызіі і карты побыту)</li><li>Копія папярэдняга дакумента (пратэрмінаванага пашпарта або папярэдняга PDP)</li><li>Мельдунак – можна атрымаць у гарадскім ужондзе за 17 злотых, але можна і самастойна бясплатна <a href=\"https://www.gov.pl/web/gov/sprawdz-swoje-dane-w-rejestrze-pesel\" target=\"_blank\">зрабіць вымалёўку з рэестра PESEL</a>, калі ў вас ёсць e-Doręczenia. Каб раздрук вымалёўкі прынялі, можна дадаткова раздрукаваць верыфікацыю лічбавага подпісу, загрузіўшы дакумент з вымалёўкай <a href=\"https://puesc.gov.pl/wer/\" target=\"_blank\">сюды</a></li><li>Дзве фатаграфіі</li><li>Для дзіцяці дадаткова:<ul><li>копіі дакументаў, якія пацвярджаюць падставу знаходжання (напрыклад, дэцызіі і карты побыту), аднаго з бацькоў</li><li>копія старонкі з фота з пашпарта/PDP бацькі ці маці</li><li>пацвярджэнне сваяцтва − копія перакладу пасведчання аб нараджэнні (або польскі odpis)</li></ul></li></ol>"
+                },
+                {
+                    "value": "____________________",
+                    "type": "static"
+                },
+                {
+                    "value": "__________________",
+                    "type": "static"
+                },
+                {
+                    "value": "KOPIA DECYZJI I KARTY POBYTU\nKOPIA POLSKIEGO DOKUMENTU PODRÓŻY\nZAŚWIADCZENIE Z REJESTRU PESEL Z ADRESEM ZAMELDOWANIA\nFOTOGRAFIE BIOMETRYCZNE 2 SZT.",
+                    "type": "text",
+                    "title": "Дадаткі",
+                    "multiline": true
+                },
+                {
+                    "type": "section",
+                    "title": "G. Заява аб праўдзівасці інфармацыі і немагчымасці атрымання іншага праязнога дакумента"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Дата подпісу",
+                    "name": "signatureDateInSectionG"
+                },
+                {
+                    "type": "same-as",
+                    "title": "Як дата падачы заявы",
+                    "source": "applicationDate",
+                    "target": "signatureDateInSectionG"
+                }
+            ]
+        },
+        "ua": {
+            "title": "Заява на польський проїзний документ - Polski dokument podróży (PDP)",
+            "annotations": [
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Місце подання заяви (місто)",
+                    "name": "applicationCity"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Дата подання",
+                    "name": "applicationDate"
+                },
+                {
+                    "value": "WOJEWODA",
+                    "type": "static"
+                },
+                {
+                    "value": "POMORSKI",
+                    "type": "select",
+                    "title": "Воєводство, де подається заява",
+                    "transform": "voivodeshipAsMasculineNominative",
+                    "options": "standard.voivodeship",
+                    "name": "voivodeship"
+                },
+                {
+                    "type": "section",
+                    "title": "A. Особисті дані"
+                },
+                {
+                    "type": "comment",
+                    "text": "Заповнювати латиницею, точно так, як написано в паспорті."
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "IVANENKO",
+                    "type": "text",
+                    "title": "Прізвище зараз",
+                    "name": "lastName"
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Прізвище при народженні (якщо відрізняється)",
+                    "ifEmpty": "lastName"
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Попереднє прізвище (якщо змінювалося)",
+                    "ifEmpty": "lastName"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "ANDREI",
+                    "newValue": "ANDRII",
+                    "type": "text",
+                    "title": "Ім'я зараз",
+                    "name": "firstName"
+                },
+                {
+                    "value": "ANDREI",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Попередні імена (якщо змінювалися)",
+                    "ifEmpty": "firstName"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "PIOTR",
+                    "newValue": "PETRO",
+                    "type": "text",
+                    "title": "Ім'я батька (як у паспорті латиницею)"
+                },
+                {
+                    "value": "TAMARA",
+                    "type": "text",
+                    "title": "Ім'я матері (як у паспорті латиницею)"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "1990 01 01",
+                    "type": "date",
+                    "title": "Дата народження",
+                    "format": "YYYY MM DD"
+                },
+                {
+                    "value": "M",
+                    "type": "select",
+                    "title": "Стать",
+                    "name": "gender",
+                    "options": {
+                        "K": "жіноча",
+                        "M": "чоловіча"
+                    }
+                },
+                {
+                    "value": "MIŃSK",
+                    "type": "text",
+                    "title": "Місце народження (населений пункт)"
+                },
+                {
+                    "value": "BIAŁORUŚ",
+                    "type": "text",
+                    "title": "Країна народження"
+                },
+                {
+                    "value": "BIAŁORUŚ",
+                    "type": "text",
+                    "title": "Громадянство"
+                },
+                {
+                    "value": "ŻONATY",
+                    "type": "select",
+                    "title": "Сімейний стан",
+                    "name": "maritalStatus",
+                    "options": {
+                        "KAWALER|PANNA": "неодружений / незаміжня",
+                        "ŻONATY|ZAMĘŻNA": "одружений / заміжня",
+                        "ROZWIEDZONY|ROZWIEDZIONA": "розлучений / розлучена",
+                        "WDOWIEC|WDOWA": "удівець / удова"
+                    },
+                    "indexer": "gender",
+                    "indices": "M|K"
+                },
+                {
+                    "value": "175",
+                    "type": "text",
+                    "title": "Зріст (см)"
+                },
+                {
+                    "value": "PIWNE",
+                    "type": "select",
+                    "title": "Колір очей",
+                    "name": "colourOfEyes",
+                    "options": {
+                        "BRĄZOWE": "карі",
+                        "CZARNE": "чорні",
+                        "ZIELONE": "зелені",
+                        "SZARE": "сірі",
+                        "NIEBIESKIE": "блакитні",
+                        "ZIELONO-NIEBIESKIE": "зелено-блакитні",
+                        "BRĄZOWO-ZIELONE": "зелено-карі",
+                        "SZARO-NIEBIESKIE": "сіро-блакитні",
+                        "SZARO-ZIELONE": "сіро-зелені",
+                        "PIWNE": "складне поєднання кольорів (piwne)",
+                        "NIEOKREŚLONE": "невизначеного кольору",
+                        "WIELOKOLOROWE": "очі різного кольору",
+                        "CZERWONE": "червоні (альбінос)"
+                    }
+                },
+                {
+                    "value": "BRAK",
+                    "type": "text",
+                    "title": "Особливі прикмети (родимки, татуювання, ...)"
+                },
+                {
+                    "value": "512345678",
+                    "type": "text",
+                    "title": "Номер телефону"
+                },
+                {
+                    "type": "section",
+                    "title": "B. Неповнолітні під опікою"
+                },
+                {
+                    "type": "table",
+                    "title": "Діти та інші"
+                },
+                {
+                    "value": "1",
+                    "type": "row-number",
+                    "title": "Неповнолітній №{row-number}",
+                    "render": false
+                },
+                {
+                    "value": "M",
+                    "type": "select",
+                    "title": "Стать",
+                    "options": {
+                        "K": "жіноча",
+                        "M": "чоловіча"
+                    }
+                },
+                {
+                    "value": "SYN",
+                    "type": "text",
+                    "title": "Ступінь споріднення (SYN, CÓRKA, ...)"
+                },
+                {
+                    "value": "NIKITA IVANOV",
+                    "newValue": "MYKYTA IVANENKO",
+                    "type": "text",
+                    "title": "Ім'я та прізвище",
+                    "mode": "fit",
+                    "maxWidth": 135
+                },
+                {
+                    "value": "2020/01/01,",
+                    "type": "date",
+                    "title": "Дата народження",
+                    "format": "YYYY/MM/DD,"
+                },
+                {
+                    "value": "BIAŁORUŚ, MIŃSK",
+                    "type": "text",
+                    "title": "Країна, місце (місто) народження"
+                },
+                {
+                    "value": "7",
+                    "type": "last-row-number"
+                },
+                {
+                    "type": "end-of-table",
+                    "add": "Додати неповнолітнього"
+                },
+                {
+                    "type": "section",
+                    "title": "C. Адреса постійного проживання (або тимчасового від двох місяців)"
+                },
+                {
+                    "value": "POMORSKIE",
+                    "type": "copy",
+                    "from": "voivodeship"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Повіт"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Ґміна"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Населений пункт"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "NIEISTNIEJĄCA",
+                    "type": "text",
+                    "title": "Вулиця"
+                },
+                {
+                    "value": "12",
+                    "type": "text",
+                    "title": "Номер будинку"
+                },
+                {
+                    "value": "3",
+                    "type": "text",
+                    "title": "Номер квартири"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "80-000",
+                    "type": "text",
+                    "title": "Поштовий індекс"
+                },
+                {
+                    "type": "section",
+                    "title": "D. Інформація про перебування в Польщі"
+                },
+                {
+                    "type": "comment",
+                    "text": "Цей розділ має дві частини, D1 і D2. Заповнюється лише одна з них, залежно від громадянства."
+                },
+                {
+                    "type": "group-selector",
+                    "title": "Громадянство",
+                    "options": {
+                        "d1": "інший іноземець, заповнюю D1",
+                        "d2": "білорус, заповнюю D2"
+                    }
+                },
+                {
+                    "type": "group-start",
+                    "group": "d1"
+                },
+                {
+                    "type": "section",
+                    "title": "D1"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Підстава перебування (D1)",
+                    "option": "постійний побут (stały pobyt)"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Підстава перебування (D1)",
+                    "option": "карта довгострокового резидента ЄС"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Підстава перебування (D1)",
+                    "option": "тимчасовий побут (czasowy pobyt) згідно з Art. 186 ust. 1 pkt 9"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Підстава перебування (D1)",
+                    "option": "додатковий захист (ochrona uzupełniająca)",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Підстава перебування (D1)",
+                    "option": "згода на перебування з гуманітарних причин"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Ким видано"
+                },
+                {
+                    "value": "2025 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Коли видано (дата децизії)"
+                },
+                {
+                    "type": "comment",
+                    "text": "<br/>Дані карти побиту / документа, що підтверджує підставу перебування"
+                },
+                {
+                    "value": "AA",
+                    "type": "text",
+                    "title": "Серія"
+                },
+                {
+                    "value": "1234567",
+                    "type": "text",
+                    "title": "Номер"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "2026 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Коли видана"
+                },
+                {
+                    "value": "2029 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Коли закінчується"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Ким видана"
+                },
+                {
+                    "type": "section",
+                    "title": "Обґрунтування заяви"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВИДАЧІ проїзного документа (D1)",
+                    "option": "втрачений власний документ"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВИДАЧІ проїзного документа (D1)",
+                    "option": "пошкоджений власний документ"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВИДАЧІ проїзного документа (D1)",
+                    "option": "закінчився строк дії власного документа",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВИДАЧІ проїзного документа (D1)",
+                    "option": "закінчився строк дії PDP"
+                },
+                {
+                    "type": "group-end",
+                    "group": "d1"
+                },
+                {
+                    "type": "group-start",
+                    "group": "d2"
+                },
+                {
+                    "type": "section",
+                    "title": "D2"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Підстава перебування",
+                    "option": "постійний побут (stały pobyt)"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Підстава перебування",
+                    "option": "карта довгострокового резидента ЄС"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Підстава перебування",
+                    "option": "тимчасовий побут (czasowy pobyt)",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Підстава перебування",
+                    "option": "додатковий захист (ochrona uzupełniająca)"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Підстава перебування",
+                    "option": "згода на перебування з гуманітарних причин"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Ким видано"
+                },
+                {
+                    "value": "2025 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Коли видано (дата децизії)"
+                },
+                {
+                    "type": "comment",
+                    "text": "<br/>Дані карти побиту / документа, що підтверджує підставу перебування"
+                },
+                {
+                    "value": "AA",
+                    "type": "text",
+                    "title": "Серія"
+                },
+                {
+                    "value": "1234567",
+                    "type": "text",
+                    "title": "Номер"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "2026 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Коли видана"
+                },
+                {
+                    "value": "2029 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Коли закінчується"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Ким видана"
+                },
+                {
+                    "type": "section",
+                    "title": "Обґрунтування заяви"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВИДАЧІ проїзного документа",
+                    "option": "втрачений"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВИДАЧІ проїзного документа",
+                    "option": "пошкоджений"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВИДАЧІ проїзного документа",
+                    "option": "закінчився строк дії",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ВИДАЧІ проїзного документа",
+                    "option": "відсутність документа для виїзду"
+                },
+                {
+                    "type": "group-end",
+                    "group": "d2"
+                },
+                {
+                    "type": "section",
+                    "title": "E. Інформація для ЗАМІНИ PDP, який ще дійсний"
+                },
+                {
+                    "type": "comment",
+                    "text": "Цей розділ, як правило, заповнювати не потрібно"
+                },
+                {
+                    "type": "check",
+                    "title": "Причина ЗАМІНИ проїзного документа",
+                    "option": "не заповнено"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ЗАМІНИ проїзного документа",
+                    "option": "дані змінилися"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ЗАМІНИ проїзного документа",
+                    "option": "документ пошкоджено"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ЗАМІНИ проїзного документа",
+                    "option": "суттєва зміна зовнішності порівняно з фото"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Причина ЗАМІНИ проїзного документа",
+                    "option": "документ втрачено"
+                },
+                {
+                    "type": "section",
+                    "title": "F. Зразок підпису"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Дата підпису",
+                    "name": "signatureDateInSectionF"
+                },
+                {
+                    "type": "same-as",
+                    "title": "Така сама, як дата подання заяви",
+                    "source": "applicationDate",
+                    "target": "signatureDateInSectionF"
+                },
+                {
+                    "type": "section",
+                    "title": "Додатки до заяви"
+                },
+                {
+                    "type": "comment",
+                    "text": "Додаються:<ol><li>Копії документів, що підтверджують підставу перебування (наприклад, децизії та карти побиту)</li><li>Копія попереднього документа (простроченого паспорта або попереднього PDP)</li><li>Мельдунок – можна отримати в міському уженді за 17 злотих, але можна й самостійно безкоштовно <a href=\"https://www.gov.pl/web/gov/sprawdz-swoje-dane-w-rejestrze-pesel\" target=\"_blank\">зробити витяг з реєстру PESEL</a>, якщо у вас є e-Doręczenia. Щоб роздруківку витягу прийняли, можна додатково роздрукувати верифікацію цифрового підпису, завантаживши документ з витягом <a href=\"https://puesc.gov.pl/wer/\" target=\"_blank\">сюди</a></li><li>Дві фотографії</li><li>Для дитини додатково:<ul><li>копії документів, що підтверджують підставу перебування (наприклад, децизії та карти побиту), одного з батьків</li><li>копія сторінки з фото з паспорта/PDP одного з батьків</li><li>підтвердження спорідненості − копія перекладу свідоцтва про народження (або польський odpis)</li></ul></li></ol>"
+                },
+                {
+                    "value": "____________________",
+                    "type": "static"
+                },
+                {
+                    "value": "__________________",
+                    "type": "static"
+                },
+                {
+                    "value": "KOPIA DECYZJI I KARTY POBYTU\nKOPIA POLSKIEGO DOKUMENTU PODRÓŻY\nZAŚWIADCZENIE Z REJESTRU PESEL Z ADRESEM ZAMELDOWANIA\nFOTOGRAFIE BIOMETRYCZNE 2 SZT.",
+                    "type": "text",
+                    "title": "Додатки",
+                    "multiline": true
+                },
+                {
+                    "type": "section",
+                    "title": "G. Заява про правдивість інформації та неможливість отримання іншого проїзного документа"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Дата підпису",
+                    "name": "signatureDateInSectionG"
+                },
+                {
+                    "type": "same-as",
+                    "title": "Така сама, як дата подання заяви",
+                    "source": "applicationDate",
+                    "target": "signatureDateInSectionG"
+                }
+            ]
         }
-    ]
+    }
 }

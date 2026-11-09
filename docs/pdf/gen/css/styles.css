@@ -95,3 +95,11 @@ button#bGenerate {
 .message.error {
     align-self: flex-start;
 }
+
+span.group {
+    display: contents;
+}
+
+span[hidden].group {
+    display: none;
+}

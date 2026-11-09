@@ -18,9 +18,5 @@ export const standardSelectOptions = {
         "WARMIŃSKO-MAZURSKIE": "warmińsko-mazurskie (Olsztyn)",
         "WIELKOPOLSKIE": "wielkopolskie (Poznań)",
         "ZACHODNIOPOMORSKIE": "zachodniopomorskie (Szczecin)"
-    },
-    gender: {
-        "M": "мужской",
-        "K": "женский"
     }
 };

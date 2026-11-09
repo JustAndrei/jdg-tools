@@ -1,0 +1,7 @@
+.fi-by {
+  background-image: url("../images/flags/by4x3.svg");
+}
+
+.fi-by.fis {
+  background-image: url("../images/flags/by1x1.svg");
+}

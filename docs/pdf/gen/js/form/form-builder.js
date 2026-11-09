@@ -1,12 +1,11 @@
 /* global $, moment */
 import { standardSelectOptions } from '../constants.js';
 import { AppError } from '../errors.js';
+import { DEFAULT_LANGUAGE, LANGUAGES, getActiveLanguage, t } from '../i18n.js';
 import { createTransformer } from '../transformations.js';
 import { byName } from '../util.js';
 import { comparators } from './conditions.js';
 import { addTableRow } from './table.js';
-
-const DEFAULT_TITLE = 'Форма для заполнения PDF';
 
 /*
  * The form is generated from the metadata's `annotations`. Every annotation type has a handler below.
@@ -92,6 +91,42 @@ const handlers = {
         return $control;
     },
 
+    'group-start'(annot, ctx) {
+        const $parent = ctx.$target.closest('.group');
+        const parentName = $parent.attr('data-group');
+        const fullName = parentName ? `${parentName}-${annot.group}` : annot.group;
+        // group-a-aa получает классы родителей: group group-a group-a-aa
+        const inherited = $parent.length
+            ? [...$parent[0].classList].filter((c) => c.startsWith('group-'))
+            : [];
+
+        const $group = $('<span class="group">')
+            .addClass([...inherited, `group-${fullName}`].join(' '))
+            .attr({ 'data-group': fullName, 'data-group-local': annot.group })
+            .appendTo(ctx.$target);
+        ctx.$targetStack.push(ctx.$target);
+        ctx.$target = $group;
+    },
+
+    'group-end'(annot, ctx) {
+        if (ctx.$target.attr('data-group-local') !== annot.group) {
+            throw new AppError(`Unexpected group-end: group '${annot.group}' either was not started or contains a sub-group not closed yet.`);
+        }
+        ctx.$target = ctx.$targetStack.pop();
+    },
+
+    'group-selector'(annot, ctx, index) {
+        const options = resolveSelectOptions(annot, index);
+        const $control = $('<select class="group-selector">');
+
+        const value = initialValue(annot);
+        for (const [optionValue, optionText] of Object.entries(options)) {
+            const $option = $('<option>').val(optionValue).text(optionText).appendTo($control);
+            if (optionValue === value) $option.attr('selected', 'selected');
+        }
+        appendLabeled(ctx, annot.title, $control);
+    },
+
     // A fixed text, drawn unless its `dependsOn` condition is not met
     static(annot, ctx) {
         const $control = hiddenControl(initialValue(annot));
@@ -121,7 +156,7 @@ const handlers = {
 
     // The checkbox is UI only: it draws nothing itself. While it is checked, the target mirrors the
     // source and is disabled; unticking it enables the target for editing.
-    sameAs(annot, ctx) {
+    'same-as'(annot, ctx) {
         if (!annot.source || !annot.target) {
             throw new AppError("An annotation of type 'sameAs' must define 'source' and 'target' referencing named inputs");
         }
@@ -159,7 +194,7 @@ const handlers = {
     },
 
     'row-number'(annot, ctx) {
-        $('<h5 class="calculate">').data('calcText', annot.title ?? 'Строка {row-number}').appendTo(ctx.$target);
+        $('<h5 class="calculate">').data('calcText', annot.title ?? t('rowTitle')).appendTo(ctx.$target);
         const $control = hiddenControl('')
             .addClass('row-number calculate')
             .data('calcValue', '{row-number}')
@@ -188,7 +223,7 @@ const handlers = {
             throw new AppError("A table needs 'last-row-number' to specify its size and row spacing");
         }
         $('<button type="button" class="add-row">')
-            .text(annot.add ?? 'Добавить строку')
+            .text(annot.add ?? t('addRow'))
             .on('click', () => addTableRow($table))
             .appendTo($table);
         ctx.$target = ctx.$body;
@@ -217,10 +252,20 @@ function resolveSelectOptions(annot, index) {
     const standardPrefix = 'standard.';
     if (typeof options === 'string' && options.startsWith(standardPrefix)) {
         const setName = options.slice(standardPrefix.length);
-        if (Object.hasOwn(standardSelectOptions, setName)) return standardSelectOptions[setName];
+        if (Object.hasOwn(standardSelectOptions, setName)) return localizedOptions(standardSelectOptions[setName]);
         throw new AppError(`Annotation #${index} of type 'select' refers to undefined standard set of options '${setName}'. Available standard sets: ${Object.keys(standardSelectOptions).join(', ')}`);
     }
     throw new AppError(`Annotation #${index} of type 'select' must have 'options': an object, or 'standard.<standard-option-set-name>'`);
+}
+
+/**
+ * A standard set is either `{ value: label }` (the labels are shown as they are) or localized:
+ * `{ ru: { value: label }, en: { value: label }, ... }`.
+ */
+function localizedOptions(set) {
+    const languages = LANGUAGES.map(({ code }) => code).filter((code) => typeof set[code] === 'object');
+    if (languages.length === 0) return set;
+    return set[getActiveLanguage()] ?? set[DEFAULT_LANGUAGE] ?? set[languages[0]];
 }
 
 /** Attaches to a control the data that collect.js needs to draw its value. */
@@ -248,6 +293,26 @@ function assertReferencesExist() {
 }
 
 /**
+ * Показывает группу, выбранную в селекторе, и скрывает остальные группы из его вариантов.
+ * Группы, не упомянутые ни в одном селекторе, остаются видимыми всегда.
+ */
+function applyGroupSelector($select) {
+    const $scope = $select.closest('.template').length ? $select.closest('.template') : $('body');
+    const selected = $select.val();
+    $select.find('option').each((_, option) => {
+        const group = option.value;
+        const active = group === selected;
+        $scope.find('.group').each((_, el) => {
+            if (el.classList.contains(`group-${group}`)) el.hidden = !active;
+        });
+    });
+}
+
+function applyAllGroupSelectors() {
+    $('select.group-selector').each((_, el) => applyGroupSelector($(el)));
+}
+
+/**
  * Replaces the page content with the form generated from `project.metadata`.
  * @param {object} project  see loadProject()
  * @param {{onGenerate: () => void}} callbacks
@@ -255,16 +320,21 @@ function assertReferencesExist() {
  */
 export function buildForm(project, { onGenerate }) {
     const { metadata } = project;
-    const $body = $('body').empty();
-    $('<h2>').text(metadata.title ?? DEFAULT_TITLE).appendTo($body);
+    const $body = $('body');
+    // Whatever is marked `data-persistent` (the language picker) stays when the form is rebuilt
+    $body.contents().filter((_, node) => !node.dataset || !('persistent' in node.dataset)).remove();
+    $('<h2>').text(metadata.title ?? t('defaultTitle')).appendTo($body);
 
     const ctx = {
         $body,
         $target: $body,
+        $targetStack: [],
         checkGroups: new Map(),
         correction: { x: 0, y: 0, ...metadata.global?.coordinateCorrection },
         transform: createTransformer({ defaultTransform: metadata.global?.defaultTransform, script: project.script })
     };
+
+    $body.off('change.groups').on('change.groups', 'select.group-selector', (e) => applyGroupSelector($(e.currentTarget)));
 
     metadata.annotations.forEach((annot, index) => {
         const handler = handlers[annot.type];
@@ -274,10 +344,12 @@ export function buildForm(project, { onGenerate }) {
         if ($control) attachDrawingData($control, annot, ctx.correction);
     });
     assertReferencesExist();
+    applyAllGroupSelectors();
 
-    $('<div class="actions"><button id="bGenerate" type="button">Заполнить PDF</button><span id="status" class="error"></span></div>')
+    $('<div class="actions"><button id="bGenerate" type="button"></button><span id="status" class="error"></span></div>')
         .appendTo($body)
         .find('button')
+        .text(t('generate'))
         .on('click', onGenerate);
     $('<object id="pdf" type="application/pdf"></object>').appendTo($body);
 }

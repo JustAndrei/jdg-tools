@@ -1,0 +1,71 @@
+/* The language drop-down in the top-right corner (js/language-picker.js) */
+.language-picker {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1000;
+}
+
+.language-picker button {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+.language-picker__toggle {
+    padding: 4px 10px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.language-picker__menu {
+    position: absolute;
+    right: 0;
+    min-width: 11em;
+    margin: 4px 0 0;
+    padding: 4px 0;
+    list-style: none;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.language-picker__menu[hidden] {
+    display: none;
+}
+
+.language-picker__item {
+    width: 100%;
+    padding: 6px 12px;
+    border: 0;
+    background: none;
+    text-align: left;
+}
+
+.language-picker__item:hover,
+.language-picker__item:focus-visible {
+    background: #eef3ff;
+}
+
+.language-picker__item[aria-current="true"] {
+    font-weight: 600;
+}
+
+.language-picker__item[aria-disabled="true"] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.language-picker__item[aria-disabled="true"]:hover {
+    background: none;
+}
+
+.language-picker .fi {
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+}

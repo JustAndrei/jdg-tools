@@ -1,5 +1,51 @@
 import { AppError } from './errors.js';
 import { downloadBytes, downloadText, HttpError, resourceUrl } from './io.js';
+const { parse } = JsonSourceMap;
+
+const escapePointer = (key) => key.replace(/~/g, '~0').replace(/\//g, '~1');
+
+/** Non-enumerable, so that Object.keys / spread / JSON.stringify do not see it. */
+function define(node, name, value) {
+    Object.defineProperty(node, name, { value, enumerable: false, configurable: true });
+}
+
+/** A deep copy of parsed JSON that keeps the line metadata (structuredClone drops non-enumerable properties). */
+export function cloneWithLines(node) {
+    if (node === null || typeof node !== 'object') return node;
+    const copy = Array.isArray(node) ? [] : {};
+    for (const [key, child] of Object.entries(node)) copy[key] = cloneWithLines(child);
+    if (node.__line !== undefined) define(copy, '__line', node.__line);
+    if (node.__lines !== undefined) define(copy, '__lines', node.__lines);   // never mutated, safe to share
+    return copy;
+}
+
+/** Line (from 1) of a property's key; an array element has no key, so its value's line is used. */
+function lineOfProperty(pointers, pointer, key, isArray) {
+    const entry = pointers[`${pointer}/${escapePointer(key)}`];
+    return (isArray ? entry.value : entry.key).line + 1;
+}
+
+function attachLines(node, pointer, pointers) {
+    if (node === null || typeof node !== 'object') return;
+    const isArray = Array.isArray(node);
+
+    // json-source-map counts lines from 0
+    define(node, '__line', pointers[pointer].value.line + 1);
+    // Lines of the individual properties: primitives cannot carry metadata themselves
+    define(node, '__lines', Object.fromEntries(
+        Object.keys(node).map((key) => [key, lineOfProperty(pointers, pointer, key, isArray)])
+    ));
+
+    for (const [key, child] of Object.entries(node)) {
+        attachLines(child, `${pointer}/${escapePointer(key)}`, pointers);
+    }
+}
+
+export function parseJsonWithLines(text) {
+    const { data, pointers } = parse(text);   // throws on a syntax error, with the position in the message
+    attachLines(data, '', pointers);
+    return data;
+}
 
 /** Metadata file `<baseName>.json`; null when there is none (then a starting-point file is offered). */
 async function loadMetadata(baseName) {
@@ -12,7 +58,7 @@ async function loadMetadata(baseName) {
         throw error;
     }
     try {
-        return JSON.parse(json);
+        return parseJsonWithLines(json);
     } catch (error) {
         throw new AppError(`${baseName}.json is not valid JSON: ${error.message}`);
     }

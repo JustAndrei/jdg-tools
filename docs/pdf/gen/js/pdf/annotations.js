@@ -12,6 +12,12 @@ const KEY = {
     color: PDFName.of('C')
 };
 
+/** " (metadata file, line 57)" for an object from the parsed metadata, "" if the line is unknown. */
+function whereIs(object, property) {
+    const line = object?.__lines?.[property] ?? object?.__line;
+    return line ? ` (metadata file, line ${line})` : '';
+}
+
 /** A number where the text is one, the text otherwise ("12pt" -> 12, "center" -> "center"). */
 function numberOrText(value) {
     return value !== '' && !Number.isNaN(Number(value)) ? Number(value) : value;
@@ -145,7 +151,10 @@ export function bindAnnotations(metaAnnotations, pdfTexts) {
         const metaAnnotation = valued[i];
         const pdfText = pdfTexts[i];
         if (!valuesMatch(metaAnnotation, pdfText)) {
-            throw new AppError(`Annotation #${i + 1} from the metadata file has value '${metaAnnotation.value}', while FreeText annotation #${i + 1} from the PDF file has value '${pdfText.value}'`);
+            throw new AppError(
+                `Annotation #${i + 1} from the metadata file${whereIs(metaAnnotation, 'value')} has value '${metaAnnotation.value}', ` +
+                `while FreeText annotation #${i + 1} from the PDF file has value '${pdfText.value}'`
+            );
         }
         const { x, y, page, style } = pdfText;
         Object.assign(metaAnnotation, { x, y, page, style });
@@ -160,8 +169,12 @@ export function downloadDefaultMetadata(pdfTexts, fileName) {
             coordinateCorrection: { y: 3 },
             defaultTransform: 'caps'
         },
-        title: 'Форма для заполнения PDF',
-        annotations: pdfTexts.map((text, index) => ({ value: text.value, type: 'text', title: `Text ${index + 1}` }))
+        local: {
+            ru: {
+                title: 'Форма для заполнения PDF',
+                annotations: pdfTexts.map((text, index) => ({ value: text.value, type: 'text', title: `Text ${index + 1}` }))
+            }
+        }
     };
     saveTextFile(fileName, 'application/json', JSON.stringify(metadata, null, 4));
 }

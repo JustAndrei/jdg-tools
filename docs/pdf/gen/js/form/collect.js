@@ -79,7 +79,8 @@ export function collectDrawInstructions({ metadata, script }, { debug = false } 
     const transform = createTransformer({ defaultTransform: metadata.global?.defaultTransform, script });
     const instructions = [];
 
-    $('.render').each((_, el) => {
+    const $controls = $('.render').filter((_, el) => !el.closest('.group[hidden]'));
+    $controls.each((_, el) => {
         if ($(el).closest('.template').length) return; // the hidden template row is not part of the output
         const instruction = readControl($(el), transform);
         if (instruction) instructions.push({ ...instruction, debug });
