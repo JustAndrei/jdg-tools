@@ -67,6 +67,60 @@
                 cursor: pointer;
             }
             .flip:focus-visible { outline: 3px solid #f2a900; outline-offset: 2px; }
+            .overlay {
+                position: fixed;
+                inset: 0;
+                z-index: 20;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 16px;
+                background: rgba(0, 0, 0, .45);
+            }
+            .dialog {
+                width: 100%;
+                max-width: 420px;
+                padding: 18px 16px 16px;
+                border-radius: 12px;
+                background: #fff;
+            }
+            .dialog h2 { margin: 0 0 6px; font-size: 18px; }
+            .choices { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 12px 0; }
+            .choices .wide { grid-column: 1 / -1; }
+            .seg {
+                padding: 14px 8px;
+                border: 1px solid #c5c8ce;
+                border-radius: 8px;
+                font: inherit;
+                font-weight: 600;
+                color: #222;
+                background: #fff;
+                cursor: pointer;
+            }
+            .seg[aria-pressed="true"] { border: 2px solid #2457c5; background: #eaf0fd; }
+            .seg:focus-visible { outline: 3px solid #f2a900; outline-offset: 2px; }
+            #loader {
+                position: fixed;
+                inset: 0;
+                z-index: 10;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 14px;
+                padding: 16px;
+                text-align: center;
+                background: rgba(242, 243, 245, .94);
+            }
+            .spinner {
+                width: 52px;
+                height: 52px;
+                border: 5px solid #c5c8ce;
+                border-top-color: #2457c5;
+                border-radius: 50%;
+                animation: spin .8s linear infinite;
+            }
+            @keyframes spin { to { transform: rotate(360deg); } }
             [hidden] { display: none !important; }
         </style>
     </head>
@@ -97,6 +151,27 @@
                 </div>
             </div>
         </main>
+
+        <div id="picker" class="overlay" role="dialog" aria-modal="true" aria-labelledby="picker-title" hidden>
+            <div class="dialog">
+                <h2 id="picker-title">Максимальный размер PDF</h2>
+                <p class="muted">Если файл получится больше, картинки будут автоматически сжаты.</p>
+                <div class="choices">
+                    <button class="seg" type="button" data-mb="5" aria-pressed="false">5 МБ</button>
+                    <button class="seg" type="button" data-mb="7.5" aria-pressed="false">7.5 МБ</button>
+                    <button class="seg" type="button" data-mb="10" aria-pressed="true">10 МБ</button>
+                    <button class="seg" type="button" data-mb="15" aria-pressed="false">15 МБ</button>
+                    <button class="seg wide" type="button" data-mb="inf" aria-pressed="false">Без ограничений (без сжатия)</button>
+                </div>
+                <button class="btn light" id="picker-cancel" type="button">Отмена</button>
+            </div>
+        </div>
+
+        <div id="loader" role="status" aria-live="polite" hidden>
+            <div class="spinner"></div>
+            <div><strong id="loader-title">Сжимаем PDF</strong></div>
+            <div class="muted" id="loader-text"></div>
+        </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"
                 integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ=="
