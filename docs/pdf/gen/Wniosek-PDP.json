@@ -627,6 +627,624 @@
                 }
             ]
         },
+        "pl": {
+            "title": "Wniosek o wydanie/wymianę polskiego dokumentu podróży dla cudzoziemca",
+            "annotations": [
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Miejsce złożenia wniosku (miasto)",
+                    "name": "applicationCity"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Data złożenia",
+                    "name": "applicationDate"
+                },
+                {
+                    "value": "WOJEWODA",
+                    "type": "static"
+                },
+                {
+                    "value": "POMORSKI",
+                    "type": "select",
+                    "title": "Województwo, w którym składany jest wniosek",
+                    "transform": "voivodeshipAsMasculineNominative",
+                    "options": "standard.voivodeship",
+                    "name": "voivodeship"
+                },
+                {
+                    "type": "section",
+                    "title": "A. Dane osobowe"
+                },
+                {
+                    "type": "comment",
+                    "text": "Wypełniać literami łacińskimi, dokładnie tak, jak w paszporcie."
+                },
+                {
+                    "value": "IVANOV",
+                    "type": "text",
+                    "title": "Nazwisko obecne",
+                    "name": "lastName"
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Nazwisko rodowe (jeśli inne)",
+                    "ifEmpty": "lastName"
+                },
+                {
+                    "value": "IVANOV",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Nazwisko poprzednie (jeśli ulegało zmianie)",
+                    "ifEmpty": "lastName"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "ANDREI",
+                    "type": "text",
+                    "title": "Imię obecne",
+                    "name": "firstName"
+                },
+                {
+                    "value": "ANDREI",
+                    "newValue": "",
+                    "type": "text",
+                    "title": "Imię (imiona) poprzednie (jeśli ulegały zmianie)",
+                    "ifEmpty": "firstName"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "PIOTR",
+                    "type": "text",
+                    "title": "Imię ojca (jak w paszporcie, literami łacińskimi)"
+                },
+                {
+                    "value": "TAMARA",
+                    "type": "text",
+                    "title": "Imię matki (jak w paszporcie, literami łacińskimi)"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "1990 01 01",
+                    "type": "date",
+                    "title": "Data urodzenia",
+                    "format": "YYYY MM DD"
+                },
+                {
+                    "value": "M",
+                    "type": "select",
+                    "title": "Płeć",
+                    "name": "gender",
+                    "options": {
+                        "K": "kobieta",
+                        "M": "mężczyzna"
+                    }
+                },
+                {
+                    "value": "MIŃSK",
+                    "type": "text",
+                    "title": "Miejsce urodzenia (miejscowość)"
+                },
+                {
+                    "value": "BIAŁORUŚ",
+                    "type": "text",
+                    "title": "Kraj urodzenia (nazwa państwa)"
+                },
+                {
+                    "value": "BIAŁORUŚ",
+                    "type": "text",
+                    "title": "Obywatelstwo"
+                },
+                {
+                    "value": "ŻONATY",
+                    "type": "select",
+                    "title": "Stan cywilny",
+                    "name": "maritalStatus",
+                    "options": {
+                        "KAWALER|PANNA": "kawaler / panna",
+                        "ŻONATY|ZAMĘŻNA": "żonaty / zamężna",
+                        "ROZWIEDZONY|ROZWIEDZIONA": "rozwiedzony / rozwiedziona",
+                        "WDOWIEC|WDOWA": "wdowiec / wdowa"
+                    },
+                    "indexer": "gender",
+                    "indices": "M|K"
+                },
+                {
+                    "value": "175",
+                    "type": "text",
+                    "title": "Wzrost (cm)"
+                },
+                {
+                    "value": "PIWNE",
+                    "type": "select",
+                    "title": "Kolor oczu",
+                    "name": "colourOfEyes",
+                    "options": {
+                        "BRĄZOWE": "brązowe",
+                        "CZARNE": "czarne",
+                        "ZIELONE": "zielone",
+                        "SZARE": "szare",
+                        "NIEBIESKIE": "niebieskie",
+                        "ZIELONO-NIEBIESKIE": "zielono-niebieskie",
+                        "BRĄZOWO-ZIELONE": "brązowo-zielone",
+                        "SZARO-NIEBIESKIE": "szaro-niebieskie",
+                        "SZARO-ZIELONE": "szaro-zielone",
+                        "PIWNE": "złożone połączenie kolorów (piwne)",
+                        "NIEOKREŚLONE": "nieokreślone",
+                        "WIELOKOLOROWE": "wielokolorowe (oczy w różnych kolorach)",
+                        "CZERWONE": "czerwone (albinos)"
+                    }
+                },
+                {
+                    "value": "BRAK",
+                    "type": "text",
+                    "title": "Znaki szczególne (znamiona, tatuaże, ...)"
+                },
+                {
+                    "value": "512345678",
+                    "type": "text",
+                    "title": "Numer telefonu do kontaktu"
+                },
+                {
+                    "type": "section",
+                    "title": "B. Towarzyszący cudzoziemcowi jego dzieci lub inni małoletni znajdujący się pod jego opieką"
+                },
+                {
+                    "type": "table",
+                    "title": "Dzieci i inne osoby"
+                },
+                {
+                    "value": "1",
+                    "type": "row-number",
+                    "title": "Dziecko №{row-number}",
+                    "render": false
+                },
+                {
+                    "value": "M",
+                    "type": "select",
+                    "title": "Płeć",
+                    "options": {
+                        "K": "kobieta",
+                        "M": "mężczyzna"
+                    }
+                },
+                {
+                    "value": "SYN",
+                    "type": "text",
+                    "title": "Stopień pokrewieństwa (SYN, CÓRKA, ...)"
+                },
+                {
+                    "value": "NIKITA IVANOV",
+                    "type": "text",
+                    "title": "Imię i nazwisko",
+                    "mode": "fit",
+                    "maxWidth": 135
+                },
+                {
+                    "value": "2020/01/01,",
+                    "type": "date",
+                    "title": "Data urodzenia",
+                    "format": "YYYY/MM/DD,"
+                },
+                {
+                    "value": "BIAŁORUŚ, MIŃSK",
+                    "type": "text",
+                    "title": "Kraj, miejsce (miasto) urodzenia"
+                },
+                {
+                    "value": "7",
+                    "type": "last-row-number"
+                },
+                {
+                    "type": "end-of-table",
+                    "add": "Dodaj osobę małoletnią"
+                },
+                {
+                    "type": "section",
+                    "title": "C. Adres zameldowania na pobyt stały lub pobyt czasowy trwający ponad 2 miesiące"
+                },
+                {
+                    "value": "POMORSKIE",
+                    "type": "copy",
+                    "from": "voivodeship"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Powiat"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Gmina"
+                },
+                {
+                    "value": "GDAŃSK",
+                    "type": "text",
+                    "title": "Miejscowość"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "NIEISTNIEJĄCA",
+                    "type": "text",
+                    "title": "Ulica"
+                },
+                {
+                    "value": "12",
+                    "type": "text",
+                    "title": "Numer domu"
+                },
+                {
+                    "value": "3",
+                    "type": "text",
+                    "title": "Numer mieszkania"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "80-000",
+                    "type": "text",
+                    "title": "Kod pocztowy"
+                },
+                {
+                    "type": "section",
+                    "title": "D. Informacje o pobycie w Polsce"
+                },
+                {
+                    "type": "comment",
+                    "text": "Ta sekcja składa się z dwóch części: D1 i D2. Wypełnia się tylko jedną z nich, w zależności od obywatelstwa."
+                },
+                {
+                    "type": "group-selector",
+                    "title": "Obywatelstwo",
+                    "options": {
+                        "d2": "Białorusin(ka), wypełniam D2",
+                        "d1": "inny cudzoziemiec, wypełniam D1"
+                    }
+                },
+                {
+                    "type": "group-start",
+                    "group": "d1"
+                },
+                {
+                    "type": "section",
+                    "title": "D1"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Podstawa pobytu (D1)",
+                    "option": "pobyt stały"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Podstawa pobytu (D1)",
+                    "option": "pobyt rezydenta długoterminowego UE"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Podstawa pobytu (D1)",
+                    "option": "pobyt czasowy, Art. 186 ust. 1 pkt 9"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Podstawa pobytu (D1)",
+                    "option": "ochrona uzupełniająca",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Podstawa pobytu (D1)",
+                    "option": "zgodę na pobyt ze względów humanitarnych"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Wydane przez"
+                },
+                {
+                    "value": "2025 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Data wydania (decyzji)"
+                },
+                {
+                    "type": "comment",
+                    "text": "<br/>Dane karty pobytu / dokumentu potwierdzającego podstawę pobytu"
+                },
+                {
+                    "value": "AA",
+                    "type": "text",
+                    "title": "Seria"
+                },
+                {
+                    "value": "1234567",
+                    "type": "text",
+                    "title": "Numer"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "2026 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Data wydania"
+                },
+                {
+                    "value": "2029 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Data upływu ważności"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Organ wydający"
+                },
+                {
+                    "type": "section",
+                    "title": "Uzasadnienie wniosku"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYDANIA PDP (D1)",
+                    "option": "utrata własnego dokumentu"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYDANIA PDP (D1)",
+                    "option": "zniszczenie własnego dokumentu"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYDANIA PDP (D1)",
+                    "option": "upływ terminu ważności własnego dokumentu",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYDANIA PDP (D1)",
+                    "option": "upływ terminu ważności PDP"
+                },
+                {
+                    "type": "group-end",
+                    "group": "d1"
+                },
+                {
+                    "type": "group-start",
+                    "group": "d2"
+                },
+                {
+                    "type": "section",
+                    "title": "D2"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Podstawa pobytu",
+                    "option": "pobyt stały"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Podstawa pobytu",
+                    "option": "pobyt rezydenta długoterminowego UE"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Podstawa pobytu",
+                    "option": "pobyt czasowy",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Podstawa pobytu",
+                    "option": "ochrona uzupełniająca"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Podstawa pobytu",
+                    "option": "zgodę na pobyt ze względów humanitarnych"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Wydane przez"
+                },
+                {
+                    "value": "2025 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Data wydania (decyzji)"
+                },
+                {
+                    "type": "comment",
+                    "text": "<br/>Dane karty pobytu / dokumentu potwierdzającego podstawę pobytu"
+                },
+                {
+                    "value": "AA",
+                    "type": "text",
+                    "title": "Seria"
+                },
+                {
+                    "value": "1234567",
+                    "type": "text",
+                    "title": "Numer"
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "value": "2026 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Data wydania"
+                },
+                {
+                    "value": "2029 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Data upływu ważności"
+                },
+                {
+                    "value": "WOJEWODA POMORSKI",
+                    "type": "text",
+                    "title": "Organ wydający"
+                },
+                {
+                    "type": "section",
+                    "title": "Uzasadnienie wniosku"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYDANIA PDP",
+                    "option": "utrata"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYDANIA PDP",
+                    "option": "zniszczenie"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYDANIA PDP",
+                    "option": "upływ terminu ważności",
+                    "default": true
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYDANIA PDP",
+                    "option": "brak dokumentu podróży"
+                },
+                {
+                    "type": "group-end",
+                    "group": "d2"
+                },
+                {
+                    "type": "section",
+                    "title": "E. Informacje istotne dla WYMIANY PDP, który jest jeszcze ważny"
+                },
+                {
+                    "type": "comment",
+                    "text": "Tej sekcji zazwyczaj nie trzeba wypełniać"
+                },
+                {
+                    "type": "check",
+                    "title": "Powód WYMIANY PDP",
+                    "option": "nie wypełniono"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYMIANY PDP",
+                    "option": "zmiana danych"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYMIANY PDP",
+                    "option": "uszkodzenie dokumentu"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYMIANY PDP",
+                    "option": "zmiana wizerunku twarzy"
+                },
+                {
+                    "value": "×",
+                    "type": "check",
+                    "title": "Powód WYMIANY PDP",
+                    "option": "utrata dokumentu"
+                },
+                {
+                    "type": "section",
+                    "title": "F. Wzór podpisu"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Data podpisu",
+                    "name": "signatureDateInSectionF"
+                },
+                {
+                    "type": "same-as",
+                    "title": "Taka sama jak data złożenia wniosku",
+                    "source": "applicationDate",
+                    "target": "signatureDateInSectionF"
+                },
+                {
+                    "type": "section",
+                    "title": "Załączniki do wniosku"
+                },
+                {
+                    "type": "comment",
+                    "text": "Załączniki:<ol><li>Kopie dokumentów potwierdzających podstawę pobytu (np. decyzji i karty pobytu)</li><li>Kopia poprzedniego dokumentu (wygasłego paszportu lub poprzedniego PDP)</li><li>Meldunek – można go uzyskać w urzędzie miasta za 17 zł, ale można też samodzielnie i bezpłatnie <a href=\"https://www.gov.pl/web/gov/sprawdz-swoje-dane-w-rejestrze-pesel\" target=\"_blank\">wygenerować wypis z rejestru PESEL</a>, jeśli masz e-Doręczenia. Aby wydruk wypisu został przyjęty, można dodatkowo wydrukować weryfikację podpisu elektronicznego, przesyłając dokument z wypisem <a href=\"https://puesc.gov.pl/wer/\" target=\"_blank\">tutaj</a></li><li>Dwie fotografie</li><li>Dla dziecka dodatkowo:<ul><li>kopie dokumentów potwierdzających podstawę pobytu (np. decyzji i karty pobytu) jednego z rodziców</li><li>kopia strony ze zdjęciem z paszportu/PDP rodzica</li><li>potwierdzenie pokrewieństwa − kopia tłumaczenia aktu urodzenia (lub polski odpis)</li></ul></li></ol>"
+                },
+                {
+                    "value": "____________________",
+                    "type": "static"
+                },
+                {
+                    "value": "__________________",
+                    "type": "static"
+                },
+                {
+                    "value": "KOPIA DECYZJI I KARTY POBYTU\nKOPIA POLSKIEGO DOKUMENTU PODRÓŻY\nZAŚWIADCZENIE Z REJESTRU PESEL Z ADRESEM ZAMELDOWANIA\nFOTOGRAFIE BIOMETRYCZNE 2 SZT.",
+                    "type": "text",
+                    "title": "Załączniki",
+                    "multiline": true
+                },
+                {
+                    "type": "section",
+                    "title": "G. Oświadczenie o prawdziwości informacji i niemożności uzyskania innego dokumentu podróży"
+                },
+                {
+                    "value": "2027 01 01",
+                    "type": "date",
+                    "format": "YYYY MM DD",
+                    "title": "Data podpisu",
+                    "name": "signatureDateInSectionG"
+                },
+                {
+                    "type": "same-as",
+                    "title": "Taka sama jak data złożenia wniosku",
+                    "source": "applicationDate",
+                    "target": "signatureDateInSectionG"
+                }
+            ]
+        },
         "en": {
             "title": "Application for a Polish travel document - Polski dokument podróży (PDP)",
             "annotations": [

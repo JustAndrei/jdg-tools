@@ -18,6 +18,7 @@ export const DEFAULT_LANGUAGE = 'ru';
  */
 export const LANGUAGES = [
     { code: 'ru', htmlLang: 'ru', name: 'Русский', flag: 'ru' },
+    { code: 'pl', htmlLang: 'pl', name: 'Polski', flag: 'pl' },
     { code: 'en', htmlLang: 'en', name: 'English', flag: 'gb' },
     { code: 'be', htmlLang: 'be', name: 'Беларуская', flag: 'by' },
     { code: 'ua', htmlLang: 'uk', name: 'Українська', flag: 'ua' }
@@ -35,6 +36,15 @@ const STRINGS = {
         language: 'Язык',
         noTranslation: 'Для этой формы нет перевода',
         confirmLanguageChange: 'Введённые данные будут потеряны при смене языка. Продолжить?'
+    },
+    pl: {
+        defaultTitle: 'Formularz do wypełnienia PDF',
+        generate: 'Wypełnij PDF',
+        addRow: 'Dodaj wiersz',
+        rowTitle: 'Wiersz {row-number}',
+        language: 'Język',
+        noTranslation: 'Brak tłumaczenia dla tego formularza',
+        confirmLanguageChange: 'Wprowadzone dane zostaną utracone po zmianie języka. Kontynuować?'
     },
     en: {
         defaultTitle: 'PDF form',
@@ -66,7 +76,7 @@ const STRINGS = {
 };
 
 // What navigator.languages calls the languages above
-const BROWSER_LANGUAGE_TO_CODE = { ru: 'ru', en: 'en', be: 'be', uk: 'ua' };
+const BROWSER_LANGUAGE_TO_CODE = { ru: 'ru', pl: 'pl', en: 'en', be: 'be', uk: 'ua' };
 
 const isKnown = (code) => LANGUAGES.some((language) => language.code === code);
 
