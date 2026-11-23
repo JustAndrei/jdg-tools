@@ -49,13 +49,15 @@
                     "value": "IVANOV",
                     "type": "text",
                     "title": "Фамилия сейчас",
-                    "name": "lastName"
+                    "name": "lastName",
+                    "profile-name-part": 2
                 },
                 {
                     "value": "IVANOV",
                     "newValue": "",
                     "type": "text",
                     "title": "Фамилия при рождении (если отличается)",
+                    "name": "birthLastName",
                     "ifEmpty": "lastName"
                 },
                 {
@@ -63,6 +65,7 @@
                     "newValue": "",
                     "type": "text",
                     "title": "Предыдущая фамилия (если менялась)",
+                    "name": "previousLastName",
                     "ifEmpty": "lastName"
                 },
                 {
@@ -72,13 +75,15 @@
                     "value": "ANDREI",
                     "type": "text",
                     "title": "Имя сейчас",
-                    "name": "firstName"
+                    "name": "firstName",
+                    "profile-name-part": 1
                 },
                 {
                     "value": "ANDREI",
                     "newValue": "",
                     "type": "text",
                     "title": "Предыдущие имена (если менялись)",
+                    "name": "previousFirstNames",
                     "ifEmpty": "firstName"
                 },
                 {
@@ -87,12 +92,14 @@
                 {
                     "value": "PIOTR",
                     "type": "text",
-                    "title": "Имя отца (как в паспорте латинскими)"
+                    "title": "Имя отца (как в паспорте латинскими)",
+                    "name": "fatherName"
                 },
                 {
                     "value": "TAMARA",
                     "type": "text",
-                    "title": "Имя матери (как в паспорте латинскими)"
+                    "title": "Имя матери (как в паспорте латинскими)",
+                    "name": "motherName"
                 },
                 {
                     "type": "break"
@@ -101,7 +108,9 @@
                     "value": "1990 01 01",
                     "type": "date",
                     "title": "Дата рождения",
-                    "format": "YYYY MM DD"
+                    "name": "birthDate",
+                    "format": "YYYY MM DD",
+                    "profile-name-part": 3
                 },
                 {
                     "value": "M",
@@ -116,17 +125,20 @@
                 {
                     "value": "MIŃSK",
                     "type": "text",
-                    "title": "Место рождения (населенный пункт)"
+                    "title": "Место рождения (населенный пункт)",
+                    "name": "birthPlace"
                 },
                 {
                     "value": "BIAŁORUŚ",
                     "type": "text",
-                    "title": "Страна рождения"
+                    "title": "Страна рождения",
+                    "name": "birthCountry"
                 },
                 {
                     "value": "BIAŁORUŚ",
                     "type": "text",
-                    "title": "Гражданство"
+                    "title": "Гражданство",
+                    "name": "citizenship"
                 },
                 {
                     "value": "ŻONATY",
@@ -145,7 +157,8 @@
                 {
                     "value": "175",
                     "type": "text",
-                    "title": "Рост (см)"
+                    "title": "Рост (см)",
+                    "name": "height"
                 },
                 {
                     "value": "PIWNE",
@@ -171,12 +184,14 @@
                 {
                     "value": "BRAK",
                     "type": "text",
-                    "title": "Особые приметы (родинки, татуировки, ...)"
+                    "title": "Особые приметы (родинки, татуировки, ...)",
+                    "name": "distinguishingMarks"
                 },
                 {
                     "value": "512345678",
                     "type": "text",
-                    "title": "Номер телефона"
+                    "title": "Номер телефона",
+                    "name": "phoneNumber"
                 },
                 {
                     "type": "section",
@@ -196,6 +211,7 @@
                     "value": "M",
                     "type": "select",
                     "title": "Пол",
+                    "name": "minorGender",
                     "options": {
                         "K": "женский",
                         "M": "мужской"
@@ -204,12 +220,14 @@
                 {
                     "value": "SYN",
                     "type": "text",
-                    "title": "Степень родства (SYN, CÓRKA, ...)"
+                    "title": "Степень родства (SYN, CÓRKA, ...)",
+                    "name": "minorRelationship"
                 },
                 {
                     "value": "NIKITA IVANOV",
                     "type": "text",
                     "title": "Имя и фамилия",
+                    "name": "minorFullName",
                     "mode": "fit",
                     "maxWidth": 135
                 },
@@ -217,12 +235,14 @@
                     "value": "2020/01/01,",
                     "type": "date",
                     "title": "Дата рождения",
+                    "name": "minorBirthDate",
                     "format": "YYYY/MM/DD,"
                 },
                 {
                     "value": "BIAŁORUŚ, MIŃSK",
                     "type": "text",
-                    "title": "Страна, место (город) рождения"
+                    "title": "Страна, место (город) рождения",
+                    "name": "minorBirthPlace"
                 },
                 {
                     "value": "7",
@@ -244,17 +264,20 @@
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Повет"
+                    "title": "Повет",
+                    "name": "residencePowiat"
                 },
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Гмина"
+                    "title": "Гмина",
+                    "name": "residenceGmina"
                 },
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Населённый пункт"
+                    "title": "Населённый пункт",
+                    "name": "residenceCity"
                 },
                 {
                     "type": "break"
@@ -262,17 +285,20 @@
                 {
                     "value": "NIEISTNIEJĄCA",
                     "type": "text",
-                    "title": "Улица"
+                    "title": "Улица",
+                    "name": "residenceStreet"
                 },
                 {
                     "value": "12",
                     "type": "text",
-                    "title": "Номер дома"
+                    "title": "Номер дома",
+                    "name": "residenceHouseNumber"
                 },
                 {
                     "value": "3",
                     "type": "text",
-                    "title": "Номер квартиры"
+                    "title": "Номер квартиры",
+                    "name": "residenceApartmentNumber"
                 },
                 {
                     "type": "break"
@@ -280,7 +306,8 @@
                 {
                     "value": "80-000",
                     "type": "text",
-                    "title": "Почтовый индекс"
+                    "title": "Почтовый индекс",
+                    "name": "residencePostalCode"
                 },
                 {
                     "type": "section",
@@ -293,6 +320,7 @@
                 {
                     "type": "group-selector",
                     "title": "Гражданство",
+                    "name": "sectionDGroup",
                     "options": {
                         "d2": "беларус, заполняю D2",
                         "d1": "другой иностранец, заполняю D1"
@@ -310,43 +338,51 @@
                     "value": "×",
                     "type": "check",
                     "title": "Основание пребывания (D1)",
-                    "option": "сталый побыт"
+                    "name": "d1StayBasis",
+                    "option": "сталый побыт",
+                    "optionId": "permanentResidence"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Основание пребывания (D1)",
-                    "option": "карта долгосрочного резидента ЕС"
+                    "option": "карта долгосрочного резидента ЕС",
+                    "optionId": "euLongTermResident"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Основание пребывания (D1)",
-                    "option": "часовый побыт по Art. 186 ust. 1 pkt 9"
+                    "option": "часовый побыт по Art. 186 ust. 1 pkt 9",
+                    "optionId": "temporaryResidenceArt186"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Основание пребывания (D1)",
                     "option": "доп. защита (ochrona uzupełniająca)",
+                    "optionId": "subsidiaryProtection",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Основание пребывания (D1)",
-                    "option": "согласие на пребывание по гум. причинам"
+                    "option": "согласие на пребывание по гум. причинам",
+                    "optionId": "humanitarianStay"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Кем выдано"
+                    "title": "Кем выдано",
+                    "name": "d1IssuedBy"
                 },
                 {
                     "value": "2025 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Когда выдано (дата децизии)"
+                    "title": "Когда выдано (дата децизии)",
+                    "name": "d1DecisionDate"
                 },
                 {
                     "type": "comment",
@@ -355,12 +391,14 @@
                 {
                     "value": "AA",
                     "type": "text",
-                    "title": "Серия"
+                    "title": "Серия",
+                    "name": "d1DocumentSeries"
                 },
                 {
                     "value": "1234567",
                     "type": "text",
-                    "title": "Номер"
+                    "title": "Номер",
+                    "name": "d1DocumentNumber"
                 },
                 {
                     "type": "break"
@@ -369,18 +407,21 @@
                     "value": "2026 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Когда выдана"
+                    "title": "Когда выдана",
+                    "name": "d1DocumentIssueDate"
                 },
                 {
                     "value": "2029 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Когда истекает"
+                    "title": "Когда истекает",
+                    "name": "d1DocumentExpiryDate"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Кем выдана"
+                    "title": "Кем выдана",
+                    "name": "d1DocumentIssuedBy"
                 },
                 {
                     "type": "section",
@@ -390,26 +431,31 @@
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВЫДАЧИ PDP (D1)",
-                    "option": "утерян свой документ"
+                    "name": "d1PdpIssueReason",
+                    "option": "утерян свой документ",
+                    "optionId": "ownDocumentLost"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВЫДАЧИ PDP (D1)",
-                    "option": "повреждён свой документ"
+                    "option": "повреждён свой документ",
+                    "optionId": "ownDocumentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВЫДАЧИ PDP (D1)",
                     "option": "истёк срок действия своего документа",
+                    "optionId": "ownDocumentExpired",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВЫДАЧИ PDP (D1)",
-                    "option": "истёк срок действия PDP"
+                    "option": "истёк срок действия PDP",
+                    "optionId": "pdpExpired"
                 },
                 {
                     "type": "group-end",
@@ -427,43 +473,51 @@
                     "value": "×",
                     "type": "check",
                     "title": "Основание пребывания",
-                    "option": "сталый побыт"
+                    "name": "d2StayBasis",
+                    "option": "сталый побыт",
+                    "optionId": "permanentResidence"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Основание пребывания",
-                    "option": "карта долгосрочного резидента ЕС"
+                    "option": "карта долгосрочного резидента ЕС",
+                    "optionId": "euLongTermResident"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Основание пребывания",
                     "option": "часовый побыт",
+                    "optionId": "temporaryResidence",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Основание пребывания",
-                    "option": "доп. защита (ochrona uzupełniająca)"
+                    "option": "доп. защита (ochrona uzupełniająca)",
+                    "optionId": "subsidiaryProtection"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Основание пребывания",
-                    "option": "согласие на пребывание по гум. причинам"
+                    "option": "согласие на пребывание по гум. причинам",
+                    "optionId": "humanitarianStay"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Кем выдано"
+                    "title": "Кем выдано",
+                    "name": "d2IssuedBy"
                 },
                 {
                     "value": "2025 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Когда выдано (дата децизии)"
+                    "title": "Когда выдано (дата децизии)",
+                    "name": "d2DecisionDate"
                 },
                 {
                     "type": "comment",
@@ -472,12 +526,14 @@
                 {
                     "value": "AA",
                     "type": "text",
-                    "title": "Серия"
+                    "title": "Серия",
+                    "name": "d2DocumentSeries"
                 },
                 {
                     "value": "1234567",
                     "type": "text",
-                    "title": "Номер"
+                    "title": "Номер",
+                    "name": "d2DocumentNumber"
                 },
                 {
                     "type": "break"
@@ -486,18 +542,21 @@
                     "value": "2026 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Когда выдана"
+                    "title": "Когда выдана",
+                    "name": "d2DocumentIssueDate"
                 },
                 {
                     "value": "2029 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Когда истекает"
+                    "title": "Когда истекает",
+                    "name": "d2DocumentExpiryDate"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Кем выдана"
+                    "title": "Кем выдана",
+                    "name": "d2DocumentIssuedBy"
                 },
                 {
                     "type": "section",
@@ -507,26 +566,31 @@
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВЫДАЧИ PDP",
-                    "option": "утерян"
+                    "name": "d2PdpIssueReason",
+                    "option": "утерян",
+                    "optionId": "documentLost"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВЫДАЧИ PDP",
-                    "option": "повреждён"
+                    "option": "повреждён",
+                    "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВЫДАЧИ PDP",
                     "option": "истёк срок действия",
+                    "optionId": "documentExpired",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВЫДАЧИ PDP",
-                    "option": "отсутствие выездного документа"
+                    "option": "отсутствие выездного документа",
+                    "optionId": "noTravelDocument"
                 },
                 {
                     "type": "group-end",
@@ -543,31 +607,37 @@
                 {
                     "type": "check",
                     "title": "Причина ЗАМЕНЫ PDP",
-                    "option": "не заполнено"
+                    "name": "pdpReplacementReason",
+                    "option": "не заполнено",
+                    "optionId": "notFilled"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ЗАМЕНЫ PDP",
-                    "option": "данные изменились"
+                    "option": "данные изменились",
+                    "optionId": "dataChanged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ЗАМЕНЫ PDP",
-                    "option": "документ повреждён"
+                    "option": "документ повреждён",
+                    "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ЗАМЕНЫ PDP",
-                    "option": "изменение лица по сравнению с фото"
+                    "option": "изменение лица по сравнению с фото",
+                    "optionId": "photoMismatch"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ЗАМЕНЫ PDP",
-                    "option": "документ утерян"
+                    "option": "документ утерян",
+                    "optionId": "documentLost"
                 },
                 {
                     "type": "section",
@@ -583,6 +653,7 @@
                 {
                     "type": "same-as",
                     "title": "Как дата подачи заявки",
+                    "name": "sameAsApplicationDateF",
                     "source": "applicationDate",
                     "target": "signatureDateInSectionF"
                 },
@@ -606,6 +677,7 @@
                     "value": "KOPIA DECYZJI I KARTY POBYTU\nKOPIA POLSKIEGO DOKUMENTU PODRÓŻY\nZAŚWIADCZENIE Z REJESTRU PESEL Z ADRESEM ZAMELDOWANIA\nFOTOGRAFIE BIOMETRYCZNE 2 SZT.",
                     "type": "text",
                     "title": "Приложения",
+                    "name": "attachments",
                     "multiline": true
                 },
                 {
@@ -622,6 +694,7 @@
                 {
                     "type": "same-as",
                     "title": "Как дата подачи заявки",
+                    "name": "sameAsApplicationDateG",
                     "source": "applicationDate",
                     "target": "signatureDateInSectionG"
                 }
@@ -667,13 +740,15 @@
                     "value": "IVANOV",
                     "type": "text",
                     "title": "Nazwisko obecne",
-                    "name": "lastName"
+                    "name": "lastName",
+                    "profile-name-part": 2
                 },
                 {
                     "value": "IVANOV",
                     "newValue": "",
                     "type": "text",
                     "title": "Nazwisko rodowe (jeśli inne)",
+                    "name": "birthLastName",
                     "ifEmpty": "lastName"
                 },
                 {
@@ -681,6 +756,7 @@
                     "newValue": "",
                     "type": "text",
                     "title": "Nazwisko poprzednie (jeśli ulegało zmianie)",
+                    "name": "previousLastName",
                     "ifEmpty": "lastName"
                 },
                 {
@@ -690,13 +766,15 @@
                     "value": "ANDREI",
                     "type": "text",
                     "title": "Imię obecne",
-                    "name": "firstName"
+                    "name": "firstName",
+                    "profile-name-part": 1
                 },
                 {
                     "value": "ANDREI",
                     "newValue": "",
                     "type": "text",
                     "title": "Imię (imiona) poprzednie (jeśli ulegały zmianie)",
+                    "name": "previousFirstNames",
                     "ifEmpty": "firstName"
                 },
                 {
@@ -705,12 +783,14 @@
                 {
                     "value": "PIOTR",
                     "type": "text",
-                    "title": "Imię ojca (jak w paszporcie, literami łacińskimi)"
+                    "title": "Imię ojca (jak w paszporcie, literami łacińskimi)",
+                    "name": "fatherName"
                 },
                 {
                     "value": "TAMARA",
                     "type": "text",
-                    "title": "Imię matki (jak w paszporcie, literami łacińskimi)"
+                    "title": "Imię matki (jak w paszporcie, literami łacińskimi)",
+                    "name": "motherName"
                 },
                 {
                     "type": "break"
@@ -719,7 +799,9 @@
                     "value": "1990 01 01",
                     "type": "date",
                     "title": "Data urodzenia",
-                    "format": "YYYY MM DD"
+                    "name": "birthDate",
+                    "format": "YYYY MM DD",
+                    "profile-name-part": 3
                 },
                 {
                     "value": "M",
@@ -734,17 +816,20 @@
                 {
                     "value": "MIŃSK",
                     "type": "text",
-                    "title": "Miejsce urodzenia (miejscowość)"
+                    "title": "Miejsce urodzenia (miejscowość)",
+                    "name": "birthPlace"
                 },
                 {
                     "value": "BIAŁORUŚ",
                     "type": "text",
-                    "title": "Kraj urodzenia (nazwa państwa)"
+                    "title": "Kraj urodzenia (nazwa państwa)",
+                    "name": "birthCountry"
                 },
                 {
                     "value": "BIAŁORUŚ",
                     "type": "text",
-                    "title": "Obywatelstwo"
+                    "title": "Obywatelstwo",
+                    "name": "citizenship"
                 },
                 {
                     "value": "ŻONATY",
@@ -763,7 +848,8 @@
                 {
                     "value": "175",
                     "type": "text",
-                    "title": "Wzrost (cm)"
+                    "title": "Wzrost (cm)",
+                    "name": "height"
                 },
                 {
                     "value": "PIWNE",
@@ -789,12 +875,14 @@
                 {
                     "value": "BRAK",
                     "type": "text",
-                    "title": "Znaki szczególne (znamiona, tatuaże, ...)"
+                    "title": "Znaki szczególne (znamiona, tatuaże, ...)",
+                    "name": "distinguishingMarks"
                 },
                 {
                     "value": "512345678",
                     "type": "text",
-                    "title": "Numer telefonu do kontaktu"
+                    "title": "Numer telefonu do kontaktu",
+                    "name": "phoneNumber"
                 },
                 {
                     "type": "section",
@@ -814,6 +902,7 @@
                     "value": "M",
                     "type": "select",
                     "title": "Płeć",
+                    "name": "minorGender",
                     "options": {
                         "K": "kobieta",
                         "M": "mężczyzna"
@@ -822,12 +911,14 @@
                 {
                     "value": "SYN",
                     "type": "text",
-                    "title": "Stopień pokrewieństwa (SYN, CÓRKA, ...)"
+                    "title": "Stopień pokrewieństwa (SYN, CÓRKA, ...)",
+                    "name": "minorRelationship"
                 },
                 {
                     "value": "NIKITA IVANOV",
                     "type": "text",
                     "title": "Imię i nazwisko",
+                    "name": "minorFullName",
                     "mode": "fit",
                     "maxWidth": 135
                 },
@@ -835,12 +926,14 @@
                     "value": "2020/01/01,",
                     "type": "date",
                     "title": "Data urodzenia",
+                    "name": "minorBirthDate",
                     "format": "YYYY/MM/DD,"
                 },
                 {
                     "value": "BIAŁORUŚ, MIŃSK",
                     "type": "text",
-                    "title": "Kraj, miejsce (miasto) urodzenia"
+                    "title": "Kraj, miejsce (miasto) urodzenia",
+                    "name": "minorBirthPlace"
                 },
                 {
                     "value": "7",
@@ -862,17 +955,20 @@
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Powiat"
+                    "title": "Powiat",
+                    "name": "residencePowiat"
                 },
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Gmina"
+                    "title": "Gmina",
+                    "name": "residenceGmina"
                 },
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Miejscowość"
+                    "title": "Miejscowość",
+                    "name": "residenceCity"
                 },
                 {
                     "type": "break"
@@ -880,17 +976,20 @@
                 {
                     "value": "NIEISTNIEJĄCA",
                     "type": "text",
-                    "title": "Ulica"
+                    "title": "Ulica",
+                    "name": "residenceStreet"
                 },
                 {
                     "value": "12",
                     "type": "text",
-                    "title": "Numer domu"
+                    "title": "Numer domu",
+                    "name": "residenceHouseNumber"
                 },
                 {
                     "value": "3",
                     "type": "text",
-                    "title": "Numer mieszkania"
+                    "title": "Numer mieszkania",
+                    "name": "residenceApartmentNumber"
                 },
                 {
                     "type": "break"
@@ -898,7 +997,8 @@
                 {
                     "value": "80-000",
                     "type": "text",
-                    "title": "Kod pocztowy"
+                    "title": "Kod pocztowy",
+                    "name": "residencePostalCode"
                 },
                 {
                     "type": "section",
@@ -911,6 +1011,7 @@
                 {
                     "type": "group-selector",
                     "title": "Obywatelstwo",
+                    "name": "sectionDGroup",
                     "options": {
                         "d2": "Białorusin(ka), wypełniam D2",
                         "d1": "inny cudzoziemiec, wypełniam D1"
@@ -928,43 +1029,51 @@
                     "value": "×",
                     "type": "check",
                     "title": "Podstawa pobytu (D1)",
-                    "option": "pobyt stały"
+                    "name": "d1StayBasis",
+                    "option": "pobyt stały",
+                    "optionId": "permanentResidence"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Podstawa pobytu (D1)",
-                    "option": "pobyt rezydenta długoterminowego UE"
+                    "option": "pobyt rezydenta długoterminowego UE",
+                    "optionId": "euLongTermResident"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Podstawa pobytu (D1)",
-                    "option": "pobyt czasowy, Art. 186 ust. 1 pkt 9"
+                    "option": "pobyt czasowy, Art. 186 ust. 1 pkt 9",
+                    "optionId": "temporaryResidenceArt186"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Podstawa pobytu (D1)",
                     "option": "ochrona uzupełniająca",
+                    "optionId": "subsidiaryProtection",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Podstawa pobytu (D1)",
-                    "option": "zgodę na pobyt ze względów humanitarnych"
+                    "option": "zgodę na pobyt ze względów humanitarnych",
+                    "optionId": "humanitarianStay"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Wydane przez"
+                    "title": "Wydane przez",
+                    "name": "d1IssuedBy"
                 },
                 {
                     "value": "2025 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Data wydania (decyzji)"
+                    "title": "Data wydania (decyzji)",
+                    "name": "d1DecisionDate"
                 },
                 {
                     "type": "comment",
@@ -973,12 +1082,14 @@
                 {
                     "value": "AA",
                     "type": "text",
-                    "title": "Seria"
+                    "title": "Seria",
+                    "name": "d1DocumentSeries"
                 },
                 {
                     "value": "1234567",
                     "type": "text",
-                    "title": "Numer"
+                    "title": "Numer",
+                    "name": "d1DocumentNumber"
                 },
                 {
                     "type": "break"
@@ -987,18 +1098,21 @@
                     "value": "2026 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Data wydania"
+                    "title": "Data wydania",
+                    "name": "d1DocumentIssueDate"
                 },
                 {
                     "value": "2029 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Data upływu ważności"
+                    "title": "Data upływu ważności",
+                    "name": "d1DocumentExpiryDate"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Organ wydający"
+                    "title": "Organ wydający",
+                    "name": "d1DocumentIssuedBy"
                 },
                 {
                     "type": "section",
@@ -1008,26 +1122,31 @@
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYDANIA PDP (D1)",
-                    "option": "utrata własnego dokumentu"
+                    "name": "d1PdpIssueReason",
+                    "option": "utrata własnego dokumentu",
+                    "optionId": "ownDocumentLost"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYDANIA PDP (D1)",
-                    "option": "zniszczenie własnego dokumentu"
+                    "option": "zniszczenie własnego dokumentu",
+                    "optionId": "ownDocumentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYDANIA PDP (D1)",
                     "option": "upływ terminu ważności własnego dokumentu",
+                    "optionId": "ownDocumentExpired",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYDANIA PDP (D1)",
-                    "option": "upływ terminu ważności PDP"
+                    "option": "upływ terminu ważności PDP",
+                    "optionId": "pdpExpired"
                 },
                 {
                     "type": "group-end",
@@ -1045,43 +1164,51 @@
                     "value": "×",
                     "type": "check",
                     "title": "Podstawa pobytu",
-                    "option": "pobyt stały"
+                    "name": "d2StayBasis",
+                    "option": "pobyt stały",
+                    "optionId": "permanentResidence"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Podstawa pobytu",
-                    "option": "pobyt rezydenta długoterminowego UE"
+                    "option": "pobyt rezydenta długoterminowego UE",
+                    "optionId": "euLongTermResident"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Podstawa pobytu",
                     "option": "pobyt czasowy",
+                    "optionId": "temporaryResidence",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Podstawa pobytu",
-                    "option": "ochrona uzupełniająca"
+                    "option": "ochrona uzupełniająca",
+                    "optionId": "subsidiaryProtection"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Podstawa pobytu",
-                    "option": "zgodę na pobyt ze względów humanitarnych"
+                    "option": "zgodę na pobyt ze względów humanitarnych",
+                    "optionId": "humanitarianStay"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Wydane przez"
+                    "title": "Wydane przez",
+                    "name": "d2IssuedBy"
                 },
                 {
                     "value": "2025 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Data wydania (decyzji)"
+                    "title": "Data wydania (decyzji)",
+                    "name": "d2DecisionDate"
                 },
                 {
                     "type": "comment",
@@ -1090,12 +1217,14 @@
                 {
                     "value": "AA",
                     "type": "text",
-                    "title": "Seria"
+                    "title": "Seria",
+                    "name": "d2DocumentSeries"
                 },
                 {
                     "value": "1234567",
                     "type": "text",
-                    "title": "Numer"
+                    "title": "Numer",
+                    "name": "d2DocumentNumber"
                 },
                 {
                     "type": "break"
@@ -1104,18 +1233,21 @@
                     "value": "2026 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Data wydania"
+                    "title": "Data wydania",
+                    "name": "d2DocumentIssueDate"
                 },
                 {
                     "value": "2029 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Data upływu ważności"
+                    "title": "Data upływu ważności",
+                    "name": "d2DocumentExpiryDate"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Organ wydający"
+                    "title": "Organ wydający",
+                    "name": "d2DocumentIssuedBy"
                 },
                 {
                     "type": "section",
@@ -1125,26 +1257,31 @@
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYDANIA PDP",
-                    "option": "utrata"
+                    "name": "d2PdpIssueReason",
+                    "option": "utrata",
+                    "optionId": "documentLost"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYDANIA PDP",
-                    "option": "zniszczenie"
+                    "option": "zniszczenie",
+                    "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYDANIA PDP",
                     "option": "upływ terminu ważności",
+                    "optionId": "documentExpired",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYDANIA PDP",
-                    "option": "brak dokumentu podróży"
+                    "option": "brak dokumentu podróży",
+                    "optionId": "noTravelDocument"
                 },
                 {
                     "type": "group-end",
@@ -1161,31 +1298,37 @@
                 {
                     "type": "check",
                     "title": "Powód WYMIANY PDP",
-                    "option": "nie wypełniono"
+                    "name": "pdpReplacementReason",
+                    "option": "nie wypełniono",
+                    "optionId": "notFilled"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYMIANY PDP",
-                    "option": "zmiana danych"
+                    "option": "zmiana danych",
+                    "optionId": "dataChanged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYMIANY PDP",
-                    "option": "uszkodzenie dokumentu"
+                    "option": "uszkodzenie dokumentu",
+                    "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYMIANY PDP",
-                    "option": "zmiana wizerunku twarzy"
+                    "option": "zmiana wizerunku twarzy",
+                    "optionId": "photoMismatch"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Powód WYMIANY PDP",
-                    "option": "utrata dokumentu"
+                    "option": "utrata dokumentu",
+                    "optionId": "documentLost"
                 },
                 {
                     "type": "section",
@@ -1201,6 +1344,7 @@
                 {
                     "type": "same-as",
                     "title": "Taka sama jak data złożenia wniosku",
+                    "name": "sameAsApplicationDateF",
                     "source": "applicationDate",
                     "target": "signatureDateInSectionF"
                 },
@@ -1224,6 +1368,7 @@
                     "value": "KOPIA DECYZJI I KARTY POBYTU\nKOPIA POLSKIEGO DOKUMENTU PODRÓŻY\nZAŚWIADCZENIE Z REJESTRU PESEL Z ADRESEM ZAMELDOWANIA\nFOTOGRAFIE BIOMETRYCZNE 2 SZT.",
                     "type": "text",
                     "title": "Załączniki",
+                    "name": "attachments",
                     "multiline": true
                 },
                 {
@@ -1240,6 +1385,7 @@
                 {
                     "type": "same-as",
                     "title": "Taka sama jak data złożenia wniosku",
+                    "name": "sameAsApplicationDateG",
                     "source": "applicationDate",
                     "target": "signatureDateInSectionG"
                 }
@@ -1286,13 +1432,15 @@
                     "newValue": "SMITH",
                     "type": "text",
                     "title": "Surname as of now",
-                    "name": "lastName"
+                    "name": "lastName",
+                    "profile-name-part": 2
                 },
                 {
                     "value": "IVANOV",
                     "newValue": "",
                     "type": "text",
                     "title": "Surname at birth (if different)",
+                    "name": "birthLastName",
                     "ifEmpty": "lastName"
                 },
                 {
@@ -1300,6 +1448,7 @@
                     "newValue": "",
                     "type": "text",
                     "title": "Previous surname (if it has changed)",
+                    "name": "previousLastName",
                     "ifEmpty": "lastName"
                 },
                 {
@@ -1310,13 +1459,15 @@
                     "newValue": "JOHN",
                     "type": "text",
                     "title": "First name as of now",
-                    "name": "firstName"
+                    "name": "firstName",
+                    "profile-name-part": 1
                 },
                 {
                     "value": "ANDREI",
                     "newValue": "",
                     "type": "text",
                     "title": "Previous first names (if changed)",
+                    "name": "previousFirstNames",
                     "ifEmpty": "firstName"
                 },
                 {
@@ -1326,13 +1477,15 @@
                     "value": "PIOTR",
                     "newValue": "JAMES",
                     "type": "text",
-                    "title": "Father's first name (as in your passport, Latin letters)"
+                    "title": "Father's first name (as in your passport, Latin letters)",
+                    "name": "fatherName"
                 },
                 {
                     "value": "TAMARA",
                     "newValue": "MARY",
                     "type": "text",
-                    "title": "Mother's first name (as in your passport, Latin letters)"
+                    "title": "Mother's first name (as in your passport, Latin letters)",
+                    "name": "motherName"
                 },
                 {
                     "type": "break"
@@ -1341,7 +1494,9 @@
                     "value": "1990 01 01",
                     "type": "date",
                     "title": "Date of birth",
-                    "format": "YYYY MM DD"
+                    "name": "birthDate",
+                    "format": "YYYY MM DD",
+                    "profile-name-part": 3
                 },
                 {
                     "value": "M",
@@ -1356,17 +1511,20 @@
                 {
                     "value": "MIŃSK",
                     "type": "text",
-                    "title": "Place of birth (town/city)"
+                    "title": "Place of birth (town/city)",
+                    "name": "birthPlace"
                 },
                 {
                     "value": "BIAŁORUŚ",
                     "type": "text",
-                    "title": "Country of birth"
+                    "title": "Country of birth",
+                    "name": "birthCountry"
                 },
                 {
                     "value": "BIAŁORUŚ",
                     "type": "text",
-                    "title": "Citizenship"
+                    "title": "Citizenship",
+                    "name": "citizenship"
                 },
                 {
                     "value": "ŻONATY",
@@ -1385,7 +1543,8 @@
                 {
                     "value": "175",
                     "type": "text",
-                    "title": "Height (cm)"
+                    "title": "Height (cm)",
+                    "name": "height"
                 },
                 {
                     "value": "PIWNE",
@@ -1411,12 +1570,14 @@
                 {
                     "value": "BRAK",
                     "type": "text",
-                    "title": "Distinguishing marks (moles, tattoos, ...)"
+                    "title": "Distinguishing marks (moles, tattoos, ...)",
+                    "name": "distinguishingMarks"
                 },
                 {
                     "value": "512345678",
                     "type": "text",
-                    "title": "Phone number"
+                    "title": "Phone number",
+                    "name": "phoneNumber"
                 },
                 {
                     "type": "section",
@@ -1436,6 +1597,7 @@
                     "value": "M",
                     "type": "select",
                     "title": "Sex",
+                    "name": "minorGender",
                     "options": {
                         "K": "female",
                         "M": "male"
@@ -1444,13 +1606,15 @@
                 {
                     "value": "SYN",
                     "type": "text",
-                    "title": "Degree of kinship (SYN, CÓRKA, ...)"
+                    "title": "Degree of kinship (SYN, CÓRKA, ...)",
+                    "name": "minorRelationship"
                 },
                 {
                     "value": "NIKITA IVANOV",
                     "newValue": "JACK SMITH",
                     "type": "text",
                     "title": "First name and surname",
+                    "name": "minorFullName",
                     "mode": "fit",
                     "maxWidth": 135
                 },
@@ -1458,12 +1622,14 @@
                     "value": "2020/01/01,",
                     "type": "date",
                     "title": "Date of birth",
+                    "name": "minorBirthDate",
                     "format": "YYYY/MM/DD,"
                 },
                 {
                     "value": "BIAŁORUŚ, MIŃSK",
                     "type": "text",
-                    "title": "Country, place (city) of birth"
+                    "title": "Country, place (city) of birth",
+                    "name": "minorBirthPlace"
                 },
                 {
                     "value": "7",
@@ -1485,17 +1651,20 @@
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Powiat (county)"
+                    "title": "Powiat (county)",
+                    "name": "residencePowiat"
                 },
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Gmina (municipality)"
+                    "title": "Gmina (municipality)",
+                    "name": "residenceGmina"
                 },
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Locality (town, village)"
+                    "title": "Locality (town, village)",
+                    "name": "residenceCity"
                 },
                 {
                     "type": "break"
@@ -1503,17 +1672,20 @@
                 {
                     "value": "NIEISTNIEJĄCA",
                     "type": "text",
-                    "title": "Street"
+                    "title": "Street",
+                    "name": "residenceStreet"
                 },
                 {
                     "value": "12",
                     "type": "text",
-                    "title": "House number"
+                    "title": "House number",
+                    "name": "residenceHouseNumber"
                 },
                 {
                     "value": "3",
                     "type": "text",
-                    "title": "Flat number"
+                    "title": "Flat number",
+                    "name": "residenceApartmentNumber"
                 },
                 {
                     "type": "break"
@@ -1521,7 +1693,8 @@
                 {
                     "value": "80-000",
                     "type": "text",
-                    "title": "Postal code"
+                    "title": "Postal code",
+                    "name": "residencePostalCode"
                 },
                 {
                     "type": "section",
@@ -1534,6 +1707,7 @@
                 {
                     "type": "group-selector",
                     "title": "Citizenship",
+                    "name": "sectionDGroup",
                     "options": {
                         "d1": "other foreigner, filling in D1",
                         "d2": "Belarusian, filling in D2"
@@ -1551,43 +1725,51 @@
                     "value": "×",
                     "type": "check",
                     "title": "Basis of stay (D1)",
-                    "option": "permanent residence (stały pobyt)"
+                    "name": "d1StayBasis",
+                    "option": "permanent residence (stały pobyt)",
+                    "optionId": "permanentResidence"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Basis of stay (D1)",
-                    "option": "EU long-term resident's card"
+                    "option": "EU long-term resident's card",
+                    "optionId": "euLongTermResident"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Basis of stay (D1)",
-                    "option": "temporary residence (czasowy pobyt) under Art. 186 ust. 1 pkt 9"
+                    "option": "temporary residence (czasowy pobyt) under Art. 186 ust. 1 pkt 9",
+                    "optionId": "temporaryResidenceArt186"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Basis of stay (D1)",
                     "option": "subsidiary protection (ochrona uzupełniająca)",
+                    "optionId": "subsidiaryProtection",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Basis of stay (D1)",
-                    "option": "consent to stay on humanitarian grounds"
+                    "option": "consent to stay on humanitarian grounds",
+                    "optionId": "humanitarianStay"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Issued by"
+                    "title": "Issued by",
+                    "name": "d1IssuedBy"
                 },
                 {
                     "value": "2025 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Issued on (date of the decision)"
+                    "title": "Issued on (date of the decision)",
+                    "name": "d1DecisionDate"
                 },
                 {
                     "type": "comment",
@@ -1596,12 +1778,14 @@
                 {
                     "value": "AA",
                     "type": "text",
-                    "title": "Series"
+                    "title": "Series",
+                    "name": "d1DocumentSeries"
                 },
                 {
                     "value": "1234567",
                     "type": "text",
-                    "title": "Number"
+                    "title": "Number",
+                    "name": "d1DocumentNumber"
                 },
                 {
                     "type": "break"
@@ -1610,18 +1794,21 @@
                     "value": "2026 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Issued on"
+                    "title": "Issued on",
+                    "name": "d1DocumentIssueDate"
                 },
                 {
                     "value": "2029 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Expires on"
+                    "title": "Expires on",
+                    "name": "d1DocumentExpiryDate"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Issued by"
+                    "title": "Issued by",
+                    "name": "d1DocumentIssuedBy"
                 },
                 {
                     "type": "section",
@@ -1631,26 +1818,31 @@
                     "value": "×",
                     "type": "check",
                     "title": "Reason for ISSUING the travel document (D1)",
-                    "option": "own document lost"
+                    "name": "d1PdpIssueReason",
+                    "option": "own document lost",
+                    "optionId": "ownDocumentLost"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Reason for ISSUING the travel document (D1)",
-                    "option": "own document damaged"
+                    "option": "own document damaged",
+                    "optionId": "ownDocumentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Reason for ISSUING the travel document (D1)",
                     "option": "own document expired",
+                    "optionId": "ownDocumentExpired",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Reason for ISSUING the travel document (D1)",
-                    "option": "PDP expired"
+                    "option": "PDP expired",
+                    "optionId": "pdpExpired"
                 },
                 {
                     "type": "group-end",
@@ -1668,43 +1860,51 @@
                     "value": "×",
                     "type": "check",
                     "title": "Basis of stay",
-                    "option": "permanent residence (stały pobyt)"
+                    "name": "d2StayBasis",
+                    "option": "permanent residence (stały pobyt)",
+                    "optionId": "permanentResidence"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Basis of stay",
-                    "option": "EU long-term resident's card"
+                    "option": "EU long-term resident's card",
+                    "optionId": "euLongTermResident"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Basis of stay",
                     "option": "temporary residence (czasowy pobyt)",
+                    "optionId": "temporaryResidence",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Basis of stay",
-                    "option": "subsidiary protection (ochrona uzupełniająca)"
+                    "option": "subsidiary protection (ochrona uzupełniająca)",
+                    "optionId": "subsidiaryProtection"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Basis of stay",
-                    "option": "consent to stay on humanitarian grounds"
+                    "option": "consent to stay on humanitarian grounds",
+                    "optionId": "humanitarianStay"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Issued by"
+                    "title": "Issued by",
+                    "name": "d2IssuedBy"
                 },
                 {
                     "value": "2025 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Issued on (date of the decision)"
+                    "title": "Issued on (date of the decision)",
+                    "name": "d2DecisionDate"
                 },
                 {
                     "type": "comment",
@@ -1713,12 +1913,14 @@
                 {
                     "value": "AA",
                     "type": "text",
-                    "title": "Series"
+                    "title": "Series",
+                    "name": "d2DocumentSeries"
                 },
                 {
                     "value": "1234567",
                     "type": "text",
-                    "title": "Number"
+                    "title": "Number",
+                    "name": "d2DocumentNumber"
                 },
                 {
                     "type": "break"
@@ -1727,18 +1929,21 @@
                     "value": "2026 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Issued on"
+                    "title": "Issued on",
+                    "name": "d2DocumentIssueDate"
                 },
                 {
                     "value": "2029 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Expires on"
+                    "title": "Expires on",
+                    "name": "d2DocumentExpiryDate"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Issued by"
+                    "title": "Issued by",
+                    "name": "d2DocumentIssuedBy"
                 },
                 {
                     "type": "section",
@@ -1748,26 +1953,31 @@
                     "value": "×",
                     "type": "check",
                     "title": "Reason for ISSUING the travel document",
-                    "option": "lost"
+                    "name": "d2PdpIssueReason",
+                    "option": "lost",
+                    "optionId": "documentLost"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Reason for ISSUING the travel document",
-                    "option": "damaged"
+                    "option": "damaged",
+                    "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Reason for ISSUING the travel document",
                     "option": "expired",
+                    "optionId": "documentExpired",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Reason for ISSUING the travel document",
-                    "option": "no travel document"
+                    "option": "no travel document",
+                    "optionId": "noTravelDocument"
                 },
                 {
                     "type": "group-end",
@@ -1784,31 +1994,37 @@
                 {
                     "type": "check",
                     "title": "Reason for REPLACING the travel document",
-                    "option": "not filled in"
+                    "name": "pdpReplacementReason",
+                    "option": "not filled in",
+                    "optionId": "notFilled"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Reason for REPLACING the travel document",
-                    "option": "data has changed"
+                    "option": "data has changed",
+                    "optionId": "dataChanged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Reason for REPLACING the travel document",
-                    "option": "document damaged"
+                    "option": "document damaged",
+                    "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Reason for REPLACING the travel document",
-                    "option": "significant change in appearance compared to the photo"
+                    "option": "significant change in appearance compared to the photo",
+                    "optionId": "photoMismatch"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Reason for REPLACING the travel document",
-                    "option": "document lost"
+                    "option": "document lost",
+                    "optionId": "documentLost"
                 },
                 {
                     "type": "section",
@@ -1824,6 +2040,7 @@
                 {
                     "type": "same-as",
                     "title": "Same as the application date",
+                    "name": "sameAsApplicationDateF",
                     "source": "applicationDate",
                     "target": "signatureDateInSectionF"
                 },
@@ -1847,6 +2064,7 @@
                     "value": "KOPIA DECYZJI I KARTY POBYTU\nKOPIA POLSKIEGO DOKUMENTU PODRÓŻY\nZAŚWIADCZENIE Z REJESTRU PESEL Z ADRESEM ZAMELDOWANIA\nFOTOGRAFIE BIOMETRYCZNE 2 SZT.",
                     "type": "text",
                     "title": "Attachments",
+                    "name": "attachments",
                     "multiline": true
                 },
                 {
@@ -1863,6 +2081,7 @@
                 {
                     "type": "same-as",
                     "title": "Same as the application date",
+                    "name": "sameAsApplicationDateG",
                     "source": "applicationDate",
                     "target": "signatureDateInSectionG"
                 }
@@ -1909,13 +2128,15 @@
                     "newValue": "IVANOU",
                     "type": "text",
                     "title": "Прозвішча зараз",
-                    "name": "lastName"
+                    "name": "lastName",
+                    "profile-name-part": 2
                 },
                 {
                     "value": "IVANOV",
                     "newValue": "",
                     "type": "text",
                     "title": "Прозвішча пры нараджэнні (калі адрозніваецца)",
+                    "name": "birthLastName",
                     "ifEmpty": "lastName"
                 },
                 {
@@ -1923,6 +2144,7 @@
                     "newValue": "",
                     "type": "text",
                     "title": "Папярэдняе прозвішча (калі змянялася)",
+                    "name": "previousLastName",
                     "ifEmpty": "lastName"
                 },
                 {
@@ -1932,13 +2154,15 @@
                     "value": "ANDREI",
                     "type": "text",
                     "title": "Імя зараз",
-                    "name": "firstName"
+                    "name": "firstName",
+                    "profile-name-part": 1
                 },
                 {
                     "value": "ANDREI",
                     "newValue": "",
                     "type": "text",
                     "title": "Папярэднія імёны (калі змяняліся)",
+                    "name": "previousFirstNames",
                     "ifEmpty": "firstName"
                 },
                 {
@@ -1947,12 +2171,14 @@
                 {
                     "value": "PIOTR",
                     "type": "text",
-                    "title": "Імя бацькі (як у пашпарце лацінкай)"
+                    "title": "Імя бацькі (як у пашпарце лацінкай)",
+                    "name": "fatherName"
                 },
                 {
                     "value": "TAMARA",
                     "type": "text",
-                    "title": "Імя маці (як у пашпарце лацінкай)"
+                    "title": "Імя маці (як у пашпарце лацінкай)",
+                    "name": "motherName"
                 },
                 {
                     "type": "break"
@@ -1961,7 +2187,9 @@
                     "value": "1990 01 01",
                     "type": "date",
                     "title": "Дата нараджэння",
-                    "format": "YYYY MM DD"
+                    "name": "birthDate",
+                    "format": "YYYY MM DD",
+                    "profile-name-part": 3
                 },
                 {
                     "value": "M",
@@ -1976,17 +2204,20 @@
                 {
                     "value": "MIŃSK",
                     "type": "text",
-                    "title": "Месца нараджэння (населены пункт)"
+                    "title": "Месца нараджэння (населены пункт)",
+                    "name": "birthPlace"
                 },
                 {
                     "value": "BIAŁORUŚ",
                     "type": "text",
-                    "title": "Краіна нараджэння"
+                    "title": "Краіна нараджэння",
+                    "name": "birthCountry"
                 },
                 {
                     "value": "BIAŁORUŚ",
                     "type": "text",
-                    "title": "Грамадзянства"
+                    "title": "Грамадзянства",
+                    "name": "citizenship"
                 },
                 {
                     "value": "ŻONATY",
@@ -2005,7 +2236,8 @@
                 {
                     "value": "175",
                     "type": "text",
-                    "title": "Рост (см)"
+                    "title": "Рост (см)",
+                    "name": "height"
                 },
                 {
                     "value": "PIWNE",
@@ -2031,12 +2263,14 @@
                 {
                     "value": "BRAK",
                     "type": "text",
-                    "title": "Асаблівыя прыметы (радзімкі, татуіроўкі, ...)"
+                    "title": "Асаблівыя прыметы (радзімкі, татуіроўкі, ...)",
+                    "name": "distinguishingMarks"
                 },
                 {
                     "value": "512345678",
                     "type": "text",
-                    "title": "Нумар тэлефона"
+                    "title": "Нумар тэлефона",
+                    "name": "phoneNumber"
                 },
                 {
                     "type": "section",
@@ -2056,6 +2290,7 @@
                     "value": "M",
                     "type": "select",
                     "title": "Пол",
+                    "name": "minorGender",
                     "options": {
                         "K": "жаночы",
                         "M": "мужчынскі"
@@ -2064,13 +2299,15 @@
                 {
                     "value": "SYN",
                     "type": "text",
-                    "title": "Ступень роднасці (SYN, CÓRKA, ...)"
+                    "title": "Ступень роднасці (SYN, CÓRKA, ...)",
+                    "name": "minorRelationship"
                 },
                 {
                     "value": "NIKITA IVANOV",
                     "newValue": "MIKITA IVANOU",
                     "type": "text",
                     "title": "Імя і прозвішча",
+                    "name": "minorFullName",
                     "mode": "fit",
                     "maxWidth": 135
                 },
@@ -2078,12 +2315,14 @@
                     "value": "2020/01/01,",
                     "type": "date",
                     "title": "Дата нараджэння",
+                    "name": "minorBirthDate",
                     "format": "YYYY/MM/DD,"
                 },
                 {
                     "value": "BIAŁORUŚ, MIŃSK",
                     "type": "text",
-                    "title": "Краіна, месца (горад) нараджэння"
+                    "title": "Краіна, месца (горад) нараджэння",
+                    "name": "minorBirthPlace"
                 },
                 {
                     "value": "7",
@@ -2105,17 +2344,20 @@
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Павет"
+                    "title": "Павет",
+                    "name": "residencePowiat"
                 },
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Гміна"
+                    "title": "Гміна",
+                    "name": "residenceGmina"
                 },
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Населены пункт"
+                    "title": "Населены пункт",
+                    "name": "residenceCity"
                 },
                 {
                     "type": "break"
@@ -2123,17 +2365,20 @@
                 {
                     "value": "NIEISTNIEJĄCA",
                     "type": "text",
-                    "title": "Вуліца"
+                    "title": "Вуліца",
+                    "name": "residenceStreet"
                 },
                 {
                     "value": "12",
                     "type": "text",
-                    "title": "Нумар дома"
+                    "title": "Нумар дома",
+                    "name": "residenceHouseNumber"
                 },
                 {
                     "value": "3",
                     "type": "text",
-                    "title": "Нумар кватэры"
+                    "title": "Нумар кватэры",
+                    "name": "residenceApartmentNumber"
                 },
                 {
                     "type": "break"
@@ -2141,7 +2386,8 @@
                 {
                     "value": "80-000",
                     "type": "text",
-                    "title": "Паштовы індэкс"
+                    "title": "Паштовы індэкс",
+                    "name": "residencePostalCode"
                 },
                 {
                     "type": "section",
@@ -2154,6 +2400,7 @@
                 {
                     "type": "group-selector",
                     "title": "Грамадзянства",
+                    "name": "sectionDGroup",
                     "options": {
                         "d2": "беларус, запаўняю D2",
                         "d1": "іншы замежнік, запаўняю D1"
@@ -2171,43 +2418,51 @@
                     "value": "×",
                     "type": "check",
                     "title": "Падстава знаходжання (D1)",
-                    "option": "пастаянны побыт (stały pobyt)"
+                    "name": "d1StayBasis",
+                    "option": "пастаянны побыт (stały pobyt)",
+                    "optionId": "permanentResidence"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Падстава знаходжання (D1)",
-                    "option": "карта доўгатэрміновага рэзідэнта ЕС"
+                    "option": "карта доўгатэрміновага рэзідэнта ЕС",
+                    "optionId": "euLongTermResident"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Падстава знаходжання (D1)",
-                    "option": "часовы побыт (czasowy pobyt) згодна з Art. 186 ust. 1 pkt 9"
+                    "option": "часовы побыт (czasowy pobyt) згодна з Art. 186 ust. 1 pkt 9",
+                    "optionId": "temporaryResidenceArt186"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Падстава знаходжання (D1)",
                     "option": "дадатковая абарона (ochrona uzupełniająca)",
+                    "optionId": "subsidiaryProtection",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Падстава знаходжання (D1)",
-                    "option": "згода на знаходжанне па гуманітарных прычынах"
+                    "option": "згода на знаходжанне па гуманітарных прычынах",
+                    "optionId": "humanitarianStay"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Кім выдадзена"
+                    "title": "Кім выдадзена",
+                    "name": "d1IssuedBy"
                 },
                 {
                     "value": "2025 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Калі выдадзена (дата дэцызіі)"
+                    "title": "Калі выдадзена (дата дэцызіі)",
+                    "name": "d1DecisionDate"
                 },
                 {
                     "type": "comment",
@@ -2216,12 +2471,14 @@
                 {
                     "value": "AA",
                     "type": "text",
-                    "title": "Серыя"
+                    "title": "Серыя",
+                    "name": "d1DocumentSeries"
                 },
                 {
                     "value": "1234567",
                     "type": "text",
-                    "title": "Нумар"
+                    "title": "Нумар",
+                    "name": "d1DocumentNumber"
                 },
                 {
                     "type": "break"
@@ -2230,18 +2487,21 @@
                     "value": "2026 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Калі выдадзена"
+                    "title": "Калі выдадзена",
+                    "name": "d1DocumentIssueDate"
                 },
                 {
                     "value": "2029 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Калі заканчваецца"
+                    "title": "Калі заканчваецца",
+                    "name": "d1DocumentExpiryDate"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Кім выдадзена"
+                    "title": "Кім выдадзена",
+                    "name": "d1DocumentIssuedBy"
                 },
                 {
                     "type": "section",
@@ -2251,26 +2511,31 @@
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
-                    "option": "страчаны ўласны дакумент"
+                    "name": "d1PdpIssueReason",
+                    "option": "страчаны ўласны дакумент",
+                    "optionId": "ownDocumentLost"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
-                    "option": "пашкоджаны ўласны дакумент"
+                    "option": "пашкоджаны ўласны дакумент",
+                    "optionId": "ownDocumentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
                     "option": "скончыўся тэрмін дзеяння ўласнага дакумента",
+                    "optionId": "ownDocumentExpired",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
-                    "option": "скончыўся тэрмін дзеяння PDP"
+                    "option": "скончыўся тэрмін дзеяння PDP",
+                    "optionId": "pdpExpired"
                 },
                 {
                     "type": "group-end",
@@ -2288,43 +2553,51 @@
                     "value": "×",
                     "type": "check",
                     "title": "Падстава знаходжання",
-                    "option": "пастаянны побыт (stały pobyt)"
+                    "name": "d2StayBasis",
+                    "option": "пастаянны побыт (stały pobyt)",
+                    "optionId": "permanentResidence"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Падстава знаходжання",
-                    "option": "карта доўгатэрміновага рэзідэнта ЕС"
+                    "option": "карта доўгатэрміновага рэзідэнта ЕС",
+                    "optionId": "euLongTermResident"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Падстава знаходжання",
                     "option": "часовы побыт (czasowy pobyt)",
+                    "optionId": "temporaryResidence",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Падстава знаходжання",
-                    "option": "дадатковая абарона (ochrona uzupełniająca)"
+                    "option": "дадатковая абарона (ochrona uzupełniająca)",
+                    "optionId": "subsidiaryProtection"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Падстава знаходжання",
-                    "option": "згода на знаходжанне па гуманітарных прычынах"
+                    "option": "згода на знаходжанне па гуманітарных прычынах",
+                    "optionId": "humanitarianStay"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Кім выдадзена"
+                    "title": "Кім выдадзена",
+                    "name": "d2IssuedBy"
                 },
                 {
                     "value": "2025 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Калі выдадзена (дата дэцызіі)"
+                    "title": "Калі выдадзена (дата дэцызіі)",
+                    "name": "d2DecisionDate"
                 },
                 {
                     "type": "comment",
@@ -2333,12 +2606,14 @@
                 {
                     "value": "AA",
                     "type": "text",
-                    "title": "Серыя"
+                    "title": "Серыя",
+                    "name": "d2DocumentSeries"
                 },
                 {
                     "value": "1234567",
                     "type": "text",
-                    "title": "Нумар"
+                    "title": "Нумар",
+                    "name": "d2DocumentNumber"
                 },
                 {
                     "type": "break"
@@ -2347,18 +2622,21 @@
                     "value": "2026 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Калі выдадзена"
+                    "title": "Калі выдадзена",
+                    "name": "d2DocumentIssueDate"
                 },
                 {
                     "value": "2029 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Калі заканчваецца"
+                    "title": "Калі заканчваецца",
+                    "name": "d2DocumentExpiryDate"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Кім выдадзена"
+                    "title": "Кім выдадзена",
+                    "name": "d2DocumentIssuedBy"
                 },
                 {
                     "type": "section",
@@ -2368,26 +2646,31 @@
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ВЫДАЧЫ праязнога дакумента",
-                    "option": "страчаны"
+                    "name": "d2PdpIssueReason",
+                    "option": "страчаны",
+                    "optionId": "documentLost"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ВЫДАЧЫ праязнога дакумента",
-                    "option": "пашкоджаны"
+                    "option": "пашкоджаны",
+                    "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ВЫДАЧЫ праязнога дакумента",
                     "option": "скончыўся тэрмін дзеяння",
+                    "optionId": "documentExpired",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ВЫДАЧЫ праязнога дакумента",
-                    "option": "адсутнасць выязнога дакумента"
+                    "option": "адсутнасць выязнога дакумента",
+                    "optionId": "noTravelDocument"
                 },
                 {
                     "type": "group-end",
@@ -2404,31 +2687,37 @@
                 {
                     "type": "check",
                     "title": "Прычына ЗАМЕНЫ праязнога дакумента",
-                    "option": "не запоўнена"
+                    "name": "pdpReplacementReason",
+                    "option": "не запоўнена",
+                    "optionId": "notFilled"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ЗАМЕНЫ праязнога дакумента",
-                    "option": "даныя змяніліся"
+                    "option": "даныя змяніліся",
+                    "optionId": "dataChanged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ЗАМЕНЫ праязнога дакумента",
-                    "option": "дакумент пашкоджаны"
+                    "option": "дакумент пашкоджаны",
+                    "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ЗАМЕНЫ праязнога дакумента",
-                    "option": "істотная змена знешнасці ў параўнанні з фота"
+                    "option": "істотная змена знешнасці ў параўнанні з фота",
+                    "optionId": "photoMismatch"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Прычына ЗАМЕНЫ праязнога дакумента",
-                    "option": "дакумент страчаны"
+                    "option": "дакумент страчаны",
+                    "optionId": "documentLost"
                 },
                 {
                     "type": "section",
@@ -2444,6 +2733,7 @@
                 {
                     "type": "same-as",
                     "title": "Як дата падачы заявы",
+                    "name": "sameAsApplicationDateF",
                     "source": "applicationDate",
                     "target": "signatureDateInSectionF"
                 },
@@ -2467,6 +2757,7 @@
                     "value": "KOPIA DECYZJI I KARTY POBYTU\nKOPIA POLSKIEGO DOKUMENTU PODRÓŻY\nZAŚWIADCZENIE Z REJESTRU PESEL Z ADRESEM ZAMELDOWANIA\nFOTOGRAFIE BIOMETRYCZNE 2 SZT.",
                     "type": "text",
                     "title": "Дадаткі",
+                    "name": "attachments",
                     "multiline": true
                 },
                 {
@@ -2483,6 +2774,7 @@
                 {
                     "type": "same-as",
                     "title": "Як дата падачы заявы",
+                    "name": "sameAsApplicationDateG",
                     "source": "applicationDate",
                     "target": "signatureDateInSectionG"
                 }
@@ -2529,13 +2821,15 @@
                     "newValue": "IVANENKO",
                     "type": "text",
                     "title": "Прізвище зараз",
-                    "name": "lastName"
+                    "name": "lastName",
+                    "profile-name-part": 2
                 },
                 {
                     "value": "IVANOV",
                     "newValue": "",
                     "type": "text",
                     "title": "Прізвище при народженні (якщо відрізняється)",
+                    "name": "birthLastName",
                     "ifEmpty": "lastName"
                 },
                 {
@@ -2543,6 +2837,7 @@
                     "newValue": "",
                     "type": "text",
                     "title": "Попереднє прізвище (якщо змінювалося)",
+                    "name": "previousLastName",
                     "ifEmpty": "lastName"
                 },
                 {
@@ -2553,13 +2848,15 @@
                     "newValue": "ANDRII",
                     "type": "text",
                     "title": "Ім'я зараз",
-                    "name": "firstName"
+                    "name": "firstName",
+                    "profile-name-part": 1
                 },
                 {
                     "value": "ANDREI",
                     "newValue": "",
                     "type": "text",
                     "title": "Попередні імена (якщо змінювалися)",
+                    "name": "previousFirstNames",
                     "ifEmpty": "firstName"
                 },
                 {
@@ -2569,12 +2866,14 @@
                     "value": "PIOTR",
                     "newValue": "PETRO",
                     "type": "text",
-                    "title": "Ім'я батька (як у паспорті латиницею)"
+                    "title": "Ім'я батька (як у паспорті латиницею)",
+                    "name": "fatherName"
                 },
                 {
                     "value": "TAMARA",
                     "type": "text",
-                    "title": "Ім'я матері (як у паспорті латиницею)"
+                    "title": "Ім'я матері (як у паспорті латиницею)",
+                    "name": "motherName"
                 },
                 {
                     "type": "break"
@@ -2583,7 +2882,9 @@
                     "value": "1990 01 01",
                     "type": "date",
                     "title": "Дата народження",
-                    "format": "YYYY MM DD"
+                    "name": "birthDate",
+                    "format": "YYYY MM DD",
+                    "profile-name-part": 3
                 },
                 {
                     "value": "M",
@@ -2598,17 +2899,20 @@
                 {
                     "value": "MIŃSK",
                     "type": "text",
-                    "title": "Місце народження (населений пункт)"
+                    "title": "Місце народження (населений пункт)",
+                    "name": "birthPlace"
                 },
                 {
                     "value": "BIAŁORUŚ",
                     "type": "text",
-                    "title": "Країна народження"
+                    "title": "Країна народження",
+                    "name": "birthCountry"
                 },
                 {
                     "value": "BIAŁORUŚ",
                     "type": "text",
-                    "title": "Громадянство"
+                    "title": "Громадянство",
+                    "name": "citizenship"
                 },
                 {
                     "value": "ŻONATY",
@@ -2627,7 +2931,8 @@
                 {
                     "value": "175",
                     "type": "text",
-                    "title": "Зріст (см)"
+                    "title": "Зріст (см)",
+                    "name": "height"
                 },
                 {
                     "value": "PIWNE",
@@ -2653,12 +2958,14 @@
                 {
                     "value": "BRAK",
                     "type": "text",
-                    "title": "Особливі прикмети (родимки, татуювання, ...)"
+                    "title": "Особливі прикмети (родимки, татуювання, ...)",
+                    "name": "distinguishingMarks"
                 },
                 {
                     "value": "512345678",
                     "type": "text",
-                    "title": "Номер телефону"
+                    "title": "Номер телефону",
+                    "name": "phoneNumber"
                 },
                 {
                     "type": "section",
@@ -2678,6 +2985,7 @@
                     "value": "M",
                     "type": "select",
                     "title": "Стать",
+                    "name": "minorGender",
                     "options": {
                         "K": "жіноча",
                         "M": "чоловіча"
@@ -2686,13 +2994,15 @@
                 {
                     "value": "SYN",
                     "type": "text",
-                    "title": "Ступінь споріднення (SYN, CÓRKA, ...)"
+                    "title": "Ступінь споріднення (SYN, CÓRKA, ...)",
+                    "name": "minorRelationship"
                 },
                 {
                     "value": "NIKITA IVANOV",
                     "newValue": "MYKYTA IVANENKO",
                     "type": "text",
                     "title": "Ім'я та прізвище",
+                    "name": "minorFullName",
                     "mode": "fit",
                     "maxWidth": 135
                 },
@@ -2700,12 +3010,14 @@
                     "value": "2020/01/01,",
                     "type": "date",
                     "title": "Дата народження",
+                    "name": "minorBirthDate",
                     "format": "YYYY/MM/DD,"
                 },
                 {
                     "value": "BIAŁORUŚ, MIŃSK",
                     "type": "text",
-                    "title": "Країна, місце (місто) народження"
+                    "title": "Країна, місце (місто) народження",
+                    "name": "minorBirthPlace"
                 },
                 {
                     "value": "7",
@@ -2727,17 +3039,20 @@
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Повіт"
+                    "title": "Повіт",
+                    "name": "residencePowiat"
                 },
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Ґміна"
+                    "title": "Ґміна",
+                    "name": "residenceGmina"
                 },
                 {
                     "value": "GDAŃSK",
                     "type": "text",
-                    "title": "Населений пункт"
+                    "title": "Населений пункт",
+                    "name": "residenceCity"
                 },
                 {
                     "type": "break"
@@ -2745,17 +3060,20 @@
                 {
                     "value": "NIEISTNIEJĄCA",
                     "type": "text",
-                    "title": "Вулиця"
+                    "title": "Вулиця",
+                    "name": "residenceStreet"
                 },
                 {
                     "value": "12",
                     "type": "text",
-                    "title": "Номер будинку"
+                    "title": "Номер будинку",
+                    "name": "residenceHouseNumber"
                 },
                 {
                     "value": "3",
                     "type": "text",
-                    "title": "Номер квартири"
+                    "title": "Номер квартири",
+                    "name": "residenceApartmentNumber"
                 },
                 {
                     "type": "break"
@@ -2763,7 +3081,8 @@
                 {
                     "value": "80-000",
                     "type": "text",
-                    "title": "Поштовий індекс"
+                    "title": "Поштовий індекс",
+                    "name": "residencePostalCode"
                 },
                 {
                     "type": "section",
@@ -2776,6 +3095,7 @@
                 {
                     "type": "group-selector",
                     "title": "Громадянство",
+                    "name": "sectionDGroup",
                     "options": {
                         "d1": "інший іноземець, заповнюю D1",
                         "d2": "білорус, заповнюю D2"
@@ -2793,43 +3113,51 @@
                     "value": "×",
                     "type": "check",
                     "title": "Підстава перебування (D1)",
-                    "option": "постійний побут (stały pobyt)"
+                    "name": "d1StayBasis",
+                    "option": "постійний побут (stały pobyt)",
+                    "optionId": "permanentResidence"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Підстава перебування (D1)",
-                    "option": "карта довгострокового резидента ЄС"
+                    "option": "карта довгострокового резидента ЄС",
+                    "optionId": "euLongTermResident"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Підстава перебування (D1)",
-                    "option": "тимчасовий побут (czasowy pobyt) згідно з Art. 186 ust. 1 pkt 9"
+                    "option": "тимчасовий побут (czasowy pobyt) згідно з Art. 186 ust. 1 pkt 9",
+                    "optionId": "temporaryResidenceArt186"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Підстава перебування (D1)",
                     "option": "додатковий захист (ochrona uzupełniająca)",
+                    "optionId": "subsidiaryProtection",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Підстава перебування (D1)",
-                    "option": "згода на перебування з гуманітарних причин"
+                    "option": "згода на перебування з гуманітарних причин",
+                    "optionId": "humanitarianStay"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Ким видано"
+                    "title": "Ким видано",
+                    "name": "d1IssuedBy"
                 },
                 {
                     "value": "2025 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Коли видано (дата децизії)"
+                    "title": "Коли видано (дата децизії)",
+                    "name": "d1DecisionDate"
                 },
                 {
                     "type": "comment",
@@ -2838,12 +3166,14 @@
                 {
                     "value": "AA",
                     "type": "text",
-                    "title": "Серія"
+                    "title": "Серія",
+                    "name": "d1DocumentSeries"
                 },
                 {
                     "value": "1234567",
                     "type": "text",
-                    "title": "Номер"
+                    "title": "Номер",
+                    "name": "d1DocumentNumber"
                 },
                 {
                     "type": "break"
@@ -2852,18 +3182,21 @@
                     "value": "2026 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Коли видана"
+                    "title": "Коли видана",
+                    "name": "d1DocumentIssueDate"
                 },
                 {
                     "value": "2029 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Коли закінчується"
+                    "title": "Коли закінчується",
+                    "name": "d1DocumentExpiryDate"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Ким видана"
+                    "title": "Ким видана",
+                    "name": "d1DocumentIssuedBy"
                 },
                 {
                     "type": "section",
@@ -2873,26 +3206,31 @@
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВИДАЧІ проїзного документа (D1)",
-                    "option": "втрачений власний документ"
+                    "name": "d1PdpIssueReason",
+                    "option": "втрачений власний документ",
+                    "optionId": "ownDocumentLost"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВИДАЧІ проїзного документа (D1)",
-                    "option": "пошкоджений власний документ"
+                    "option": "пошкоджений власний документ",
+                    "optionId": "ownDocumentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВИДАЧІ проїзного документа (D1)",
                     "option": "закінчився строк дії власного документа",
+                    "optionId": "ownDocumentExpired",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВИДАЧІ проїзного документа (D1)",
-                    "option": "закінчився строк дії PDP"
+                    "option": "закінчився строк дії PDP",
+                    "optionId": "pdpExpired"
                 },
                 {
                     "type": "group-end",
@@ -2910,43 +3248,51 @@
                     "value": "×",
                     "type": "check",
                     "title": "Підстава перебування",
-                    "option": "постійний побут (stały pobyt)"
+                    "name": "d2StayBasis",
+                    "option": "постійний побут (stały pobyt)",
+                    "optionId": "permanentResidence"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Підстава перебування",
-                    "option": "карта довгострокового резидента ЄС"
+                    "option": "карта довгострокового резидента ЄС",
+                    "optionId": "euLongTermResident"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Підстава перебування",
                     "option": "тимчасовий побут (czasowy pobyt)",
+                    "optionId": "temporaryResidence",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Підстава перебування",
-                    "option": "додатковий захист (ochrona uzupełniająca)"
+                    "option": "додатковий захист (ochrona uzupełniająca)",
+                    "optionId": "subsidiaryProtection"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Підстава перебування",
-                    "option": "згода на перебування з гуманітарних причин"
+                    "option": "згода на перебування з гуманітарних причин",
+                    "optionId": "humanitarianStay"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Ким видано"
+                    "title": "Ким видано",
+                    "name": "d2IssuedBy"
                 },
                 {
                     "value": "2025 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Коли видано (дата децизії)"
+                    "title": "Коли видано (дата децизії)",
+                    "name": "d2DecisionDate"
                 },
                 {
                     "type": "comment",
@@ -2955,12 +3301,14 @@
                 {
                     "value": "AA",
                     "type": "text",
-                    "title": "Серія"
+                    "title": "Серія",
+                    "name": "d2DocumentSeries"
                 },
                 {
                     "value": "1234567",
                     "type": "text",
-                    "title": "Номер"
+                    "title": "Номер",
+                    "name": "d2DocumentNumber"
                 },
                 {
                     "type": "break"
@@ -2969,18 +3317,21 @@
                     "value": "2026 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Коли видана"
+                    "title": "Коли видана",
+                    "name": "d2DocumentIssueDate"
                 },
                 {
                     "value": "2029 01 01",
                     "type": "date",
                     "format": "YYYY MM DD",
-                    "title": "Коли закінчується"
+                    "title": "Коли закінчується",
+                    "name": "d2DocumentExpiryDate"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
                     "type": "text",
-                    "title": "Ким видана"
+                    "title": "Ким видана",
+                    "name": "d2DocumentIssuedBy"
                 },
                 {
                     "type": "section",
@@ -2990,26 +3341,31 @@
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВИДАЧІ проїзного документа",
-                    "option": "втрачений"
+                    "name": "d2PdpIssueReason",
+                    "option": "втрачений",
+                    "optionId": "documentLost"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВИДАЧІ проїзного документа",
-                    "option": "пошкоджений"
+                    "option": "пошкоджений",
+                    "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВИДАЧІ проїзного документа",
                     "option": "закінчився строк дії",
+                    "optionId": "documentExpired",
                     "default": true
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ВИДАЧІ проїзного документа",
-                    "option": "відсутність документа для виїзду"
+                    "option": "відсутність документа для виїзду",
+                    "optionId": "noTravelDocument"
                 },
                 {
                     "type": "group-end",
@@ -3026,31 +3382,37 @@
                 {
                     "type": "check",
                     "title": "Причина ЗАМІНИ проїзного документа",
-                    "option": "не заповнено"
+                    "name": "pdpReplacementReason",
+                    "option": "не заповнено",
+                    "optionId": "notFilled"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ЗАМІНИ проїзного документа",
-                    "option": "дані змінилися"
+                    "option": "дані змінилися",
+                    "optionId": "dataChanged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ЗАМІНИ проїзного документа",
-                    "option": "документ пошкоджено"
+                    "option": "документ пошкоджено",
+                    "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ЗАМІНИ проїзного документа",
-                    "option": "суттєва зміна зовнішності порівняно з фото"
+                    "option": "суттєва зміна зовнішності порівняно з фото",
+                    "optionId": "photoMismatch"
                 },
                 {
                     "value": "×",
                     "type": "check",
                     "title": "Причина ЗАМІНИ проїзного документа",
-                    "option": "документ втрачено"
+                    "option": "документ втрачено",
+                    "optionId": "documentLost"
                 },
                 {
                     "type": "section",
@@ -3066,6 +3428,7 @@
                 {
                     "type": "same-as",
                     "title": "Така сама, як дата подання заяви",
+                    "name": "sameAsApplicationDateF",
                     "source": "applicationDate",
                     "target": "signatureDateInSectionF"
                 },
@@ -3089,6 +3452,7 @@
                     "value": "KOPIA DECYZJI I KARTY POBYTU\nKOPIA POLSKIEGO DOKUMENTU PODRÓŻY\nZAŚWIADCZENIE Z REJESTRU PESEL Z ADRESEM ZAMELDOWANIA\nFOTOGRAFIE BIOMETRYCZNE 2 SZT.",
                     "type": "text",
                     "title": "Додатки",
+                    "name": "attachments",
                     "multiline": true
                 },
                 {
@@ -3105,6 +3469,7 @@
                 {
                     "type": "same-as",
                     "title": "Така сама, як дата подання заяви",
+                    "name": "sameAsApplicationDateG",
                     "source": "applicationDate",
                     "target": "signatureDateInSectionG"
                 }

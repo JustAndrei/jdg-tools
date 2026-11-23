@@ -20,4 +20,5 @@ export function showPdf(bytes) {
     if (currentPdfUrl) URL.revokeObjectURL(currentPdfUrl);
     currentPdfUrl = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
     $('#pdf').attr('data', currentPdfUrl);
+    $('#pdf')[0].scrollIntoView({behavior: "smooth"});
 }

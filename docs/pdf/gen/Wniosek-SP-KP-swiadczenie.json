@@ -31,14 +31,17 @@
             "value": "×",
             "type": "check",
             "title": "Первая заявка?",
+            "name": "isFirstApplication",
             "option": "первая",
+            "optionId": "first",
             "default": true
         },
         {
             "value": "×",
             "type": "check",
             "title": "Первая заявка?",
-            "option": "последующая"
+            "option": "последующая",
+            "optionId": "subsequent"
         },
         {
             "value": "WOJEWODA",
@@ -48,6 +51,7 @@
             "value": "POMORSKI",
             "type": "select",
             "title": "Воеводство, где подаётся заявка",
+            "name": "voivodeship",
             "options": "standard.voivodeship",
             "transform": "voivodeshipAsMasculineNominative"
         },
@@ -63,13 +67,15 @@
             "value": "IVANOVA",
             "type": "text",
             "title": "Фамилия сейчас",
-            "name": "lastName"
+            "name": "lastName",
+            "profile-name-part": 2
         },
         {
             "value": "SIDOROVA",
             "newValue": "",
             "type": "text",
             "title": "Фамилия при рождении (если отличается)",
+            "name": "birthLastName",
             "ifEmpty": "lastName"
         },
         {
@@ -77,17 +83,22 @@
             "newValue": "",
             "type": "text",
             "title": "Предыдущая фамилия (если менялась)",
+            "name": "previousLastName",
             "ifEmpty": "lastName"
         },
         {
             "value": "EKATERINA",
             "type": "text",
-            "title": "Имя"
+            "title": "Имя",
+            "name": "firstName",
+            "profile-name-part": 1
         },
         {
             "value": "1999 01 01",
             "type": "date",
             "title": "Дата рождения",
+            "name": "birthDate",
+            "profile-name-part": 3,
             "format": "YYYY MM DD"
         },
         {
@@ -103,17 +114,20 @@
         {
             "value": "MIŃSK",
             "type": "text",
-            "title": "Место рождения (населенный пункт)"
+            "title": "Место рождения (населенный пункт)",
+            "name": "birthPlace"
         },
         {
             "value": "BIAŁORUŚ",
             "type": "text",
-            "title": "Страна рождения"
+            "title": "Страна рождения",
+            "name": "birthCountry"
         },
         {
             "value": "BIAŁORUŚ",
             "type": "text",
-            "title": "Гражданство"
+            "title": "Гражданство",
+            "name": "citizenship"
         },
         {
             "type": "section",
@@ -126,32 +140,38 @@
         {
             "value": "BIAŁORUŚ",
             "type": "text",
-            "title": "Страна"
+            "title": "Страна",
+            "name": "foreignCountry"
         },
         {
             "value": "MIŃSK",
             "type": "text",
-            "title": "Город"
+            "title": "Город",
+            "name": "foreignCity"
         },
         {
             "value": "NEREALNAYA",
             "type": "text",
-            "title": "Улица"
+            "title": "Улица",
+            "name": "foreignStreet"
         },
         {
             "value": "12",
             "type": "text",
-            "title": "Номер дома"
+            "title": "Номер дома",
+            "name": "foreignHouseNumber"
         },
         {
             "value": "345",
             "type": "text",
-            "title": "Номер квартиры"
+            "title": "Номер квартиры",
+            "name": "foreignApartmentNumber"
         },
         {
             "value": "220000",
             "type": "text",
-            "title": "Почтовый индекс"
+            "title": "Почтовый индекс",
+            "name": "foreignPostalCode"
         },
         {
             "type": "section",
@@ -161,47 +181,56 @@
             "value": "POMORSKIE",
             "type": "select",
             "title": "Воеводство",
+            "name": "currentVoivodeship",
             "options": "standard.voivodeship"
         },
         {
             "value": "GDAŃSK",
             "type": "text",
-            "title": "Округ (powiat)"
+            "title": "Округ (powiat)",
+            "name": "currentPowiat"
         },
         {
             "value": "GDAŃSK",
             "type": "text",
-            "title": "Город"
+            "title": "Город",
+            "name": "currentCity"
         },
         {
             "value": "NIEISTNIEJĄCA",
             "type": "text",
-            "title": "Улица"
+            "title": "Улица",
+            "name": "currentStreet"
         },
         {
             "value": "1",
             "type": "text",
-            "title": "Номер дома"
+            "title": "Номер дома",
+            "name": "currentHouseNumber"
         },
         {
             "value": "123",
             "type": "text",
-            "title": "Номер квартиры"
+            "title": "Номер квартиры",
+            "name": "currentApartmentNumber"
         },
         {
             "value": "80-800",
             "type": "text",
-            "title": "Почтовый индекс"
+            "title": "Почтовый индекс",
+            "name": "currentPostalCode"
         },
         {
             "value": "+48571123456",
             "type": "text",
-            "title": "Номер телефона"
+            "title": "Номер телефона",
+            "name": "phoneNumber"
         },
         {
             "value": "KATERINA.IVANOVA@GMAIL.COM",
             "type": "text",
             "title": "E-mail",
+            "name": "email",
             "maxCharsPerLine": 20
         },
         {
@@ -212,37 +241,44 @@
             "value": "POMORSKIE",
             "type": "select",
             "title": "Воеводство",
+            "name": "plannedVoivodeship",
             "options": "standard.voivodeship"
         },
         {
             "value": "GDAŃSK",
             "type": "text",
-            "title": "Округ (powiat)"
+            "title": "Округ (powiat)",
+            "name": "plannedPowiat"
         },
         {
             "value": "GDAŃSK",
             "type": "text",
-            "title": "Город"
+            "title": "Город",
+            "name": "plannedCity"
         },
         {
             "value": "NIEISTNIEJĄCA",
             "type": "text",
-            "title": "Улица"
+            "title": "Улица",
+            "name": "plannedStreet"
         },
         {
             "value": "1",
             "type": "text",
-            "title": "Номер дома"
+            "title": "Номер дома",
+            "name": "plannedHouseNumber"
         },
         {
             "value": "123",
             "type": "text",
-            "title": "Номер квартиры"
+            "title": "Номер квартиры",
+            "name": "plannedApartmentNumber"
         },
         {
             "value": "80-800",
             "type": "text",
-            "title": "Почтовый индекс"
+            "title": "Почтовый индекс",
+            "name": "plannedPostalCode"
         },
         {
             "type": "section",
@@ -273,6 +309,7 @@
             "value": "VASILI PUPKIN",
             "type": "text",
             "title": "Имя и фамилия",
+            "name": "relativeFullName",
             "mode": "fit",
             "maxWidth": 115
         },
@@ -280,12 +317,14 @@
             "value": "1989/01/01",
             "type": "date",
             "title": "Дата рождения",
+            "name": "relativeBirthDate",
             "format": "YYYY/MM/DD"
         },
         {
             "value": "MAŁŻONEK",
             "type": "select",
             "title": "Основание получения денег",
+            "name": "relativeBasis",
             "options": {
                 "MAŁŻONEK": "супруг",
                 "DZIECKO": "ребенок"
@@ -295,6 +334,7 @@
             "value": "GDAŃSK",
             "type": "text",
             "title": "Город проживания",
+            "name": "relativeCity",
             "mode": "fit",
             "maxWidth": 105
         },
@@ -313,23 +353,27 @@
         {
             "value": "ZAD123456",
             "type": "text",
-            "title": "Номер карты"
+            "title": "Номер карты",
+            "name": "cardNumber"
         },
         {
             "value": "WOJEWODA OPOLSKI",
             "type": "text",
-            "title": "Орган, выдавший карту"
+            "title": "Орган, выдавший карту",
+            "name": "cardIssuedBy"
         },
         {
             "value": "2024 01 01",
             "type": "date",
             "title": "Дата выдачи",
+            "name": "cardIssueDate",
             "format": "YYYY MM DD"
         },
         {
             "value": "2034 01 01",
             "type": "date",
             "title": "Действительна до",
+            "name": "cardExpiryDate",
             "format": "YYYY MM DD"
         },
         {
@@ -349,6 +393,7 @@
             "newValue": "POTWIERDZENIE OPŁATY SKARBOWEJ\nKSEROKOPIA PASZPORTU\nKSEROKOPIA KARTY POLAKA I DECYZJI\nKSEROKOPIA UMOWY NAJMU LOKALU MIESZKALNEGO\nKSEROKOPIA POWIADOMIENIA O NADANIU NUMERU PESEL\nODPIS AKTU MAŁŻEŃSTWA\nODPIS(Y) AKTU URODZENIA",
             "type": "text",
             "title": "Приложения",
+            "name": "attachments",
             "multiline": true
         },
         {
@@ -373,12 +418,14 @@
             "value": "01/01/2025",
             "type": "date",
             "title": "Дата заявки на сталый побыт",
+            "name": "permanentResidenceApplicationDate",
             "format": "DD/MM/YYYY"
         },
         {
             "value": "POMORSKIEGO",
             "type": "select",
             "title": "Воеводство, где подана заявка на сталый побыт",
+            "name": "permanentResidenceApplicationVoivodeship",
             "options": "standard.voivodeship",
             "transform": "voivodeshipAsGenitiveAdjective"
         },

@@ -6,15 +6,25 @@ import {
     availableLanguages, getActiveLanguage, getPreferredLanguage, localizeMetadata,
     pickLanguage, saveLanguage, setActiveLanguage, t
 } from './i18n.js';
-import { downloadBytes, resourceUrl } from './io.js';
+import { downloadBytes, pickLocalFile, resourceUrl, saveTextFile } from './io.js';
 import { createLanguagePicker } from './language-picker.js';
 import { loadProject } from './loader.js';
 import { bindAnnotations, downloadDefaultMetadata, readPdfAnnotations } from './pdf/annotations.js';
 import { renderPdf } from './pdf/render.js';
+import { createProfileBar } from './profiles/profile-bar.js';
+import {
+    isFormState, nameParts, profileNameOf, restoreForm, serializeForm, withDefaults
+} from './profiles/form-state.js';
+import {
+    clearProfiles, getCurrentProfile, hasProfile, listProfiles, loadProfile, saveProfile, setCurrentProfile
+} from './profiles/profile-store.js';
 import { displayError, displayInfo, setStatus, showPdf } from './ui.js';
 
 // `index.html?debug` marks the anchor point of every text on the output, which helps calibrate coordinates
 const DEBUG = new URLSearchParams(location.search).has('debug');
+
+/** The bar that stays at the top of the page: the profile controls (once a form is open) and the language picker. */
+let $topBar;
 
 /** The language drop-down; created when the page is ready. */
 let picker;
@@ -22,8 +32,8 @@ let picker;
 /** The form on the screen: `show(language)` rebuilds it in another language without reloading the PDF. */
 let openForm = null;
 
-/** Whether anything was typed into the form since it was built: switching the language would discard it. */
-let hasUnsavedInput = false;
+/** The bar with the saved profiles of the open form; created together with the form. */
+let profileBar;
 
 function reportable(error) {
     console.error(error);
@@ -44,6 +54,7 @@ async function generate(project) {
 function activate(language) {
     setActiveLanguage(language);
     picker.setActive(language);
+    profileBar?.refreshLabels();
 }
 
 async function openProject(baseName, pdfBytes) {
@@ -61,13 +72,119 @@ async function openProject(baseName, pdfBytes) {
     project.rects = rects;
     picker.setAvailable(languages);
 
+    const form = project.baseName;   // profiles are kept in localStorage under the name of the form
+    let defaults;                    // the state of the freshly built form
+    let nameFields;                  // the controls the profile name is made of
+
+    const showProfiles = () => {
+        const current = getCurrentProfile(form);
+        profileBar.setProfiles(listProfiles(form), current);
+    };
+
+    /** Saves the state under `name`, makes the profile the current one and updates the bar. */
+    const keepProfile = (name, state) => {
+        saveProfile(form, name, state);
+        setCurrentProfile(form, name);
+        showProfiles();
+    };
+
+    const applyProfile = (state) => restoreForm(withDefaults(defaults, state));
+
+    const switchProfile = (name) => {
+        const state = loadProfile(form, name);
+        if (!isFormState(state)) {
+            alert(t('invalidProfileFile'));
+            showProfiles();
+            return;
+        }
+        setCurrentProfile(form, name);
+        applyProfile(state);
+        showProfiles();
+    };
+
+    /** Called by "Fill PDF": the form goes to the profile named after its fields (a new one if they changed). */
+    const saveForm = () => {
+        const state = serializeForm();
+        keepProfile(profileNameOf(state, nameFields) || t('unnamedProfile'), state);
+    };
+
+    const exportProfile = () => {
+        const state = serializeForm();
+        const name = profileNameOf(state, nameFields) || t('unnamedProfile');
+        const filename = `${form} ${name.replace(/[\\/:*?"<>|]/g, '_')}.json`;
+        saveTextFile(filename, 'application/json', JSON.stringify({ form, ...state }, null, 2));
+    };
+
+    const importProfile = async () => {
+        const file = await pickLocalFile('.json,application/json');
+        if (!file) return;
+
+        let data;
+        try {
+            data = JSON.parse(await file.text());
+        } catch {
+            alert(t('invalidProfileFile'));
+            return;
+        }
+        if (!isFormState(data)) {
+            alert(t('invalidProfileFile'));
+            return;
+        }
+        if (data.form !== undefined && data.form !== form) {
+            alert(t('wrongFormFile'));
+            return;
+        }
+
+        const state = { version: data.version, fields: data.fields, tables: Array.isArray(data.tables) ? data.tables : [] };
+        const name = profileNameOf(state, nameFields) || file.name.replace(/\.json$/i, '') || t('unnamedProfile');
+        if (hasProfile(form, name) && !confirm(t('confirmOverwrite').replace('{name}', name))) return;
+
+        keepProfile(name, state);
+        applyProfile(state);
+    };
+
+    const resetProfiles = () => {
+        if (!confirm(t('confirmReset'))) return;
+        clearProfiles(form);
+        restoreForm(defaults);
+        showProfiles();
+    };
+
+    profileBar = createProfileBar({
+        container: $topBar,
+        onSelect: switchProfile,
+        onSave: exportProfile,
+        onLoad: () => guarded(importProfile),
+        onReset: resetProfiles
+    });
+
     openForm = {
+        built: false,
         show(language) {
+            // Rebuilding the form for another language must not lose what has been typed in
+            const typedIn = this.built ? serializeForm() : null;
+
             activate(language);
             project.metadata = localizeMetadata(metadataOfAllLanguages, language);
             bindAnnotations(project.metadata.annotations, texts);
-            buildForm(project, { onGenerate: () => generate(project) });
-            hasUnsavedInput = false;
+            buildForm(project, { onGenerate: () => { saveForm(); generate(project); } });
+            defaults = serializeForm();
+            nameFields = nameParts();
+            this.built = true;
+
+            if (typedIn) {
+                applyProfile(typedIn);
+            } else {
+                // Opening the form: the current profile, or the first saved one if it has disappeared
+                const names = listProfiles(form);
+                const current = names.includes(getCurrentProfile(form)) ? getCurrentProfile(form) : names[0];
+                const state = current === undefined ? null : loadProfile(form, current);
+                if (isFormState(state)) {
+                    setCurrentProfile(form, current);
+                    applyProfile(state);
+                }
+            }
+            showProfiles();
         }
     };
     openForm.show(pickLanguage(languages, getPreferredLanguage()));
@@ -94,9 +211,6 @@ async function guarded(action) {
 
 function onLanguageSelected(language) {
     if (language === getActiveLanguage()) return;
-    // The form is rebuilt from scratch, so what the person has typed in would be lost
-    if (openForm && hasUnsavedInput && !confirm(t('confirmLanguageChange'))) return;
-
     saveLanguage(language);
     if (!openForm) {
         activate(language);
@@ -110,11 +224,9 @@ function onLanguageSelected(language) {
 }
 
 $(() => {
-    picker = createLanguagePicker({ onSelect: onLanguageSelected });
+    $topBar = $('<div class="top-bar" data-persistent>').appendTo('body');
+    picker = createLanguagePicker({ onSelect: onLanguageSelected, container: $topBar });
     activate(getPreferredLanguage());
-    $(document).on('input change', 'input, select, textarea', () => {
-        if (openForm) hasUnsavedInput = true;
-    });
 
     const baseName = location.hash.replace(/^#/, '');
     if (baseName) {

@@ -35,7 +35,15 @@ const STRINGS = {
         rowTitle: 'Строка {row-number}',
         language: 'Язык',
         noTranslation: 'Для этой формы нет перевода',
-        confirmLanguageChange: 'Введённые данные будут потеряны при смене языка. Продолжить?'
+        profile: 'Профиль',
+        saveToFile: 'Сохранить в файл',
+        loadFromFile: 'Загрузить из файла',
+        resetProfiles: 'Сброс',
+        confirmReset: 'Удалить все сохранённые профили и вернуть форму к значениям по умолчанию?',
+        confirmOverwrite: 'Профиль «{name}» уже существует. Заменить его?',
+        invalidProfileFile: 'Не удалось прочитать профиль: файл повреждён или это не файл профиля.',
+        wrongFormFile: 'Этот файл сохранён из другой формы.',
+        unnamedProfile: 'Профиль'
     },
     pl: {
         defaultTitle: 'Formularz do wypełnienia PDF',
@@ -44,7 +52,15 @@ const STRINGS = {
         rowTitle: 'Wiersz {row-number}',
         language: 'Język',
         noTranslation: 'Brak tłumaczenia dla tego formularza',
-        confirmLanguageChange: 'Wprowadzone dane zostaną utracone po zmianie języka. Kontynuować?'
+        profile: 'Profil',
+        saveToFile: 'Zapisz do pliku',
+        loadFromFile: 'Wczytaj z pliku',
+        resetProfiles: 'Reset',
+        confirmReset: 'Usunąć wszystkie zapisane profile i przywrócić domyślne wartości formularza?',
+        confirmOverwrite: 'Profil „{name}” już istnieje. Zastąpić go?',
+        invalidProfileFile: 'Nie udało się wczytać profilu: plik jest uszkodzony lub nie jest plikiem profilu.',
+        wrongFormFile: 'Ten plik zapisano z innego formularza.',
+        unnamedProfile: 'Profil'
     },
     en: {
         defaultTitle: 'PDF form',
@@ -53,7 +69,15 @@ const STRINGS = {
         rowTitle: 'Row {row-number}',
         language: 'Language',
         noTranslation: 'This form is not translated into this language',
-        confirmLanguageChange: 'The data you entered will be lost when the language is changed. Continue?'
+        profile: 'Profile',
+        saveToFile: 'Save to file',
+        loadFromFile: 'Load from file',
+        resetProfiles: 'Reset',
+        confirmReset: 'Delete all saved profiles and restore the form to its defaults?',
+        confirmOverwrite: 'Profile “{name}” already exists. Replace it?',
+        invalidProfileFile: 'Could not read the profile: the file is damaged or is not a profile file.',
+        wrongFormFile: 'This file was saved from a different form.',
+        unnamedProfile: 'Profile'
     },
     be: {
         defaultTitle: 'Форма для запаўнення PDF',
@@ -62,7 +86,15 @@ const STRINGS = {
         rowTitle: 'Радок {row-number}',
         language: 'Мова',
         noTranslation: 'Для гэтай формы няма перакладу',
-        confirmLanguageChange: 'Уведзеныя даныя будуць страчаны пры змене мовы. Працягнуць?'
+        profile: 'Профіль',
+        saveToFile: 'Захаваць у файл',
+        loadFromFile: 'Загрузіць з файла',
+        resetProfiles: 'Скід',
+        confirmReset: 'Выдаліць усе захаваныя профілі і вярнуць форму да значэнняў па змаўчанні?',
+        confirmOverwrite: 'Профіль «{name}» ужо існуе. Замяніць яго?',
+        invalidProfileFile: 'Не ўдалося прачытаць профіль: файл пашкоджаны або гэта не файл профілю.',
+        wrongFormFile: 'Гэты файл захаваны з іншай формы.',
+        unnamedProfile: 'Профіль'
     },
     ua: {
         defaultTitle: 'Форма для заповнення PDF',
@@ -71,7 +103,15 @@ const STRINGS = {
         rowTitle: 'Рядок {row-number}',
         language: 'Мова',
         noTranslation: 'Для цієї форми немає перекладу',
-        confirmLanguageChange: 'Введені дані буде втрачено під час зміни мови. Продовжити?'
+        profile: 'Профіль',
+        saveToFile: 'Зберегти у файл',
+        loadFromFile: 'Завантажити з файлу',
+        resetProfiles: 'Скидання',
+        confirmReset: 'Видалити всі збережені профілі та повернути форму до значень за замовчуванням?',
+        confirmOverwrite: 'Профіль «{name}» вже існує. Замінити його?',
+        invalidProfileFile: 'Не вдалося прочитати профіль: файл пошкоджено або це не файл профілю.',
+        wrongFormFile: 'Цей файл збережено з іншої форми.',
+        unnamedProfile: 'Профіль'
     }
 };
 

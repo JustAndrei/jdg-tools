@@ -1,9 +1,7 @@
-/* The language drop-down in the top-right corner (js/language-picker.js) */
+/* The language drop-down at the right end of the top bar (js/language-picker.js) */
 .language-picker {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    z-index: 1000;
+    position: relative;
+    margin-left: auto;
 }
 
 .language-picker button {

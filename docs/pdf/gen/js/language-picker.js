@@ -2,16 +2,16 @@
 import { LANGUAGES, t } from './i18n.js';
 
 /**
- * The language drop-down in the top-right corner of the page.
- * It has `data-persistent`, so rebuilding the page content (see buildForm) leaves it in place.
+ * The language drop-down; it sits at the right end of the top bar.
+ * The bar has `data-persistent`, so rebuilding the page content (see buildForm) leaves it in place.
  * The languages that the opened form is not translated into are shown, but cannot be chosen.
  *
- * @param {{onSelect: (code: string) => void}} callbacks
+ * @param {{onSelect: (code: string) => void, container: object}} options  `container`: the jQuery object to put it in
  * @returns {{setActive: (code: string) => void, setAvailable: (codes: string[]|null) => void}}
  *          `setAvailable(null)` enables all the languages
  */
-export function createLanguagePicker({ onSelect }) {
-    const $root = $('<div class="language-picker" data-persistent>');
+export function createLanguagePicker({ onSelect, container }) {
+    const $root = $('<div class="language-picker">');
     const $toggle = $('<button type="button" class="language-picker__toggle" aria-haspopup="true" aria-expanded="false">').appendTo($root);
     const $menu = $('<ul class="language-picker__menu" hidden>').appendTo($root);
     const items = new Map();   // language code -> its button
@@ -68,7 +68,7 @@ export function createLanguagePicker({ onSelect }) {
             }
         });
 
-    $root.appendTo('body');
+    $root.appendTo(container);
     refresh();
 
     return {

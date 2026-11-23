@@ -8,6 +8,10 @@ input, select {
     min-width: 300px;
 }
 
+select.profile-bar__select {
+    min-width: 0;
+}
+
 input[type="checkbox"] {
     min-width: 0;
 }
@@ -66,15 +70,13 @@ span.comment, span.line-break {
 
 /* Output */
 .actions {
-    width: 100%;
+    display: inline-flex;
 }
 
 button#bGenerate {
-    margin: 1em 0;
     background-color: green;
     color: white;
     font-weight: bold;
-    font-size: 120%;
 }
 
 #status {
@@ -102,4 +104,44 @@ span.group {
 
 span[hidden].group {
     display: none;
+}
+
+/* The top bar (profiles + language picker) stays in place while the page scrolls */
+.top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap-reverse;
+    align-items: center;
+    gap: 0.5em 1em;
+    box-sizing: border-box;
+    width: calc(100% + 16px);        /* the whole width of the window, over the margin of the body */
+    margin: -8px -8px 1em;
+    padding: 8px;
+    background: #f2f4f8;
+    border-bottom: 1px solid #ccd;
+}
+
+/* Profiles (js/profiles/profile-bar.js) */
+.profile-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5em 1em;
+}
+
+.profile-bar label {
+    margin: 0;
+}
+
+.profile-bar__reset {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+}
+
+.profile-bar__reset:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }

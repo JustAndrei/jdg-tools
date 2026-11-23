@@ -57,15 +57,16 @@ const handlers = {
 
     // Annotations of this type with the same title form ONE drop-down (a group of mutually exclusive
     // check marks): each annotation is an option that carries the position of its own mark.
-    check(annot, ctx) {
+    check(annot, ctx, index) {
         let $select = ctx.checkGroups.get(annot.title);
         if (!$select) {
-            $select = $('<select class="render">');
+            $select = $('<select class="render">').data('stateKey', stateKey(annot, index));
             ctx.checkGroups.set(annot.title, $select);
             appendLabeled(ctx, annot.title, $select);
         }
         // attr() rather than prop(): the state must survive cloning of table rows
-        const $option = $('<option>').val(annot.option).text(annot.option).appendTo($select);
+        // `optionId` is what a saved profile holds: unlike the (translated) text of the option, it is the same in every language
+        const $option = $('<option>').val(annot.optionId ?? annot.option).text(annot.option).appendTo($select);
         $option.data('realValue', initialValue(annot));
         if (annot.default) $option.attr('selected', 'selected');
         return $option;
@@ -117,7 +118,7 @@ const handlers = {
 
     'group-selector'(annot, ctx, index) {
         const options = resolveSelectOptions(annot, index);
-        const $control = $('<select class="group-selector">');
+        const $control = $('<select class="group-selector">').data('stateKey', stateKey(annot, index));
 
         const value = initialValue(annot);
         for (const [optionValue, optionText] of Object.entries(options)) {
@@ -156,7 +157,7 @@ const handlers = {
 
     // The checkbox is UI only: it draws nothing itself. While it is checked, the target mirrors the
     // source and is disabled; unticking it enables the target for editing.
-    'same-as'(annot, ctx) {
+    'same-as'(annot, ctx, index) {
         if (!annot.source || !annot.target) {
             throw new AppError("An annotation of type 'sameAs' must define 'source' and 'target' referencing named inputs");
         }
@@ -166,7 +167,7 @@ const handlers = {
             throw new AppError(`'sameAs': '${annot.source}' and '${annot.target}' must be defined before this annotation`);
         }
 
-        const $checkbox = $('<input type="checkbox" checked="checked">');
+        const $checkbox = $('<input type="checkbox" checked="checked">').data('stateKey', stateKey(annot, index));
         const syncTarget = () => {
             if ($checkbox.prop('checked')) $target.val($source.val());
         };
@@ -230,6 +231,14 @@ const handlers = {
     }
 };
 
+/**
+ * The key under which a control's value is saved in a profile (see profiles/form-state.js):
+ * the annotation's `name`, or `annotation<index>` while it has none.
+ */
+function stateKey(annot, index) {
+    return annot.name ?? `annotation${index}`;
+}
+
 /** `newValue` (the value to pre-fill the form with) wins over `value` (the sample text from the PDF). */
 function initialValue(annot) {
     return ('newValue' in annot ? annot.newValue : annot.value) ?? '';
@@ -269,10 +278,13 @@ function localizedOptions(set) {
 }
 
 /** Attaches to a control the data that collect.js needs to draw its value. */
-function attachDrawingData($control, annot, correction) {
+function attachDrawingData($control, annot, index, correction) {
     if (annot.name) $control.attr('name', annot.name);
     if (annot.ifEmpty) $control.data('ifEmpty', annot.ifEmpty);
+    // A `check` option shares the drop-down created for its group, which already has the key of its first annotation
+    if (!$control.is('option')) $control.data('stateKey', stateKey(annot, index));
     $control.data({
+        profileNamePart: annot['profile-name-part'],
         page: annot.page,
         x: annot.x + correction.x,
         y: annot.y + correction.y,
@@ -321,7 +333,7 @@ function applyAllGroupSelectors() {
 export function buildForm(project, { onGenerate }) {
     const { metadata } = project;
     const $body = $('body');
-    // Whatever is marked `data-persistent` (the language picker) stays when the form is rebuilt
+    // Whatever is marked `data-persistent` (the top bar with the profiles and the language picker) stays when the form is rebuilt
     $body.contents().filter((_, node) => !node.dataset || !('persistent' in node.dataset)).remove();
     $('<h2>').text(metadata.title ?? t('defaultTitle')).appendTo($body);
 
@@ -341,13 +353,13 @@ export function buildForm(project, { onGenerate }) {
         if (!handler) throw new AppError(`Annotation #${index}: unexpected type '${annot.type}'`);
 
         const $control = handler(annot, ctx, index);
-        if ($control) attachDrawingData($control, annot, ctx.correction);
+        if ($control) attachDrawingData($control, annot, index, ctx.correction);
     });
     assertReferencesExist();
     applyAllGroupSelectors();
 
     $('<div class="actions"><button id="bGenerate" type="button"></button><span id="status" class="error"></span></div>')
-        .appendTo($body)
+        .prependTo($('.top-bar'))
         .find('button')
         .text(t('generate'))
         .on('click', onGenerate);
