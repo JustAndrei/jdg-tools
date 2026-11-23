@@ -224,12 +224,11 @@ function onLanguageSelected(language) {
 }
 
 $(() => {
-    $topBar = $('<div class="top-bar" data-persistent>').appendTo('body');
-    picker = createLanguagePicker({ onSelect: onLanguageSelected, container: $topBar });
-    activate(getPreferredLanguage());
-
     const baseName = location.hash.replace(/^#/, '');
     if (baseName) {
+        $topBar = $('<div class="top-bar" data-persistent>').appendTo('body');
+        picker = createLanguagePicker({ onSelect: onLanguageSelected, container: $topBar });
+        activate(getPreferredLanguage());
         guarded(() => openServerPdf(decodeURIComponent(baseName)));
     }
 });
