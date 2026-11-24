@@ -26,6 +26,42 @@
                     "name": "applicationDate"
                 },
                 {
+                    "type": "section",
+                    "title": "Тип заявки"
+                },
+                {
+                    "type": "comment",
+                    "text": "Если меняете просроченный паспорт на PDP, выбирайте 'новый PDP'."
+                },
+                {
+                    "type": "comment",
+                    "text": "Если у вас есть PDP, который просрочен или будет просрочен в течение следующего месяца, выбирайте 'новый PDP'."
+                },
+                {
+                    "type": "comment",
+                    "text": "Если окончание срока действия вашего PDP ещё не скоро (больше месяца), но вам нужна замена по причине изменения данных, серьезного изменения лица по сравнению с фотографией, либо по причине порчи или утери PDP, тогда выбирайте 'замена действующего PDP'."
+                },
+                {
+                    "value": "_______",
+                    "type": "check",
+                    "title": "Тип заявки",
+                    "name": "applicationType",
+                    "groupSelector": true,
+                    "option": "замена действующего PDP",
+                    "optionId": "replacementOfPDP"
+                },
+                {
+                    "value": "_______",
+                    "type": "check",
+                    "title": "Тип заявки",
+                    "option": "новый PDP",
+                    "optionId": "newPDP",
+                    "default": true
+                },
+                {
+                    "type": "break"
+                },
+                {
                     "value": "WOJEWODA",
                     "type": "static"
                 },
@@ -310,8 +346,12 @@
                     "name": "residencePostalCode"
                 },
                 {
+                    "type": "group-start",
+                    "group": "newPDP"
+                },
+                {
                     "type": "section",
-                    "title": "D. Информация о пребывании в Польше"
+                    "title": "D. Информация для выдачи нового PDP"
                 },
                 {
                     "type": "comment",
@@ -430,7 +470,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВЫДАЧИ PDP (D1)",
+                    "title": "Причина выдачи PDP (D1)",
                     "name": "d1PdpIssueReason",
                     "option": "утерян свой документ",
                     "optionId": "ownDocumentLost"
@@ -438,14 +478,14 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВЫДАЧИ PDP (D1)",
+                    "title": "Причина выдачи PDP (D1)",
                     "option": "повреждён свой документ",
                     "optionId": "ownDocumentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВЫДАЧИ PDP (D1)",
+                    "title": "Причина выдачи PDP (D1)",
                     "option": "истёк срок действия своего документа",
                     "optionId": "ownDocumentExpired",
                     "default": true
@@ -453,7 +493,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВЫДАЧИ PDP (D1)",
+                    "title": "Причина выдачи PDP (D1)",
                     "option": "истёк срок действия PDP",
                     "optionId": "pdpExpired"
                 },
@@ -565,7 +605,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВЫДАЧИ PDP",
+                    "title": "Причина выдачи PDP",
                     "name": "d2PdpIssueReason",
                     "option": "утерян",
                     "optionId": "documentLost"
@@ -573,14 +613,14 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВЫДАЧИ PDP",
+                    "title": "Причина выдачи PDP",
                     "option": "повреждён",
                     "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВЫДАЧИ PDP",
+                    "title": "Причина выдачи PDP",
                     "option": "истёк срок действия",
                     "optionId": "documentExpired",
                     "default": true
@@ -588,7 +628,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВЫДАЧИ PDP",
+                    "title": "Причина выдачи PDP",
                     "option": "отсутствие выездного документа",
                     "optionId": "noTravelDocument"
                 },
@@ -598,46 +638,64 @@
                 },
                 {
                     "type": "section",
-                    "title": "E. Информация для ЗАМЕНЫ ПДП, который ещё действует"
+                    "title": "E. Информация для замены PDP, который ещё действует"
                 },
                 {
                     "type": "comment",
-                    "text": "Этот раздел, как правило, заполнять не нужно"
+                    "text": "У вас заявка на получение нового PDP взамен паспорта или предыдущего [почти] просроченного PDP, значит раздел E оставляете пустым."
                 },
                 {
-                    "type": "check",
-                    "title": "Причина ЗАМЕНЫ PDP",
-                    "name": "pdpReplacementReason",
-                    "option": "не заполнено",
-                    "optionId": "notFilled"
+                    "type": "group-end",
+                    "group": "newPDP"
+                },
+                {
+                    "type": "group-start",
+                    "group": "replacementOfPDP"
+                },
+                {
+                    "type": "section",
+                    "title": "D. Информация для выдачи нового PDP"
+                },
+                {
+                    "type": "comment",
+                    "text": "У вас заявка на замену действующего PDP, значит раздел D оставляете пустым."
+                },
+                {
+                    "type": "section",
+                    "title": "E. Информация для замены PDP, который ещё действует"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ЗАМЕНЫ PDP",
+                    "title": "Причина замены PDP",
+                    "name": "pdpReplacementReason",
                     "option": "данные изменились",
                     "optionId": "dataChanged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ЗАМЕНЫ PDP",
+                    "title": "Причина замены PDP",
                     "option": "документ повреждён",
                     "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ЗАМЕНЫ PDP",
+                    "title": "Причина замены PDP",
                     "option": "изменение лица по сравнению с фото",
                     "optionId": "photoMismatch"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ЗАМЕНЫ PDP",
+                    "title": "Причина замены PDP",
                     "option": "документ утерян",
                     "optionId": "documentLost"
+                },
+                {
+                    "type": "group-end",
+                    "group": "replacementOfPDP"
                 },
                 {
                     "type": "section",
@@ -715,6 +773,42 @@
                     "format": "YYYY MM DD",
                     "title": "Data złożenia",
                     "name": "applicationDate"
+                },
+                {
+                    "type": "section",
+                    "title": "Rodzaj wniosku"
+                },
+                {
+                    "type": "comment",
+                    "text": "Jeśli wymieniasz paszport z upłyniętym terminem ważności na PDP, wybierz 'nowy PDP'."
+                },
+                {
+                    "type": "comment",
+                    "text": "Jeśli masz PDP, który stracił ważność lub straci ją w ciągu najbliższego miesiąca, wybierz 'nowy PDP'."
+                },
+                {
+                    "type": "comment",
+                    "text": "Jeśli twój PDP jeszcze długo będzie ważny (ponad miesiąc), ale potrzebujesz wymiany z powodu zmiany danych, istotnej zmiany wyglądu twarzy w porównaniu ze zdjęciem albo uszkodzenia lub utraty PDP, wybierz 'wymiana obowiązującego PDP'."
+                },
+                {
+                    "value": "_______",
+                    "type": "check",
+                    "title": "Rodzaj wniosku",
+                    "name": "applicationType",
+                    "groupSelector": true,
+                    "option": "wymiana obowiązującego PDP",
+                    "optionId": "replacementOfPDP"
+                },
+                {
+                    "value": "_______",
+                    "type": "check",
+                    "title": "Rodzaj wniosku",
+                    "option": "nowy PDP",
+                    "optionId": "newPDP",
+                    "default": true
+                },
+                {
+                    "type": "break"
                 },
                 {
                     "value": "WOJEWODA",
@@ -1001,8 +1095,12 @@
                     "name": "residencePostalCode"
                 },
                 {
+                    "type": "group-start",
+                    "group": "newPDP"
+                },
+                {
                     "type": "section",
-                    "title": "D. Informacje o pobycie w Polsce"
+                    "title": "D. Informacje dotyczące wydania nowego PDP"
                 },
                 {
                     "type": "comment",
@@ -1121,7 +1219,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYDANIA PDP (D1)",
+                    "title": "Powód wydania PDP (D1)",
                     "name": "d1PdpIssueReason",
                     "option": "utrata własnego dokumentu",
                     "optionId": "ownDocumentLost"
@@ -1129,14 +1227,14 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYDANIA PDP (D1)",
+                    "title": "Powód wydania PDP (D1)",
                     "option": "zniszczenie własnego dokumentu",
                     "optionId": "ownDocumentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYDANIA PDP (D1)",
+                    "title": "Powód wydania PDP (D1)",
                     "option": "upływ terminu ważności własnego dokumentu",
                     "optionId": "ownDocumentExpired",
                     "default": true
@@ -1144,7 +1242,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYDANIA PDP (D1)",
+                    "title": "Powód wydania PDP (D1)",
                     "option": "upływ terminu ważności PDP",
                     "optionId": "pdpExpired"
                 },
@@ -1256,7 +1354,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYDANIA PDP",
+                    "title": "Powód wydania PDP",
                     "name": "d2PdpIssueReason",
                     "option": "utrata",
                     "optionId": "documentLost"
@@ -1264,14 +1362,14 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYDANIA PDP",
+                    "title": "Powód wydania PDP",
                     "option": "zniszczenie",
                     "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYDANIA PDP",
+                    "title": "Powód wydania PDP",
                     "option": "upływ terminu ważności",
                     "optionId": "documentExpired",
                     "default": true
@@ -1279,7 +1377,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYDANIA PDP",
+                    "title": "Powód wydania PDP",
                     "option": "brak dokumentu podróży",
                     "optionId": "noTravelDocument"
                 },
@@ -1289,46 +1387,64 @@
                 },
                 {
                     "type": "section",
-                    "title": "E. Informacje istotne dla WYMIANY PDP, który jest jeszcze ważny"
+                    "title": "E. Informacje istotne dla wymiany PDP, który jest jeszcze ważny"
                 },
                 {
                     "type": "comment",
-                    "text": "Tej sekcji zazwyczaj nie trzeba wypełniać"
+                    "text": "Składasz wniosek o wydanie nowego PDP w miejsce paszportu lub poprzedniego PDP, który stracił [lub wkrótce straci] ważność, więc sekcję E pozostaw pustą."
                 },
                 {
-                    "type": "check",
-                    "title": "Powód WYMIANY PDP",
-                    "name": "pdpReplacementReason",
-                    "option": "nie wypełniono",
-                    "optionId": "notFilled"
+                    "type": "group-end",
+                    "group": "newPDP"
+                },
+                {
+                    "type": "group-start",
+                    "group": "replacementOfPDP"
+                },
+                {
+                    "type": "section",
+                    "title": "D. Informacje dotyczące wydania nowego PDP"
+                },
+                {
+                    "type": "comment",
+                    "text": "Składasz wniosek o wymianę obowiązującego PDP, więc sekcję D pozostaw pustą."
+                },
+                {
+                    "type": "section",
+                    "title": "E. Informacje istotne dla wymiany PDP, który jest jeszcze ważny"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYMIANY PDP",
+                    "title": "Powód wymiany PDP",
+                    "name": "pdpReplacementReason",
                     "option": "zmiana danych",
                     "optionId": "dataChanged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYMIANY PDP",
+                    "title": "Powód wymiany PDP",
                     "option": "uszkodzenie dokumentu",
                     "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYMIANY PDP",
+                    "title": "Powód wymiany PDP",
                     "option": "zmiana wizerunku twarzy",
                     "optionId": "photoMismatch"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Powód WYMIANY PDP",
+                    "title": "Powód wymiany PDP",
                     "option": "utrata dokumentu",
                     "optionId": "documentLost"
+                },
+                {
+                    "type": "group-end",
+                    "group": "replacementOfPDP"
                 },
                 {
                     "type": "section",
@@ -1406,6 +1522,42 @@
                     "format": "YYYY MM DD",
                     "title": "Date of submission",
                     "name": "applicationDate"
+                },
+                {
+                    "type": "section",
+                    "title": "Type of application"
+                },
+                {
+                    "type": "comment",
+                    "text": "If you are replacing an expired passport with a PDP, choose 'new PDP'."
+                },
+                {
+                    "type": "comment",
+                    "text": "If you have a PDP that has expired or will expire within the next month, choose 'new PDP'."
+                },
+                {
+                    "type": "comment",
+                    "text": "If your PDP does not expire for a while yet (more than a month), but you need a replacement because your data has changed, your face has changed significantly compared to the photo, or the PDP has been damaged or lost, choose 'replacement of the current PDP'."
+                },
+                {
+                    "value": "_______",
+                    "type": "check",
+                    "title": "Type of application",
+                    "name": "applicationType",
+                    "groupSelector": true,
+                    "option": "replacement of the current PDP",
+                    "optionId": "replacementOfPDP"
+                },
+                {
+                    "value": "_______",
+                    "type": "check",
+                    "title": "Type of application",
+                    "option": "new PDP",
+                    "optionId": "newPDP",
+                    "default": true
+                },
+                {
+                    "type": "break"
                 },
                 {
                     "value": "WOJEWODA",
@@ -1697,8 +1849,12 @@
                     "name": "residencePostalCode"
                 },
                 {
+                    "type": "group-start",
+                    "group": "newPDP"
+                },
+                {
                     "type": "section",
-                    "title": "D. Information about your stay in Poland"
+                    "title": "D. Information for issuing a new PDP"
                 },
                 {
                     "type": "comment",
@@ -1817,7 +1973,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for ISSUING the travel document (D1)",
+                    "title": "Reason for issuing the travel document (D1)",
                     "name": "d1PdpIssueReason",
                     "option": "own document lost",
                     "optionId": "ownDocumentLost"
@@ -1825,14 +1981,14 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for ISSUING the travel document (D1)",
+                    "title": "Reason for issuing the travel document (D1)",
                     "option": "own document damaged",
                     "optionId": "ownDocumentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for ISSUING the travel document (D1)",
+                    "title": "Reason for issuing the travel document (D1)",
                     "option": "own document expired",
                     "optionId": "ownDocumentExpired",
                     "default": true
@@ -1840,7 +1996,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for ISSUING the travel document (D1)",
+                    "title": "Reason for issuing the travel document (D1)",
                     "option": "PDP expired",
                     "optionId": "pdpExpired"
                 },
@@ -1952,7 +2108,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for ISSUING the travel document",
+                    "title": "Reason for issuing the travel document",
                     "name": "d2PdpIssueReason",
                     "option": "lost",
                     "optionId": "documentLost"
@@ -1960,14 +2116,14 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for ISSUING the travel document",
+                    "title": "Reason for issuing the travel document",
                     "option": "damaged",
                     "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for ISSUING the travel document",
+                    "title": "Reason for issuing the travel document",
                     "option": "expired",
                     "optionId": "documentExpired",
                     "default": true
@@ -1975,7 +2131,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for ISSUING the travel document",
+                    "title": "Reason for issuing the travel document",
                     "option": "no travel document",
                     "optionId": "noTravelDocument"
                 },
@@ -1985,46 +2141,64 @@
                 },
                 {
                     "type": "section",
-                    "title": "E. Information for REPLACING a PDP that is still valid"
+                    "title": "E. Information for replacing a PDP that is still valid"
                 },
                 {
                     "type": "comment",
-                    "text": "This section usually does not need to be filled in"
+                    "text": "You are applying for a new PDP to replace a passport or a previous PDP that has expired [or is about to], so leave section E empty."
                 },
                 {
-                    "type": "check",
-                    "title": "Reason for REPLACING the travel document",
-                    "name": "pdpReplacementReason",
-                    "option": "not filled in",
-                    "optionId": "notFilled"
+                    "type": "group-end",
+                    "group": "newPDP"
+                },
+                {
+                    "type": "group-start",
+                    "group": "replacementOfPDP"
+                },
+                {
+                    "type": "section",
+                    "title": "D. Information for issuing a new PDP"
+                },
+                {
+                    "type": "comment",
+                    "text": "You are applying to replace a PDP that is still valid, so leave section D empty."
+                },
+                {
+                    "type": "section",
+                    "title": "E. Information for replacing a PDP that is still valid"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for REPLACING the travel document",
+                    "title": "Reason for replacing the travel document",
+                    "name": "pdpReplacementReason",
                     "option": "data has changed",
                     "optionId": "dataChanged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for REPLACING the travel document",
+                    "title": "Reason for replacing the travel document",
                     "option": "document damaged",
                     "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for REPLACING the travel document",
+                    "title": "Reason for replacing the travel document",
                     "option": "significant change in appearance compared to the photo",
                     "optionId": "photoMismatch"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Reason for REPLACING the travel document",
+                    "title": "Reason for replacing the travel document",
                     "option": "document lost",
                     "optionId": "documentLost"
+                },
+                {
+                    "type": "group-end",
+                    "group": "replacementOfPDP"
                 },
                 {
                     "type": "section",
@@ -2102,6 +2276,42 @@
                     "format": "YYYY MM DD",
                     "title": "Дата падачы",
                     "name": "applicationDate"
+                },
+                {
+                    "type": "section",
+                    "title": "Тып заявы"
+                },
+                {
+                    "type": "comment",
+                    "text": "Калі вы замяняеце пратэрмінаваны пашпарт на PDP, выбірайце 'новы PDP'."
+                },
+                {
+                    "type": "comment",
+                    "text": "Калі ў вас ёсць PDP, тэрмін дзеяння якога скончыўся або скончыцца на працягу наступнага месяца, выбірайце 'новы PDP'."
+                },
+                {
+                    "type": "comment",
+                    "text": "Калі тэрмін дзеяння вашага PDP скончыцца яшчэ не хутка (больш чым праз месяц), але вам патрэбна замена з-за змены даных, сур'ёзнай змены твару ў параўнанні з фотаздымкам або з-за пашкоджання ці страты PDP, тады выбірайце 'замена дзеючага PDP'."
+                },
+                {
+                    "value": "_______",
+                    "type": "check",
+                    "title": "Тып заявы",
+                    "name": "applicationType",
+                    "groupSelector": true,
+                    "option": "замена дзеючага PDP",
+                    "optionId": "replacementOfPDP"
+                },
+                {
+                    "value": "_______",
+                    "type": "check",
+                    "title": "Тып заявы",
+                    "option": "новы PDP",
+                    "optionId": "newPDP",
+                    "default": true
+                },
+                {
+                    "type": "break"
                 },
                 {
                     "value": "WOJEWODA",
@@ -2390,8 +2600,12 @@
                     "name": "residencePostalCode"
                 },
                 {
+                    "type": "group-start",
+                    "group": "newPDP"
+                },
+                {
                     "type": "section",
-                    "title": "D. Інфармацыя аб знаходжанні ў Польшчы"
+                    "title": "D. Інфармацыя для выдачы новага PDP"
                 },
                 {
                     "type": "comment",
@@ -2510,7 +2724,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
+                    "title": "Прычына выдачы праязнога дакумента (D1)",
                     "name": "d1PdpIssueReason",
                     "option": "страчаны ўласны дакумент",
                     "optionId": "ownDocumentLost"
@@ -2518,14 +2732,14 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
+                    "title": "Прычына выдачы праязнога дакумента (D1)",
                     "option": "пашкоджаны ўласны дакумент",
                     "optionId": "ownDocumentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
+                    "title": "Прычына выдачы праязнога дакумента (D1)",
                     "option": "скончыўся тэрмін дзеяння ўласнага дакумента",
                     "optionId": "ownDocumentExpired",
                     "default": true
@@ -2533,7 +2747,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ВЫДАЧЫ праязнога дакумента (D1)",
+                    "title": "Прычына выдачы праязнога дакумента (D1)",
                     "option": "скончыўся тэрмін дзеяння PDP",
                     "optionId": "pdpExpired"
                 },
@@ -2645,7 +2859,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ВЫДАЧЫ праязнога дакумента",
+                    "title": "Прычына выдачы праязнога дакумента",
                     "name": "d2PdpIssueReason",
                     "option": "страчаны",
                     "optionId": "documentLost"
@@ -2653,14 +2867,14 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ВЫДАЧЫ праязнога дакумента",
+                    "title": "Прычына выдачы праязнога дакумента",
                     "option": "пашкоджаны",
                     "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ВЫДАЧЫ праязнога дакумента",
+                    "title": "Прычына выдачы праязнога дакумента",
                     "option": "скончыўся тэрмін дзеяння",
                     "optionId": "documentExpired",
                     "default": true
@@ -2668,7 +2882,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ВЫДАЧЫ праязнога дакумента",
+                    "title": "Прычына выдачы праязнога дакумента",
                     "option": "адсутнасць выязнога дакумента",
                     "optionId": "noTravelDocument"
                 },
@@ -2678,46 +2892,64 @@
                 },
                 {
                     "type": "section",
-                    "title": "E. Інфармацыя для ЗАМЕНЫ PDP, які яшчэ дзейнічае"
+                    "title": "E. Інфармацыя для замены PDP, які яшчэ дзейнічае"
                 },
                 {
                     "type": "comment",
-                    "text": "Гэты раздзел, як правіла, запаўняць не трэба"
+                    "text": "У вас заява на атрыманне новага PDP замест пашпарта або папярэдняга [амаль] пратэрмінаванага PDP, таму раздзел E пакідаеце пустым."
                 },
                 {
-                    "type": "check",
-                    "title": "Прычына ЗАМЕНЫ праязнога дакумента",
-                    "name": "pdpReplacementReason",
-                    "option": "не запоўнена",
-                    "optionId": "notFilled"
+                    "type": "group-end",
+                    "group": "newPDP"
+                },
+                {
+                    "type": "group-start",
+                    "group": "replacementOfPDP"
+                },
+                {
+                    "type": "section",
+                    "title": "D. Інфармацыя для выдачы новага PDP"
+                },
+                {
+                    "type": "comment",
+                    "text": "У вас заява на замену дзеючага PDP, таму раздзел D пакідаеце пустым."
+                },
+                {
+                    "type": "section",
+                    "title": "E. Інфармацыя для замены PDP, які яшчэ дзейнічае"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ЗАМЕНЫ праязнога дакумента",
+                    "title": "Прычына замены праязнога дакумента",
+                    "name": "pdpReplacementReason",
                     "option": "даныя змяніліся",
                     "optionId": "dataChanged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ЗАМЕНЫ праязнога дакумента",
+                    "title": "Прычына замены праязнога дакумента",
                     "option": "дакумент пашкоджаны",
                     "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ЗАМЕНЫ праязнога дакумента",
+                    "title": "Прычына замены праязнога дакумента",
                     "option": "істотная змена знешнасці ў параўнанні з фота",
                     "optionId": "photoMismatch"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Прычына ЗАМЕНЫ праязнога дакумента",
+                    "title": "Прычына замены праязнога дакумента",
                     "option": "дакумент страчаны",
                     "optionId": "documentLost"
+                },
+                {
+                    "type": "group-end",
+                    "group": "replacementOfPDP"
                 },
                 {
                     "type": "section",
@@ -2795,6 +3027,42 @@
                     "format": "YYYY MM DD",
                     "title": "Дата подання",
                     "name": "applicationDate"
+                },
+                {
+                    "type": "section",
+                    "title": "Тип заяви"
+                },
+                {
+                    "type": "comment",
+                    "text": "Якщо ви замінюєте прострочений паспорт на PDP, обирайте 'новий PDP'."
+                },
+                {
+                    "type": "comment",
+                    "text": "Якщо у вас є PDP, термін дії якого закінчився або закінчиться протягом наступного місяця, обирайте 'новий PDP'."
+                },
+                {
+                    "type": "comment",
+                    "text": "Якщо термін дії вашого PDP закінчиться ще не скоро (більше ніж через місяць), але вам потрібна заміна через зміну даних, суттєву зміну обличчя порівняно з фотографією або через пошкодження чи втрату PDP, тоді обирайте 'заміна чинного PDP'."
+                },
+                {
+                    "value": "_______",
+                    "type": "check",
+                    "title": "Тип заяви",
+                    "name": "applicationType",
+                    "groupSelector": true,
+                    "option": "заміна чинного PDP",
+                    "optionId": "replacementOfPDP"
+                },
+                {
+                    "value": "_______",
+                    "type": "check",
+                    "title": "Тип заяви",
+                    "option": "новий PDP",
+                    "optionId": "newPDP",
+                    "default": true
+                },
+                {
+                    "type": "break"
                 },
                 {
                     "value": "WOJEWODA",
@@ -3085,8 +3353,12 @@
                     "name": "residencePostalCode"
                 },
                 {
+                    "type": "group-start",
+                    "group": "newPDP"
+                },
+                {
                     "type": "section",
-                    "title": "D. Інформація про перебування в Польщі"
+                    "title": "D. Інформація для видачі нового PDP"
                 },
                 {
                     "type": "comment",
@@ -3205,7 +3477,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВИДАЧІ проїзного документа (D1)",
+                    "title": "Причина видачі проїзного документа (D1)",
                     "name": "d1PdpIssueReason",
                     "option": "втрачений власний документ",
                     "optionId": "ownDocumentLost"
@@ -3213,14 +3485,14 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВИДАЧІ проїзного документа (D1)",
+                    "title": "Причина видачі проїзного документа (D1)",
                     "option": "пошкоджений власний документ",
                     "optionId": "ownDocumentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВИДАЧІ проїзного документа (D1)",
+                    "title": "Причина видачі проїзного документа (D1)",
                     "option": "закінчився строк дії власного документа",
                     "optionId": "ownDocumentExpired",
                     "default": true
@@ -3228,7 +3500,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВИДАЧІ проїзного документа (D1)",
+                    "title": "Причина видачі проїзного документа (D1)",
                     "option": "закінчився строк дії PDP",
                     "optionId": "pdpExpired"
                 },
@@ -3340,7 +3612,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВИДАЧІ проїзного документа",
+                    "title": "Причина видачі проїзного документа",
                     "name": "d2PdpIssueReason",
                     "option": "втрачений",
                     "optionId": "documentLost"
@@ -3348,14 +3620,14 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВИДАЧІ проїзного документа",
+                    "title": "Причина видачі проїзного документа",
                     "option": "пошкоджений",
                     "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВИДАЧІ проїзного документа",
+                    "title": "Причина видачі проїзного документа",
                     "option": "закінчився строк дії",
                     "optionId": "documentExpired",
                     "default": true
@@ -3363,7 +3635,7 @@
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ВИДАЧІ проїзного документа",
+                    "title": "Причина видачі проїзного документа",
                     "option": "відсутність документа для виїзду",
                     "optionId": "noTravelDocument"
                 },
@@ -3373,46 +3645,64 @@
                 },
                 {
                     "type": "section",
-                    "title": "E. Інформація для ЗАМІНИ PDP, який ще дійсний"
+                    "title": "E. Інформація для заміни PDP, який ще дійсний"
                 },
                 {
                     "type": "comment",
-                    "text": "Цей розділ, як правило, заповнювати не потрібно"
+                    "text": "У вас заява на отримання нового PDP замість паспорта або попереднього [майже] простроченого PDP, тому розділ E залишаєте порожнім."
                 },
                 {
-                    "type": "check",
-                    "title": "Причина ЗАМІНИ проїзного документа",
-                    "name": "pdpReplacementReason",
-                    "option": "не заповнено",
-                    "optionId": "notFilled"
+                    "type": "group-end",
+                    "group": "newPDP"
+                },
+                {
+                    "type": "group-start",
+                    "group": "replacementOfPDP"
+                },
+                {
+                    "type": "section",
+                    "title": "D. Інформація для видачі нового PDP"
+                },
+                {
+                    "type": "comment",
+                    "text": "У вас заява на заміну чинного PDP, тому розділ D залишаєте порожнім."
+                },
+                {
+                    "type": "section",
+                    "title": "E. Інформація для заміни PDP, який ще дійсний"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ЗАМІНИ проїзного документа",
+                    "title": "Причина заміни проїзного документа",
+                    "name": "pdpReplacementReason",
                     "option": "дані змінилися",
                     "optionId": "dataChanged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ЗАМІНИ проїзного документа",
+                    "title": "Причина заміни проїзного документа",
                     "option": "документ пошкоджено",
                     "optionId": "documentDamaged"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ЗАМІНИ проїзного документа",
+                    "title": "Причина заміни проїзного документа",
                     "option": "суттєва зміна зовнішності порівняно з фото",
                     "optionId": "photoMismatch"
                 },
                 {
                     "value": "×",
                     "type": "check",
-                    "title": "Причина ЗАМІНИ проїзного документа",
+                    "title": "Причина заміни проїзного документа",
                     "option": "документ втрачено",
                     "optionId": "documentLost"
+                },
+                {
+                    "type": "group-end",
+                    "group": "replacementOfPDP"
                 },
                 {
                     "type": "section",

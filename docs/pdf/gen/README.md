@@ -38,7 +38,7 @@ to the field), `transform`, `ifEmpty` (draw the value of the field with this nam
 | `text` | text input | `multiline`, `maxCharsPerLine`, `maxWidth`, `mode` (`simple`, `fit`, `chars`, `chars-with-spacing`) |
 | `date` | date picker | `format` (moment.js tokens) |
 | `select` | drop-down | `options`: an object `{ drawn: label }` or `"standard.<set>"` (see `js/constants.js`); `indexer` + `indices` to draw the variant of `a\|b` matching another field |
-| `check` | one drop-down per `title`, each annotation is an option with the position of its own mark | `option` (label), `optionId` (what profiles save), `default` |
+| `check` | one drop-down per `title`, each annotation is an option with the position of its own mark | `option` (label), `optionId` (what profiles save), `default`. Set `groupSelector` to `true` to make the drop-down working as a `group-selector` at once. |
 | `static` | fixed text | `dependsOn`, `comparison` (`equals`), `argument`: draw only when the named field has that value |
 | `copy` | repeat another field | `from`: name of the source field |
 | `same-as` | checkbox under the `target` field, checked by default: the target mirrors the `source` field and is disabled; unticking it lets the person edit the target. Draws nothing itself | `source`, `target`: names of two fields defined **earlier** in `annotations` (of the same kind of control); `title`: checkbox label. Not supported inside tables |

@@ -64,6 +64,9 @@ const handlers = {
             ctx.checkGroups.set(annot.title, $select);
             appendLabeled(ctx, annot.title, $select);
         }
+        if (annot.groupSelector === true) {
+            $select.addClass('group-selector');
+        }
         // attr() rather than prop(): the state must survive cloning of table rows
         // `optionId` is what a saved profile holds: unlike the (translated) text of the option, it is the same in every language
         const $option = $('<option>').val(annot.optionId ?? annot.option).text(annot.option).appendTo($select);
@@ -306,17 +309,23 @@ function assertReferencesExist() {
 
 /**
  * Показывает группу, выбранную в селекторе, и скрывает остальные группы из его вариантов.
+ * Варианты селектора — локальные имена групп (`group`), и относятся они только к группам,
+ * лежащим на том же уровне вложенности, что и сам селектор: селектор внутри группы `newPDP`
+ * управляет группами `d1`/`d2` внутри `newPDP`, а селектор верхнего уровня — группами верхнего уровня.
+ * Вложенные группы скрываются вместе с родителем (у скрытого родителя `hidden` не трогаем), поэтому
+ * переключение внешнего селектора не перезаписывает выбор внутреннего.
  * Группы, не упомянутые ни в одном селекторе, остаются видимыми всегда.
  */
 function applyGroupSelector($select) {
     const $scope = $select.closest('.template').length ? $select.closest('.template') : $('body');
+    const parentGroup = $select.closest('.group')[0] ?? null;
     const selected = $select.val();
-    $select.find('option').each((_, option) => {
-        const group = option.value;
-        const active = group === selected;
-        $scope.find('.group').each((_, el) => {
-            if (el.classList.contains(`group-${group}`)) el.hidden = !active;
-        });
+    const variants = new Set($select.find('option').map((_, option) => option.value).get());
+    $scope.find('.group').each((_, el) => {
+        const local = el.dataset.groupLocal;
+        if (!variants.has(local)) return;
+        if ((el.parentElement.closest('.group') ?? null) !== parentGroup) return;
+        el.hidden = local !== selected;
     });
 }
 
@@ -358,6 +367,8 @@ export function buildForm(project, { onGenerate }) {
     assertReferencesExist();
     applyAllGroupSelectors();
 
+    // The top bar is persistent, so the button of the previous build is still there: replace it, don't add another
+    $('.top-bar .actions').remove();
     $('<div class="actions"><button id="bGenerate" type="button"></button><span id="status" class="error"></span></div>')
         .prependTo($('.top-bar'))
         .find('button')
