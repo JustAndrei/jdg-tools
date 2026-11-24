@@ -71,6 +71,16 @@ span.comment, span.line-break {
 /* Output */
 .actions {
     display: inline-flex;
+    align-items: center;
+}
+
+.actions .coffee {
+    margin-right: 1em;
+}
+
+.actions .coffee img {
+    width: 80px;
+    display: block;
 }
 
 button#bGenerate {

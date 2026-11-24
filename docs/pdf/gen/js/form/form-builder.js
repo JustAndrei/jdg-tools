@@ -369,7 +369,7 @@ export function buildForm(project, { onGenerate }) {
 
     // The top bar is persistent, so the button of the previous build is still there: replace it, don't add another
     $('.top-bar .actions').remove();
-    $('<div class="actions"><button id="bGenerate" type="button"></button><span id="status" class="error"></span></div>')
+    $('<div class="actions"><a class="coffee" href="https://justandrei.github.io/coffee" target="_blank" rel="noopener"><img src="https://justandrei.github.io/coffee/bmc.svg" alt="Buy me a coffee"></a><button id="bGenerate" type="button"></button><span id="status" class="error"></span></div>')
         .prependTo($('.top-bar'))
         .find('button')
         .text(t('generate'))
