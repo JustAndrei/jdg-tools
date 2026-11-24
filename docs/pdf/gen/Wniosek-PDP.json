@@ -413,6 +413,7 @@
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
+                    "newValue": "SZEF UDSC",
                     "type": "text",
                     "title": "Кем выдано",
                     "name": "d1IssuedBy"
@@ -545,6 +546,10 @@
                     "title": "Основание пребывания",
                     "option": "согласие на пребывание по гум. причинам",
                     "optionId": "humanitarianStay"
+                },
+                {
+                    "type": "comment",
+                    "text": "Подсказка: в случае выбора 'доп. защита (ochrona uzupełniająca)' в поле 'Кем выдано', вероятно, будет 'SZEF UDSC' (Szef Urzędu do Spraw Cudzoziemców)"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
@@ -1162,6 +1167,7 @@
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
+                    "newValue": "SZEF UDSC",
                     "type": "text",
                     "title": "Wydane przez",
                     "name": "d1IssuedBy"
@@ -1294,6 +1300,10 @@
                     "title": "Podstawa pobytu",
                     "option": "zgodę na pobyt ze względów humanitarnych",
                     "optionId": "humanitarianStay"
+                },
+                {
+                    "type": "comment",
+                    "text": "Wskazówka: w przypadku wyboru opcji 'ochrona uzupełniająca' w polu 'Wydane przez' prawdopodobnie będzie 'SZEF UDSC' (Szef Urzędu do Spraw Cudzoziemców)"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
@@ -1916,6 +1926,7 @@
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
+                    "newValue": "SZEF UDSC",
                     "type": "text",
                     "title": "Issued by",
                     "name": "d1IssuedBy"
@@ -2048,6 +2059,10 @@
                     "title": "Basis of stay",
                     "option": "consent to stay on humanitarian grounds",
                     "optionId": "humanitarianStay"
+                },
+                {
+                    "type": "comment",
+                    "text": "Tip: if you choose 'subsidiary protection (ochrona uzupełniająca)', the 'Issued by' field will probably say 'SZEF UDSC' (Szef Urzędu do Spraw Cudzoziemców)"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
@@ -2667,6 +2682,7 @@
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
+                    "newValue": "SZEF UDSC",
                     "type": "text",
                     "title": "Кім выдадзена",
                     "name": "d1IssuedBy"
@@ -2799,6 +2815,10 @@
                     "title": "Падстава знаходжання",
                     "option": "згода на знаходжанне па гуманітарных прычынах",
                     "optionId": "humanitarianStay"
+                },
+                {
+                    "type": "comment",
+                    "text": "Падказка: у выпадку выбару 'дадатковая абарона (ochrona uzupełniająca)' у полі 'Кім выдадзена' верагодна будзе 'SZEF UDSC' (Szef Urzędu do Spraw Cudzoziemców)"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
@@ -3420,6 +3440,7 @@
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
+                    "newValue": "SZEF UDSC",
                     "type": "text",
                     "title": "Ким видано",
                     "name": "d1IssuedBy"
@@ -3552,6 +3573,10 @@
                     "title": "Підстава перебування",
                     "option": "згода на перебування з гуманітарних причин",
                     "optionId": "humanitarianStay"
+                },
+                {
+                    "type": "comment",
+                    "text": "Підказка: у разі вибору 'додатковий захист (ochrona uzupełniająca)' у полі 'Ким видано', імовірно, буде 'SZEF UDSC' (Szef Urzędu do Spraw Cudzoziemców)"
                 },
                 {
                     "value": "WOJEWODA POMORSKI",
